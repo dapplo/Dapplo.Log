@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0bb54c52-0e62-45b4-bde2-5c420f006a45</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Dapplo.Log.Facade</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ILogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loggers\IgnoreLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogSourceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loggers\AbstractLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loggers\DebugLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogLevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogSource.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>$id$</id>
+        <version>$version$</version>
+        <authors>$author$</authors>
+        <licenseUrl>http://www.gnu.org/licenses/lgpl-3.0.en.html</licenseUrl>
+        <projectUrl>http://www.dapplo.net/blocks/Dapplo.Log.Facade</projectUrl>
+        <iconUrl>http://www.dapplo.net/favicon.ico</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Dapplo.Log.Facade contains a small facade to log without logger.</description>
+		<summary>Add logging without a logger to your project.</summary>
+        <language>en-us</language>
+		<copyright>$author$</copyright>
+		<tags>logger facade dapplo</tags>
+		<dependencies>
+			<group targetFramework="net45" />
+			<group targetFramework="dnxcore50" />
+			<group targetFramework="uap10.0" />
+			<group targetFramework="dotnet" />
+			<group targetFramework="portable-net45+netcore45" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="Dapplo.Log.Facade\bin\release\$id$.pdb" target="lib\net45" />
+		<file src="Dapplo.Log.Facade\bin\release\$id$.xml" target="lib\net45" />
+		<file src="Dapplo.Log.Facade\bin\release\$id$.dll" target="lib\net45" />
+		
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.pdb" target="lib\dnxcore50" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.xml" target="lib\dnxcore50" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.dll" target="lib\dnxcore50" />
+
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.pdb" target="lib\dotnet" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.xml" target="lib\dotnet" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.dll" target="lib\dotnet" />
+
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.pdb" target="lib\uap10.0" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.xml" target="lib\uap10.0" />
+		<file src="Dapplo.Log.Facade.PCL\bin\release\$id$.dll" target="lib\uap10.0" />
+		
+		<file src="Dapplo.Log.Facade.Xamarin\bin\release\$id$.pdb" target="lib\portable-net45+netcore45" />
+		<file src="Dapplo.Log.Facade.Xamarin\bin\release\$id$.xml" target="lib\portable-net45+netcore45" />
+		<file src="Dapplo.Log.Facade.Xamarin\bin\release\$id$.dll" target="lib\portable-net45+netcore45" />
+	</files>
+</package>

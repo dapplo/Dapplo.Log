@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9b8c9a88-9f7a-42db-a572-6336a2c2d7b4</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Dapplo.Log.LogFile</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FileLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileLoggerConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFileLoggerConfiguration.cs" />
+  </ItemGroup>
+</Project>
