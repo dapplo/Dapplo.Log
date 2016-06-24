@@ -5,7 +5,7 @@
 This contains both a simple Facade as some simple loggers and log adaptors.
 The Facade allows a framework/library to log without forcing the project that uses this to use the same huge logger.
 
-- Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log.Facade) (soon)
+- Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log) (soon)
 - Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
 - Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
 - NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.facade.svg)](https://badge.fury.io/nu/dapplo.facade.log)
@@ -78,8 +78,8 @@ Would give an entry in your debug console with something like: Date time - Info 
 
 
 I have included examples of "wrappers" in the test project, these are not available in a NuGet Package.
-- a [NLogLogger](https://github.com/dapplo/Dapplo.LogFacade/blob/master/Dapplo.LogFacade.Tests/Logger/NLogLogger.cs) for loggin Dapplo.LogFacade to NLog
-- a [SeriLogLogger](https://github.com/dapplo/Dapplo.LogFacade/blob/master/Dapplo.LogFacade.Tests/Logger/SeriLogLogger.cs) for loggin Dapplo.LogFacade to SeriLog
-- a special [StringWriterLogger](https://github.com/dapplo/Dapplo.LogFacade/blob/master/Dapplo.LogFacade.Tests/Logger/StringWriterLogger.cs) for loggin Dapplo.LogFacade to a StringWriter, this is Thread/Task aware and takes care of separating the StringWriters for your tests. (e.g. works with xUnit tests)
+- a [NLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/NLogLogger.cs) for loggin with Dapplo.Log to NLog
+- a [SeriLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/SeriLogLogger.cs) for loggin with Dapplo.Log to SeriLog
+- a special [StringWriterLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/StringWriterLogger.cs) for loggin with Dapplo.Log to a StringWriter, this is Thread/Task aware and takes care of separating the StringWriters for your tests. (e.g. works with xUnit tests)
 
 That is all for now...

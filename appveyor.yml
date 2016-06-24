@@ -25,7 +25,7 @@ after_test:
   - ps: .\CreateCoverage.ps1
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: P+WB/WhJ/gvBkb3cvJh+zjJQx1Cr0NFxPvQnySbRatwhnOqrOElvm5m9IFIAOIOO
+    secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
 build:
   project: Dapplo.Log.sln
   publish_nuget: true
