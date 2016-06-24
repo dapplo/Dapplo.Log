@@ -13,6 +13,9 @@
         <language>en-us</language>
 		<copyright>$author$</copyright>
 		<tags>logger xunit dapplo</tags>
+		<dependencies>
+			<dependency id="Dapplo.Log.Facade" version="$version$" />
+		</dependencies>
 	</metadata>
 	<files>
 		<file src="Dapplo.Log.XUnit\bin\release\$id$.pdb" target="lib\net46" />

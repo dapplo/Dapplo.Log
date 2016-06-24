@@ -6,9 +6,12 @@ This contains both a simple Facade as some simple loggers and log adaptors.
 The Facade allows a framework/library to log without forcing the project that uses this to use the same huge logger.
 
 - Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log.Facade) (soon)
-- Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/3ocr4r55ne8yiji0?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-logfacade)
-- Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.LogFacade/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.LogFacade?branch=master)
-- NuGet package: [![NuGet package](https://badge.fury.io/nu/Dapplo.LogFacade.svg)](https://badge.fury.io/nu/Dapplo.LogFacade)
+- Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
+- Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
+- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.facade.svg)](https://badge.fury.io/nu/dapplo.facade.log)
+- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.loggers.svg)](https://badge.fury.io/nu/dapplo.log.loggers)
+- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.logfile.svg)](https://badge.fury.io/nu/dapplo.log.logfile)
+- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.xunit.svg)](https://badge.fury.io/nu/dapplo.log.xunit)
 
 This package supports most platforms / profiles, if something is missing let me know.
 
