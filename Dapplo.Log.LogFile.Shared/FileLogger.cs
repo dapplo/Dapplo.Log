@@ -76,7 +76,7 @@ namespace Dapplo.Log.LogFile
 			}
 #endif
 			// Start the processing in the background
-			_backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token));
+			_backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token).ConfigureAwait(false));
 		}
 
 		/// <summary>
@@ -183,7 +183,7 @@ namespace Dapplo.Log.LogFile
 					// ReSharper disable once UnusedVariable
 					var ignoreThis = archiveTask.ContinueWith(async x =>
 					{
-						await x;
+						await x.ConfigureAwait(false);
 						lock (_archiveTaskList)
 						{
 							_archiveTaskList.Remove(x);
@@ -278,7 +278,7 @@ namespace Dapplo.Log.LogFile
 				{
 					using (var compressionStream = new GZipStream(targetFileStream, CompressionMode.Compress))
 					{
-						await sourceFileStream.CopyToAsync(compressionStream);
+						await sourceFileStream.CopyToAsync(compressionStream).ConfigureAwait(false);
 					}
 				}
 				// As the previous code didn't throw, we can now safely delete the old file
