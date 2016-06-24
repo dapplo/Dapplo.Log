@@ -60,7 +60,11 @@ namespace Dapplo.Log.LogFile
 		private readonly IFileLoggerConfiguration _fileLoggerConfiguration;
 		private readonly Task<bool> _backgroundTask;
 		private readonly IList<Task> _archiveTaskList = new List<Task>();
-		
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="fileLoggerConfiguration">IFileLoggerConfiguration</param>
 		public FileLogger(IFileLoggerConfiguration fileLoggerConfiguration = null)
 		{
 			_fileLoggerConfiguration = fileLoggerConfiguration ?? new FileLoggerConfiguration();
@@ -295,7 +299,7 @@ namespace Dapplo.Log.LogFile
 #region IDisposable Support
 		private bool _disposedValue; // To detect redundant calls
 
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (!_disposedValue)
 			{

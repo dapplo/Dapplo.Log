@@ -13,6 +13,9 @@ namespace Dapplo.Log.LogFile
 		/// </summary>
 		public int MaxBufferSize { get; set; } = 512 * 1024;
 
+		/// <summary>
+		/// Specify how long the background task can wait until it starts writing log entries
+		/// </summary>
 		public int WriteInterval { get; set; } = (int)TimeSpan.FromMilliseconds(500).TotalMilliseconds;
 
 		/// <summary>

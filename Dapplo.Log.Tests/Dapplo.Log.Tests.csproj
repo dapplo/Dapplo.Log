@@ -82,7 +82,7 @@
       <Project>{df0302bd-c893-4424-9766-1e3360946e05}</Project>
       <Name>Dapplo.Log.Facade</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Log.File\Dapplo.Log.LogFile.csproj">
+    <ProjectReference Include="..\Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj">
       <Project>{B2F8643D-E81D-4D1D-960D-7C66C632AED5}</Project>
       <Name>Dapplo.Log.LogFile</Name>
     </ProjectReference>
