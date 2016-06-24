@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Dapplo.Log.LogFile")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A file logger for Dapplo.Log")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dapplo")]
 [assembly: AssemblyProduct("Dapplo.Log.LogFile")]
