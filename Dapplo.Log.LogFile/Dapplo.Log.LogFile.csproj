@@ -42,7 +42,7 @@
       <Name>Dapplo.Log.Facade</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Dapplo.Log.File.Shared\Dapplo.Log.File.Shared.projitems" Label="Shared" />
+  <Import Project="..\Dapplo.Log.LogFile.Shared\Dapplo.Log.LogFile.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
