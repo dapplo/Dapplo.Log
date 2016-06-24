@@ -47,6 +47,13 @@ namespace Dapplo.Log.Facade
 		Func<LogInfo, string, object[], string> Format { get; set; }
 
 		/// <summary>
+		/// This is called when your logger was the default, and is replaced with a different one.
+		/// In this method a buffer logger could place all it's content into the new logger.
+		/// </summary>
+		/// <param name="newLogger">ILogger</param>
+		void ReplacedWith(ILogger newLogger);
+
+		/// <summary>
 		///     A simple test, to see if the log level is enabled.
 		///     Note: level == LogLevels.None should always return false
 		///     Level == LogLevels.None is actually checked in the extension

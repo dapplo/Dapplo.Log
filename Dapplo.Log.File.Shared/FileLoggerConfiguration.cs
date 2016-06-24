@@ -34,7 +34,11 @@ namespace Dapplo.Log.LogFile
 		/// Change the format for the filename, the possible arguments are documented in the .
 		/// Environment variablen are also expanded.
 		/// </summary>
+#if _PCL_
+		public string DirectoryPath { get; set; } = @"";
+#else
 		public string DirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
+#endif
 
 		/// <summary>
 		/// Change the format for the archived filename
@@ -44,8 +48,12 @@ namespace Dapplo.Log.LogFile
 		/// <summary>
 		/// The path of the archived file
 		/// </summary>
+#if _PCL_
+		public string ArchiveDirectoryPath { get; set; } = @"";
+#else
 		public string ArchiveDirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
-
+#endif
+		
 		/// <summary>
 		/// The extension of archived file, default this is ".log.gz"
 		/// </summary>

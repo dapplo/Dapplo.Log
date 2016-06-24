@@ -1,4 +1,6 @@
-# Dapplo.Log.Facade
+# Dapplo.Log
+
+> As soon as the .NET Platform Standard is usable (more stable, less hacky) I will change the project to support this.
 
 This contains both a simple Facade as some simple loggers and log adaptors.
 The Facade allows a framework/library to log without forcing the project that uses this to use the same huge logger.

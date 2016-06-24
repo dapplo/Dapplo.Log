@@ -41,8 +41,6 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Loggers\ConsoleLogger.cs" />
-    <Compile Include="Loggers\TraceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="..\Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.projitems" Label="Shared" />

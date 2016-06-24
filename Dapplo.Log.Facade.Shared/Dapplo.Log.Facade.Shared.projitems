@@ -9,12 +9,11 @@
     <Import_RootNamespace>Dapplo.Log.Facade</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AbstractLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DummyLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Loggers\IgnoreLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogSourceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogInfoExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Loggers\AbstractLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Loggers\DebugLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogLevel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogSettings.cs" />

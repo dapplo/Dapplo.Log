@@ -22,7 +22,6 @@
 #region using
 
 using Dapplo.Log.Facade;
-using Dapplo.Log.Facade.Loggers;
 using Serilog.Events;
 
 #endregion

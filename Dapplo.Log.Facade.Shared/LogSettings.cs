@@ -129,9 +129,13 @@ namespace Dapplo.Log.Facade
 			var newLogger = new TLogger {LogLevel = logLevel == LogLevels.None ? DefaultLogLevel : logLevel};
 
 			// Assign the new default logger, but make sure the previous DefaultLogger is disposed (if IDisposable is implemented)
-			var defaultLogger = DefaultLogger as IDisposable;
+			var previousDefaultLogger = DefaultLogger;
 			DefaultLogger = newLogger;
-			defaultLogger?.Dispose();
+			previousDefaultLogger?.ReplacedWith(newLogger);
+
+			// Call Dispose if the logger implements IDisposable
+			IDisposable previousDefaultLoggerAsDisposable = previousDefaultLogger as IDisposable;
+			previousDefaultLoggerAsDisposable?.Dispose();
 
 			return newLogger;
 		}

@@ -23,7 +23,6 @@
 
 using System;
 using System.Threading;
-using Dapplo.Log.Facade.Loggers;
 using Xunit.Abstractions;
 using Dapplo.Log.Facade;
 

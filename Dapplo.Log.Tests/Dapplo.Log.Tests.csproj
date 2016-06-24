@@ -86,6 +86,10 @@
       <Project>{B2F8643D-E81D-4D1D-960D-7C66C632AED5}</Project>
       <Name>Dapplo.Log.LogFile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj">
+      <Project>{da27a6f0-4ced-4d54-90a4-d16739ad9570}</Project>
+      <Name>Dapplo.Log.Loggers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dapplo.Log.XUnit\Dapplo.Log.XUnit.csproj">
       <Project>{AB7C6084-1BE8-4391-A9BC-06E2555D3787}</Project>
       <Name>Dapplo.Log.XUnit</Name>

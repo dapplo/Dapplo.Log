@@ -1,24 +1,25 @@
-﻿//  Dapplo - building blocks for desktop applications
+﻿//  Dapplo - building blocks for .NET applications
 //  Copyright (C) 2015-2016 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
 // 
-//  This file is part of Dapplo.Log.Facade
+//  This file is part of Dapplo.Log
 // 
-//  Dapplo.Log.Facade is free software: you can redistribute it and/or modify
+//  Dapplo.Log is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Lesser General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 // 
-//  Dapplo.Log.Facade is distributed in the hope that it will be useful,
+//  Dapplo.Log is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU Lesser General Public License for more details.
 // 
 //  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+#region Usings
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -26,11 +27,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapplo.Log.Facade;
-using Dapplo.Log.Facade.Loggers;
-using Dapplo.Utils.Extensions;
 using System.Collections.Generic;
 using System.IO.Compression;
+using System.Linq;
+
+#if !_PCL_
 using System.Reflection;
+#endif
+
+#endregion
 
 namespace Dapplo.Log.LogFile
 {
@@ -45,30 +50,75 @@ namespace Dapplo.Log.LogFile
 		static FileLogger()
 		{
 			// Make sure this class doesn't log into it's own file
-			LogSettings.RegisterLoggerFor(Log, new IgnoreLogger());
+			LogSettings.RegisterLoggerFor(Log, new DummyLogger());
 		}
 
-		private readonly ConcurrentQueue<Tuple<LogInfo, string>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string>>();
+		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
 		private readonly CancellationTokenSource _backgroundCancellationTokenSource = new CancellationTokenSource();
 		private string _previousFilePath;
 		private IDictionary<string, object> _previousVariables;
 		private readonly IFileLoggerConfiguration _fileLoggerConfiguration;
 		private readonly Task<bool> _backgroundTask;
+		private readonly IList<Task> _archiveTaskList = new List<Task>();
 		
 		public FileLogger(IFileLoggerConfiguration fileLoggerConfiguration = null)
 		{
-			
-
 			_fileLoggerConfiguration = fileLoggerConfiguration ?? new FileLoggerConfiguration();
+#if !_PCL_
 			if (string.IsNullOrEmpty(_fileLoggerConfiguration.Processname))
 			{
 				var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
 				_fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(assembly.Location);
 			}
+#endif
 			// Start the processing in the background
 			_backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token));
 		}
 
+		/// <summary>
+		/// Enqueue the current information so it can be written to the file, formatting is done later.. (improves performance for the UI)
+		/// Preferably do NOT pass huge objects which need to be garbage collected
+		/// </summary>
+		/// <param name="logInfo">LogInfo</param>
+		/// <param name="messageTemplate">string</param>
+		/// <param name="logParameters">params</param>
+		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+		{
+			if (_backgroundCancellationTokenSource.IsCancellationRequested)
+			{
+				throw new OperationCanceledException("FileLogger has been disposed!", _backgroundCancellationTokenSource.Token);
+			}
+			_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, messageTemplate, logParameters));
+		}
+
+#region FormatWith
+		/// <summary>
+		/// A simple FormatWith
+		/// </summary>
+		/// <param name="source"></param>
+		/// <param name="variables"></param>
+		/// <returns>Formatted string</returns>
+		private static string SimpleFormatWith(string source, IDictionary<string, object> variables)
+		{
+			var stringToFormat = source;
+			IList<object> arguments = new List<object>();
+			foreach (var key in variables.Keys)
+			{
+				var index = arguments.Count;
+				if (stringToFormat.Contains(key))
+				{
+					// Replace the key with the index, so we can use normal formatting
+					stringToFormat = stringToFormat.Replace(key, index.ToString());
+					// Add the argument to the index, so the normal formatting can find this
+					arguments.Add(variables[key]);
+				}
+			}
+
+			return string.Format(stringToFormat, arguments.ToArray());
+		}
+#endregion
+
+#region Background processing
 		/// <summary>
 		/// This is the implementation of the background task
 		/// </summary>
@@ -84,6 +134,7 @@ namespace Dapplo.Log.LogFile
 			}
 			return true;
 		}
+
 
 		/// <summary>
 		/// Process the lines
@@ -103,21 +154,37 @@ namespace Dapplo.Log.LogFile
 				{ "Extension", _fileLoggerConfiguration.Extension }
 			};
 			var expandedFilename = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.FilenamePattern);
-			var directory = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.DirectoryPath).FormatWith(variables);
+			var directory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.DirectoryPath), variables);
 
 			// Filename of the file to write to.
-			string filename = expandedFilename.FormatWith(variables);
+			string filename = SimpleFormatWith(expandedFilename, variables);
 			var filepath = Path.Combine(directory, filename);
 
 			bool isFilepathChange = !filepath.Equals(_previousFilePath);
 
 			if (_previousFilePath != null && isFilepathChange)
 			{
-				// Archive, and await... we will hopefully catch up??
-				// TODO: Check if this is the case...
+				// Archive!!
 				try
 				{
-					await ArchiveFileAsync(_previousFilePath, _previousVariables, cancellationToken);
+					// Create the archive task
+					var archiveTask = ArchiveFileAsync(_previousFilePath, _previousVariables, cancellationToken);
+					// Add it to the list of current archive tasks
+					lock (_archiveTaskList)
+					{
+						_archiveTaskList.Add(archiveTask);
+					}
+					// Create a continue, so the task can be removed from the list, we do not use a CancellationToken or use the variable.
+					// ReSharper disable once MethodSupportsCancellation
+					// ReSharper disable once UnusedVariable
+					var ignoreThis = archiveTask.ContinueWith(async x =>
+					{
+						await x;
+						lock (_archiveTaskList)
+						{
+							_archiveTaskList.Remove(x);
+						}
+					});
 				}
 				catch (Exception ex)
 				{
@@ -137,11 +204,13 @@ namespace Dapplo.Log.LogFile
 			{
 				streamWriter.AutoFlush = true;
 				// Item to process
-				Tuple<LogInfo, string> logItem;
+				Tuple<LogInfo, string, object[]> logItem;
 				// Loop as long as there are items available
 				while (_logItems.TryDequeue(out logItem))
 				{
-					await streamWriter.WriteAsync(logItem.Item2).ConfigureAwait(false);
+					var line = Format(logItem.Item1, logItem.Item2, logItem.Item3);
+
+					await streamWriter.WriteAsync(line).ConfigureAwait(false);
 					// Check if we exceeded our buffer
 					if (streamWriter.BaseStream.Length > _fileLoggerConfiguration.MaxBufferSize)
 					{
@@ -166,7 +235,6 @@ namespace Dapplo.Log.LogFile
 					}
 					catch (Exception ex)
 					{
-						// TODO: handle the exception?
 						Log.Error().WriteLine(ex, "Error writing to logfile {0}", filepath);
 					}
 				}
@@ -182,10 +250,10 @@ namespace Dapplo.Log.LogFile
 		{
 			var expandedArchiveFilename = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.ArchiveFilenamePattern);
 			oldVariables["Extension"] = _fileLoggerConfiguration.ArchiveExtension;
-			var archiveDirectory = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.ArchiveDirectoryPath).FormatWith(oldVariables);
+			var archiveDirectory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.ArchiveDirectoryPath), oldVariables);
 
 			// Filename of the file to write to.
-			string archiveFilename = expandedArchiveFilename.FormatWith(oldVariables);
+			string archiveFilename = SimpleFormatWith(expandedArchiveFilename, oldVariables);
 			var archiveFilepath = Path.Combine(archiveDirectory, archiveFilename);
 
 			Log.Info().WriteLine("Archiving {0} to {1}", oldFile, archiveFilepath);
@@ -201,7 +269,7 @@ namespace Dapplo.Log.LogFile
 			}
 			else
 			{
-				using (var targetFileStream = new FileStream(archiveFilepath, FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+				using (var targetFileStream = new FileStream(archiveFilepath + ".tmp", FileMode.CreateNew, FileAccess.Write, FileShare.Read))
 				using (var sourceFileStream = new FileStream(oldFile, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					using (var compressionStream = new GZipStream(targetFileStream, CompressionMode.Compress))
@@ -209,7 +277,10 @@ namespace Dapplo.Log.LogFile
 						await sourceFileStream.CopyToAsync(compressionStream);
 					}
 				}
+				// As the previous code didn't throw, we can now safely delete the old file
 				File.Delete(oldFile);
+				// And rename the .tmp file.
+				File.Move(archiveFilepath + ".tmp", archiveFilepath);
 			}
 
 			while (_fileLoggerConfiguration.ArchiveHistory.Count > _fileLoggerConfiguration.ArchiveCount)
@@ -219,52 +290,68 @@ namespace Dapplo.Log.LogFile
 				File.Delete(fileToRemove);
 			}
 		}
+#endregion
 
-		/// <summary>
-		/// Enqueue the current information so it can be written to the file
-		/// The formatting of the message with the parameters needs to be done here, to prevent issues with disposed objects
-		/// </summary>
-		/// <param name="logInfo">LogInfo</param>
-		/// <param name="messageTemplate">string</param>
-		/// <param name="logParameters">params</param>
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
-	    {
-			if (_backgroundCancellationTokenSource.IsCancellationRequested)
-			{
-				throw new OperationCanceledException("FileLogger has been disposed!", _backgroundCancellationTokenSource.Token);
-			}
-			_logItems.Enqueue(new Tuple<LogInfo, string>(logInfo, Format(logInfo, messageTemplate, logParameters)));
-		}
+#region IDisposable Support
+		private bool _disposedValue; // To detect redundant calls
 
-		/// <summary>
-		/// This takes care of cancelling the background task which is writing the items
-		/// </summary>
-		public void Dispose()
+		protected virtual void Dispose(bool disposing)
 		{
-			_backgroundCancellationTokenSource.Cancel();
-			try
+			if (!_disposedValue)
 			{
-				_backgroundTask.GetAwaiter().GetResult();
-			}
-			catch (TaskCanceledException)
-			{
-				// Expected!
-			}
-			catch (Exception ex)
-			{
-				Log.Error().WriteLine(ex, "Exception in background task.");
-			}
+				if (disposing)
+				{
+					_backgroundCancellationTokenSource.Cancel();
+					try
+					{
+						_backgroundTask.GetAwaiter().GetResult();
+					}
+					catch (TaskCanceledException)
+					{
+						// Expected!
+					}
+					catch (Exception ex)
+					{
+						Log.Error().WriteLine(ex, "Exception in background task.");
+					}
 
-			// Process leftovers
-			try
-			{
-				ProcessLinesAsync().Wait();
-			}
-			catch (Exception ex)
-			{
-				Log.Error().WriteLine(ex, "Exception in cleanup.");
-			}
+					// Process leftovers
+					try
+					{
+						ProcessLinesAsync().Wait();
+					}
+					catch (Exception ex)
+					{
+						Log.Error().WriteLine(ex, "Exception in cleanup.");
+					}
+					// Wait for archiving
+					try
+					{
+						IList<Task> archiveTasksToWaitFor;
+						lock (_archiveTaskList)
+						{
+							archiveTasksToWaitFor = _archiveTaskList.ToList();
+						}
+						Task.WhenAll(archiveTasksToWaitFor).Wait();
+					}
+					catch (Exception ex)
+					{
+						Log.Error().WriteLine(ex, "Exception in archiving.");
+					}
 
+				}
+
+				_disposedValue = true;
+			}
 		}
+
+		// This code added to correctly implement the disposable pattern.
+		void IDisposable.Dispose()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+		}
+#endregion
+
 	}
 }

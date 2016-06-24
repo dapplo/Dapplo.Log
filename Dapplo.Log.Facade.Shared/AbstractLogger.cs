@@ -27,7 +27,7 @@ using System;
 
 #endregion
 
-namespace Dapplo.Log.Facade.Loggers
+namespace Dapplo.Log.Facade
 {
 	/// <summary>
 	/// Abstract implementation for ILogger, which safes some time.
@@ -57,6 +57,15 @@ namespace Dapplo.Log.Facade.Loggers
 		public virtual bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
 		{
 			return logLevel != LogLevels.None && logLevel >= LogLevel;
+		}
+
+		/// <summary>
+		/// Override this if you need to move your content into a different logger.
+		/// </summary>
+		/// <param name="newLogger">ILogger</param>
+		public virtual void ReplacedWith(ILogger newLogger)
+		{
+			// This does nothing.
 		}
 
 		/// <summary>

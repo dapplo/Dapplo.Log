@@ -21,26 +21,27 @@
 
 #region using
 
-using System;
+using System.Diagnostics;
+using Dapplo.Log.Facade;
 
 #endregion
 
-namespace Dapplo.Log.Facade.Loggers
+namespace Dapplo.Log.Loggers
 {
 	/// <summary>
-	///     A console logger, the simplest implementation for logging messages to a console
+	///     A trace logger, the simplest implementation for logging trace messages
 	/// </summary>
-	public class ConsoleLogger : AbstractLogger
+	public class TraceLogger : AbstractLogger
 	{
 		/// <summary>
-		/// Write a message with parameters to the Console
+		/// Write a message with parameters to the Trace
 		/// </summary>
 		/// <param name="logInfo">LogInfo</param>
 		/// <param name="messageTemplate">string with the message template</param>
 		/// <param name="logParameters">object array with the parameters for the template</param>
 		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
-			Console.Write(Format(logInfo, messageTemplate, logParameters));
+			Trace.Write(Format(logInfo, messageTemplate, logParameters));
 		}
 	}
 }

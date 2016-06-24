@@ -27,13 +27,13 @@
 
 #endregion
 
-namespace Dapplo.Log.Facade.Loggers
+namespace Dapplo.Log.Facade
 {
 	/// <summary>
 	///     An ignoring logger, doesn't log anything!
 	///     This can be used to shut-up certain LogSources
 	/// </summary>
-	public class IgnoreLogger : AbstractLogger
+	public class DummyLogger : AbstractLogger
 	{
 		/// <summary>
 		/// Always returns false, there is no logging

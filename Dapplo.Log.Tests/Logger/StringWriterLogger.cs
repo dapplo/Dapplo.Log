@@ -24,7 +24,6 @@
 using System;
 using System.IO;
 using Dapplo.Log.Facade;
-using Dapplo.Log.Facade.Loggers;
 
 #endregion
 

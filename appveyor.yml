@@ -20,7 +20,6 @@ before_build:
 before_package:
   - del /S /Q packages\OpenCover.4.6.519\SampleSln packages\OpenCover.4.6.519\Samples
   - GitLink .\
-  - nuget pack -Verbosity detailed "%APPVEYOR_PROJECT_NAME%.nuspec" -MSBuildVersion 14.0 -Properties id=%APPVEYOR_PROJECT_NAME%;version=%APPVEYOR_BUILD_VERSION%;author=Dapplo
 after_test:
 # This runs the tests with OpenCover and publishes the report to Coverall
   - ps: .\CreateCoverage.ps1
