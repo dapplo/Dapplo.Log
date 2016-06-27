@@ -50,7 +50,7 @@ namespace Dapplo.Log.LogFile
 		static FileLogger()
 		{
 			// Make sure this class doesn't log into it's own file
-			LogSettings.RegisterLoggerFor(Log, new DummyLogger());
+			LogSettings.RegisterLoggerFor(Log, new NullLogger());
 		}
 
 		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
@@ -212,13 +212,20 @@ namespace Dapplo.Log.LogFile
 				// Loop as long as there are items available
 				while (_logItems.TryDequeue(out logItem))
 				{
-					var line = Format(logItem.Item1, logItem.Item2, logItem.Item3);
-
-					await streamWriter.WriteAsync(line).ConfigureAwait(false);
-					// Check if we exceeded our buffer
-					if (streamWriter.BaseStream.Length > _fileLoggerConfiguration.MaxBufferSize)
+					try
 					{
-						break;
+						var line = Format(logItem.Item1, logItem.Item2, logItem.Item3);
+						await streamWriter.WriteAsync(line).ConfigureAwait(false);
+						// Check if we exceeded our buffer
+						if (streamWriter.BaseStream.Length > _fileLoggerConfiguration.MaxBufferSize)
+						{
+							break;
+						}
+					}
+					catch (Exception ex)
+					{
+						Log.Error().WriteLine(ex, "Couldn't format passed log information, maybe this was owned by the UI?");
+						Log.Warn().WriteLine("LogInfo and messagetemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
 					}
 				}
 				// Check if we wrote anything, if so store it to the file

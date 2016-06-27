@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AbstractLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DummyLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NullLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogSourceExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LogInfoExtensions.cs" />

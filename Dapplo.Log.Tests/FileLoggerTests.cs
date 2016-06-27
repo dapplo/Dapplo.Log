@@ -52,12 +52,18 @@ namespace Dapplo.Log.Tests
 				FilenamePattern = filenamePattern,
 				ArchiveFilenamePattern = filenamePattern
 			};
-			using (var fileLogger = new FileLogger(fileLoggerConfiguration) {LogLevel = LogLevels.Verbose})
+
+			using (var forwardingLogger = new ForwardingLogger() { LogLevel = LogLevels.Verbose })
 			{
-				LoggerTestSupport.TestAllLogMethods(fileLogger);
-				// Force archiving, as the filename changes
-				Thread.Sleep(2000);
-				LoggerTestSupport.TestAllLogMethods(fileLogger);
+				LoggerTestSupport.TestAllLogMethods(forwardingLogger);
+				using (var fileLogger = new FileLogger(fileLoggerConfiguration) { LogLevel = LogLevels.Verbose })
+				{
+					forwardingLogger.ReplacedWith(fileLogger);
+					//LoggerTestSupport.TestAllLogMethods(fileLogger);
+					// Force archiving, as the filename changes
+					Thread.Sleep(2000);
+					LoggerTestSupport.TestAllLogMethods(fileLogger);
+				}
 			}
 		}
 	}

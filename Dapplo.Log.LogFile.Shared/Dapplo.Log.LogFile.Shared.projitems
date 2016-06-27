@@ -9,6 +9,7 @@
     <Import_RootNamespace>Dapplo.Log.LogFile</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ForwardingLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileLoggerConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IFileLoggerConfiguration.cs" />

@@ -30,10 +30,10 @@
 namespace Dapplo.Log.Facade
 {
 	/// <summary>
-	///     An ignoring logger, doesn't log anything!
+	///     An null logger, doesn't log anything!
 	///     This can be used to shut-up certain LogSources
 	/// </summary>
-	public class DummyLogger : AbstractLogger
+	public class NullLogger : AbstractLogger
 	{
 		/// <summary>
 		/// Always returns false, there is no logging
