@@ -47,6 +47,10 @@ namespace Dapplo.Log.LogFile
 	{
 		private static readonly LogSource Log = new LogSource();
 
+		/// <summary>
+		/// This take care of specifying a logger, to prevent the internal logsource to write to it's own file.
+		/// The code should still work if the mapping was already available before (which only works if the registration is done by name)
+		/// </summary>
 		static FileLogger()
 		{
 			// Make sure this class doesn't log into it's own file
@@ -92,7 +96,14 @@ namespace Dapplo.Log.LogFile
 			{
 				throw new OperationCanceledException("FileLogger has been disposed!", _backgroundCancellationTokenSource.Token);
 			}
-			_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, messageTemplate, logParameters));
+			if (_fileLoggerConfiguration.Preformat)
+			{
+				_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, Format(logInfo, messageTemplate, logParameters), null));
+			}
+			else
+			{
+				_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, messageTemplate, logParameters));
+			}
 		}
 
 #region FormatWith
@@ -213,8 +224,8 @@ namespace Dapplo.Log.LogFile
 				while (_logItems.TryDequeue(out logItem))
 				{
 					try
-					{
-						var line = Format(logItem.Item1, logItem.Item2, logItem.Item3);
+					{	
+						var line = _fileLoggerConfiguration.Preformat ? logItem.Item2 : Format(logItem.Item1, logItem.Item2, logItem.Item3);
 						await streamWriter.WriteAsync(line).ConfigureAwait(false);
 						// Check if we exceeded our buffer
 						if (streamWriter.BaseStream.Length > _fileLoggerConfiguration.MaxBufferSize)

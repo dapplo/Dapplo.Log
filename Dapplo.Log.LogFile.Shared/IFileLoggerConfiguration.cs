@@ -9,6 +9,14 @@ namespace Dapplo.Log.LogFile
 	public interface IFileLoggerConfiguration
 	{
 		/// <summary>
+		/// Setting this to true will format the message in the context of the write call.
+		/// If this is set to false, the default, the formatting is done when writing to the file.
+		/// First makes the call slower, last could introduce problems with UI owned objects.
+		/// </summary>
+		[DefaultValue(false)]
+		bool Preformat { get; set; }
+
+		/// <summary>
 		/// Limit the internal stringbuilder size, 
 		/// </summary>
 		[DefaultValue(512 * 1024)]
