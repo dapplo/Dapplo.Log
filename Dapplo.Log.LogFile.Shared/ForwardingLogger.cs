@@ -64,7 +64,11 @@ namespace Dapplo.Log.LogFile
 			// Loop as long as there are items available
 			while (_logItems.TryDequeue(out logItem))
 			{
-				newLogger.Write(logItem.Item1, logItem.Item2, logItem.Item3);
+				// Only forward those items of which the log level is supported
+				if (newLogger.IsLogLevelEnabled(logItem.Item1.LogLevel))
+				{
+					newLogger.Write(logItem.Item1, logItem.Item2, logItem.Item3);
+				}
 			}
 		}
 
