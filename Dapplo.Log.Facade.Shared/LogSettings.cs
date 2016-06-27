@@ -127,16 +127,7 @@ namespace Dapplo.Log.Facade
 		public static TLogger RegisterDefaultLogger<TLogger>(LogLevels logLevel = default(LogLevels)) where TLogger : ILogger, new()
 		{
 			var newLogger = new TLogger {LogLevel = logLevel == LogLevels.None ? DefaultLogLevel : logLevel};
-
-			// Assign the new default logger, but make sure the previous DefaultLogger is disposed (if IDisposable is implemented)
-			var previousDefaultLogger = DefaultLogger;
-			DefaultLogger = newLogger;
-			previousDefaultLogger?.ReplacedWith(newLogger);
-
-			// Call Dispose if the logger implements IDisposable
-			IDisposable previousDefaultLoggerAsDisposable = previousDefaultLogger as IDisposable;
-			previousDefaultLoggerAsDisposable?.Dispose();
-
+			ReplaceDefaultLogger(newLogger);
 			return newLogger;
 		}
 
@@ -150,14 +141,24 @@ namespace Dapplo.Log.Facade
 		public static TLogger RegisterDefaultLogger<TLogger>(LogLevels logLevel = default(LogLevels), params object[] arguments) where TLogger : ILogger
 		{
 			var newLogger = (TLogger)Activator.CreateInstance(typeof(TLogger), arguments);
-
 			newLogger.LogLevel = logLevel == LogLevels.None ? DefaultLogLevel : logLevel;
-			// Assign the new default logger, but make sure the previous DefaultLogger is disposed (if IDisposable is implemented)
-			var defaultLogger = DefaultLogger as IDisposable;
-			DefaultLogger = newLogger;
-			defaultLogger?.Dispose();
-
+			ReplaceDefaultLogger(newLogger);
 			return newLogger;
+		}
+
+		/// <summary>
+		/// Assign the new default logger, but make sure the previous DefaultLogger is disposed (if IDisposable is implemented)
+		/// </summary>
+		/// <param name="newLogger">ILogger</param>
+		private static void ReplaceDefaultLogger(ILogger newLogger)
+		{
+			var previousDefaultLogger = DefaultLogger;
+			DefaultLogger = newLogger;
+			previousDefaultLogger?.ReplacedWith(newLogger);
+
+			// Call Dispose if the logger implements IDisposable
+			IDisposable previousDefaultLoggerAsDisposable = previousDefaultLogger as IDisposable;
+			previousDefaultLoggerAsDisposable?.Dispose();
 		}
 
 		/// <summary>

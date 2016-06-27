@@ -34,7 +34,7 @@ namespace Dapplo.Log.LogFile
 		/// <summary>
 		/// Change the format for the filename, as soon as the filename changes, the previous is archived.
 		/// </summary>
-		[DefaultValue("{Processname}{Timestamp:yyyyMMdd}{Extension}")]
+		[DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
 		string FilenamePattern { get; set; }
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace Dapplo.Log.LogFile
 		/// <summary>
 		/// Change the format for the archived filename
 		/// </summary>
-		[DefaultValue("{Processname}{Timestamp:yyyyMMdd}{Extension}")]
+		[DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
 		string ArchiveFilenamePattern { get; set; }
 
 		/// <summary>
