@@ -47,6 +47,7 @@ namespace Dapplo.Log.XUnit
 		public XUnitLogger(ITestOutputHelper testOutputHelper)
 		{
 			TestOutputHelperAsyncLocal.Value = testOutputHelper;
+			LogLevelAsyncLocal.Value = LogLevels.Info;
 		}
 
 		/// <summary>

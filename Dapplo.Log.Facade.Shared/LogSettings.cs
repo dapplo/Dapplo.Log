@@ -55,7 +55,7 @@ namespace Dapplo.Log.Facade
 		public static Func<LogSource, IEnumerable<ILogger>> LoggerLookup { get; set; } = x => x.Loggers().ToList();
 
 		/// <summary>
-		/// Takes care of registering the default logger with a logger and arguments
+		/// Takes care of registering the default logger with a logger, configuration and arguments
 		/// </summary>
 		/// <typeparam name="TLogger">Type for the logger</typeparam>
 		/// <param name="loggerConfiguration">ILoggerConfiguration to configure the logger with</param>
@@ -68,6 +68,30 @@ namespace Dapplo.Log.Facade
 			{
 				newLogger.Configure(loggerConfiguration);
 			}
+			return newLogger;
+		}
+
+		/// <summary>
+		/// Takes care of registering the default logger with a logger, LogLevel and arguments
+		/// </summary>
+		/// <typeparam name="TLogger">Type for the logger</typeparam>
+		/// <param name="logLevel">LogLevels level</param>
+		/// <param name="arguments">params</param>
+		/// <returns>The newly created logger, this might be needed elsewhere</returns>
+		public static TLogger RegisterDefaultLogger<TLogger>(LogLevels logLevel, params object[] arguments) where TLogger : ILogger
+		{
+			var newLogger = (TLogger)Activator.CreateInstance(typeof(TLogger), arguments);
+			newLogger.LogLevel = logLevel;
+			ReplaceDefaultLogger(newLogger);
+			return newLogger;
+		}
+
+		/// <summary>
+		/// Helper method to replace the default logger
+		/// </summary>
+		/// <param name="newLogger">ILogger</param>
+		private static void ReplaceDefaultLogger(ILogger newLogger)
+		{
 			var previousDefaultLogger = DefaultLogger;
 
 			DefaultLogger = newLogger;
@@ -76,8 +100,6 @@ namespace Dapplo.Log.Facade
 			// Call Dispose if the logger implements IDisposable
 			var previousDefaultLoggerAsDisposable = previousDefaultLogger as IDisposable;
 			previousDefaultLoggerAsDisposable?.Dispose();
-
-			return newLogger;
 		}
 	}
 }
