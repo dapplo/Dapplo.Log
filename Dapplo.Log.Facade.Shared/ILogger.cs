@@ -1,25 +1,29 @@
-﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2015-2016 Dapplo
+﻿#region Dapplo 2016 - GNU Lesser General Public License
+
+//  Dapplo - building blocks for .NET applications
+//  Copyright (C) 2016 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
 // 
-//  This file is part of Dapplo.Log.Facade
+//  This file is part of Dapplo.Log
 // 
-//  Dapplo.Log.Facade is free software: you can redistribute it and/or modify
+//  Dapplo.Log is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Lesser General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 // 
-//  Dapplo.Log.Facade is distributed in the hope that it will be useful,
+//  Dapplo.Log is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU Lesser General Public License for more details.
 // 
 //  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
+#endregion
+
+#region Usings
 
 using System;
 
@@ -33,18 +37,18 @@ namespace Dapplo.Log.Facade
 	///     Assign it to the HttpExtensionsGlobals.Logger and Dapplo.HttpExtensions will start logger with your class.
 	///     A TraceLogger implementation is supplied, so you can see some output while your project is in development.
 	/// </summary>
-	public interface ILogger
+	public interface ILogger : ILoggerConfiguration
 	{
 		/// <summary>
-		///     The LogLevels enum this logger uses, default can be taken from the LogSettings.DefaultLevel
+		/// Configure the logger with the values from the ILoggerConfiguration
 		/// </summary>
-		LogLevels LogLevel { get; set; }
+		/// <param name="loggerConfiguration">ILoggerConfiguration</param>
+		void Configure(ILoggerConfiguration loggerConfiguration);
 
 		/// <summary>
-		/// This function can be changed to format the line message differently
-		/// First argument is the LogInfo, second the messageTemplate, third the parameters
+		/// This can be overriden to format the line message differently
 		/// </summary>
-		Func<LogInfo, string, object[], string> Format { get; set; }
+		string Format(LogInfo logInfo, string messageTemplate, object[] parameters);
 
 		/// <summary>
 		/// This is called when your logger was the default, and is replaced with a different one.

@@ -1,30 +1,35 @@
-﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2015-2016 Dapplo
-// 
-//  For more information see: http://dapplo.net/
-//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
-// 
-//  This file is part of Dapplo.Log.Facade
-// 
-//  Dapplo.Log.Facade is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-// 
-//  Dapplo.Log.Facade is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Lesser General Public License for more details.
-// 
-//  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+﻿#region Dapplo 2016 - GNU Lesser General Public License
 
-#region using
+// Dapplo - building blocks for .NET applications
+// Copyright (C) 2016 Dapplo
+// 
+// For more information see: http://dapplo.net/
+// Dapplo repositories are hosted on GitHub: https://github.com/dapplo
+// 
+// This file is part of Dapplo.Log
+// 
+// Dapplo.Log is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Dapplo.Log is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have a copy of the GNU Lesser General Public License
+// along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+#endregion
+
+#region Usings
 
 using System;
 using System.Linq;
 #if !_PCL_
 using System.Diagnostics;
+
 #else
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -36,10 +41,12 @@ using System.Text.RegularExpressions;
 namespace Dapplo.Log.Facade
 {
 	/// <summary>
-	/// This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear where the log
-	/// entries come from. In general this should be instanciated with the default constructor without arguments, which takes care of initiating it.
-	/// For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
-	/// For other platforms this uses the CallerFilePath, which supplies the source-file.
+	///     This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear
+	///     where the log
+	///     entries come from. In general this should be instanciated with the default constructor without arguments, which
+	///     takes care of initiating it.
+	///     For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
+	///     For other platforms this uses the CallerFilePath, which supplies the source-file.
 	/// </summary>
 	public class LogSource
 	{
@@ -57,7 +64,7 @@ namespace Dapplo.Log.Facade
 		}
 
 		/// <summary>
-		/// Private constructor used internally, to differenciate from the empty constructor
+		///     Private constructor used internally, to differenciate from the empty constructor
 		/// </summary>
 		// ReSharper disable once UnusedParameter.Local
 		private LogSource(bool ignore)
@@ -103,7 +110,7 @@ namespace Dapplo.Log.Facade
 #endif
 
 		/// <summary>
-		/// Factory method where you can specify the type manually
+		///     Factory method where you can specify the type manually
 		/// </summary>
 		/// <param name="source">A custom identifier for the LogSource</param>
 		/// <returns>LogSource</returns>
@@ -115,7 +122,7 @@ namespace Dapplo.Log.Facade
 		}
 
 		/// <summary>
-		/// Use a string to set the source information
+		///     Use a string to set the source information
 		/// </summary>
 		/// <param name="source">Source to se</param>
 		private void SetSourceFromString(string source)
@@ -124,7 +131,7 @@ namespace Dapplo.Log.Facade
 			var parts = Source.Split('.');
 			if (parts.Length > 0)
 			{
-				ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] { parts.Last() }));
+				ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));
 			}
 			else
 			{
@@ -133,7 +140,7 @@ namespace Dapplo.Log.Facade
 		}
 
 		/// <summary>
-		/// Use a type to set the source information
+		///     Use a type to set the source information
 		/// </summary>
 		/// <param name="sourceType"></param>
 		private void SetSourceFromType(Type sourceType)
@@ -149,7 +156,7 @@ namespace Dapplo.Log.Facade
 		/// <summary>
 		///     The Type where this LogSource was created
 		/// </summary>
-		public Type SourceType { get; private set;}
+		public Type SourceType { get; private set; }
 
 		/// <summary>
 		///     The Type, as string, where this LogSource was created

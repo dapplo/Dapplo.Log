@@ -25,51 +25,40 @@
 
 #region Usings
 
-using System;
+using System.ComponentModel;
 
 #endregion
 
 namespace Dapplo.Log.Facade
 {
 	/// <summary>
-	///     A simple wrapper for some information which is passed to the logger
+	///     Interface for the LoggerConfiguration
 	/// </summary>
-	public class LogInfo
+	public interface ILoggerConfiguration
 	{
 		/// <summary>
-		///     The LogLevels enum for the log
+		///     The LogLevels enum a logger uses
 		/// </summary>
-		public LogLevels LogLevel { get; set; }
+		[DefaultValue(LogLevels.Info)]
+		LogLevels LogLevel { get; set; }
 
 		/// <summary>
-		///     The line of the log
+		///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.Facade.LoggerTest
 		/// </summary>
-		public int Line { get; set; }
+		[DefaultValue(true)]
+		bool UseShortSource { get; set; }
 
 		/// <summary>
-		///     Method in the Caller (class) from where the log statement came
+		///     Timestamp format which is used in the output, when outputting the LogInfo details
 		/// </summary>
-		public string Method { get; set; }
+		[DefaultValue("yyyy-MM-dd HH:mm:ss.fff")]
+		string DateTimeFormat { get; set; }
 
 		/// <summary>
-		///     Class from where the log statement came
+		///     Default line format for loggers which use the DefaultFormatter.
+		///     The first argument is the LogInfo, the second the message + parameters formatted
 		/// </summary>
-		public LogSource Source { get; set; }
-
-		/// <summary>
-		///     Timestamp for the log
-		/// </summary>
-		public DateTimeOffset Timestamp { get; } = DateTimeOffset.Now;
-
-		/// <summary>
-		///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
-		///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
-		/// </summary>
-		/// <returns>string</returns>
-		public override string ToString()
-		{
-			return
-				$"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {LogLevel} {Source.Source}:{Method}({Line})";
-		}
+		[DefaultValue("{0} - {1}")]
+		string LogLineFormat { get; set; }
 	}
 }

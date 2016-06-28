@@ -1,5 +1,7 @@
-﻿//  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2015-2016 Dapplo
+﻿#region Dapplo 2016 - GNU Lesser General Public License
+
+//  Dapplo - building blocks for .NET applications
+//  Copyright (C) 2016 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -19,17 +21,20 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+#endregion
+
 #region Usings
+
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapplo.Log.Facade;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
 
 #if !_PCL_
 using System.Reflection;
@@ -40,52 +45,174 @@ using System.Reflection;
 namespace Dapplo.Log.LogFile
 {
 	/// <summary>
-	/// This implements a logger which writes to a log file in the background
-	/// Filename and directory are configurable, also rolling filename and compression can be activated
+	///     This implements a logger which writes to a log file in the background
+	///     Filename and directory are configurable, also rolling filename and compression can be activated
 	/// </summary>
-    public class FileLogger : AbstractLogger, IDisposable
+	public class FileLogger : AbstractLogger, IDisposable, IFileLoggerConfiguration
 	{
 		private static readonly LogSource Log = new LogSource();
 
 		/// <summary>
-		/// This take care of specifying a logger, to prevent the internal logsource to write to it's own file.
-		/// The code should still work if the mapping was already available before (which only works if the registration is done by name)
+		///     This take care of specifying a logger, to prevent the internal logsource to write to it's own file.
+		///     The code should still work if the mapping was already available before (which only works if the registration is
+		///     done by name)
 		/// </summary>
 		static FileLogger()
 		{
 			// Make sure this class doesn't log into it's own file
-			LogSettings.RegisterLoggerFor(Log, new NullLogger());
+			Log.LogTo(new NullLogger());
 		}
 
-		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
+		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems =
+			new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
+
 		private readonly CancellationTokenSource _backgroundCancellationTokenSource = new CancellationTokenSource();
 		private string _previousFilePath;
 		private IDictionary<string, object> _previousVariables;
-		private readonly IFileLoggerConfiguration _fileLoggerConfiguration;
 		private readonly Task<bool> _backgroundTask;
 		private readonly IList<Task> _archiveTaskList = new List<Task>();
 
 		/// <summary>
-		/// Constructor
+		///     default Constructor which starts the background task
 		/// </summary>
-		/// <param name="fileLoggerConfiguration">IFileLoggerConfiguration</param>
-		public FileLogger(IFileLoggerConfiguration fileLoggerConfiguration = null)
+		public FileLogger()
 		{
-			_fileLoggerConfiguration = fileLoggerConfiguration ?? new FileLoggerConfiguration();
-#if !_PCL_
-			if (string.IsNullOrEmpty(_fileLoggerConfiguration.Processname))
-			{
-				var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-				_fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(assembly.Location);
-			}
-#endif
 			// Start the processing in the background
 			_backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token).ConfigureAwait(false));
+#if !_PCL_
+			SetProcessName(this);
+#endif
+		}
+
+#if !_PCL_
+		private void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
+		{
+			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+			fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(assembly.Location);
+		}
+#endif
+
+		/// <summary>
+		///     Configure this logger
+		/// </summary>
+		/// <param name="configuration"></param>
+		public override void Configure(ILoggerConfiguration configuration)
+		{
+			// Copy all values from the ILoggerConfiguration
+			base.Configure(configuration);
+
+			// Test if it's a IFileLoggerConfiguration
+			var fileLoggerConfiguration = configuration as IFileLoggerConfiguration;
+			if (fileLoggerConfiguration == null)
+			{
+				return;
+			}
+
+			// Copy all values from the IFileLoggerConfiguration
+			if (string.IsNullOrEmpty(fileLoggerConfiguration.Processname))
+			{
+#if !_PCL_
+				SetProcessName(fileLoggerConfiguration);
+#else
+				throw new ArgumentNullException(nameof(fileLoggerConfiguration.Processname));
+#endif
+			}
+
+			ArchiveHistory = fileLoggerConfiguration.ArchiveHistory;
+			ArchiveCompress = fileLoggerConfiguration.ArchiveCompress;
+			ArchiveCount = fileLoggerConfiguration.ArchiveCount;
+			ArchiveDirectoryPath = fileLoggerConfiguration.ArchiveDirectoryPath;
+			ArchiveExtension = fileLoggerConfiguration.ArchiveExtension;
+			ArchiveFilenamePattern = fileLoggerConfiguration.ArchiveFilenamePattern;
+			DirectoryPath = fileLoggerConfiguration.DirectoryPath;
+			Extension = fileLoggerConfiguration.Extension;
+			FilenamePattern = fileLoggerConfiguration.FilenamePattern;
+			MaxBufferSize = fileLoggerConfiguration.MaxBufferSize;
+			Preformat = fileLoggerConfiguration.Preformat;
+			Processname = fileLoggerConfiguration.Processname;
+			WriteInterval = fileLoggerConfiguration.WriteInterval;
 		}
 
 		/// <summary>
-		/// Enqueue the current information so it can be written to the file, formatting is done later.. (improves performance for the UI)
-		/// Preferably do NOT pass huge objects which need to be garbage collected
+		///     Setting this to true will format the message in the context of the write call.
+		///     If this is set to false, the default, the formatting is done when writing to the file.
+		///     First makes the call slower, last could introduce problems with UI owned objects.
+		/// </summary>
+		public bool Preformat { get; set; }
+
+		/// <summary>
+		///     Limit the internal stringbuilder size,
+		/// </summary>
+		public int MaxBufferSize { get; set; } = 512*1024;
+
+		/// <summary>
+		///     Specify how long the background task can wait until it starts writing log entries
+		/// </summary>
+		public int WriteInterval { get; set; } = (int) TimeSpan.FromMilliseconds(500).TotalMilliseconds;
+
+		/// <summary>
+		///     Name of the application, if null it will be created
+		/// </summary>
+		public string Processname { get; set; }
+
+		/// <summary>
+		///     The extension of log file, default this is ".log"
+		/// </summary>
+		public string Extension { get; set; } = ".log";
+
+		/// <summary>
+		///     Change the format for the filename, as soon as the filename changes, the previous is archived.
+		/// </summary>
+		public string FilenamePattern { get; set; } = "{Processname}-{Timestamp:yyyyMMdd}{Extension}";
+
+		/// <summary>
+		///     Change the format for the filename, the possible arguments are documented in the .
+		///     Environment variablen are also expanded.
+		/// </summary>
+#if _PCL_
+		public string DirectoryPath { get; set; } = @"";
+#else
+		public string DirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
+#endif
+
+		/// <summary>
+		///     Change the format for the archived filename
+		/// </summary>
+		public string ArchiveFilenamePattern { get; set; } = "{Processname}-{Timestamp:yyyyMMdd}{Extension}";
+
+		/// <summary>
+		///     The path of the archived file
+		/// </summary>
+#if _PCL_
+		public string ArchiveDirectoryPath { get; set; } = @"";
+#else
+		public string ArchiveDirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
+#endif
+
+		/// <summary>
+		///     The extension of archived file, default this is ".log.gz"
+		/// </summary>
+		public string ArchiveExtension { get; set; } = ".log.gz";
+
+		/// <summary>
+		///     Compress the archive
+		/// </summary>
+		public bool ArchiveCompress { get; set; } = true;
+
+		/// <summary>
+		///     The amount of archived files which are allowed. The oldest is removed.
+		/// </summary>
+		public int ArchiveCount { get; set; } = 2;
+
+		/// <summary>
+		///     The history of archived files, this could e.g. be stored in a configuration
+		/// </summary>
+		public IList<string> ArchiveHistory { get; set; } = new List<string>();
+
+		/// <summary>
+		///     Enqueue the current information so it can be written to the file, formatting is done later.. (improves performance
+		///     for the UI)
+		///     Preferably do NOT pass huge objects which need to be garbage collected
 		/// </summary>
 		/// <param name="logInfo">LogInfo</param>
 		/// <param name="messageTemplate">string</param>
@@ -96,9 +223,10 @@ namespace Dapplo.Log.LogFile
 			{
 				throw new OperationCanceledException("FileLogger has been disposed!", _backgroundCancellationTokenSource.Token);
 			}
-			if (_fileLoggerConfiguration.Preformat)
+			if (Preformat)
 			{
-				_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, Format(logInfo, messageTemplate, logParameters), null));
+				_logItems.Enqueue(new Tuple<LogInfo, string, object[]>(logInfo, Format(logInfo, messageTemplate, logParameters),
+					null));
 			}
 			else
 			{
@@ -106,9 +234,10 @@ namespace Dapplo.Log.LogFile
 			}
 		}
 
-#region FormatWith
+		#region FormatWith
+
 		/// <summary>
-		/// A simple FormatWith
+		///     A simple FormatWith
 		/// </summary>
 		/// <param name="source"></param>
 		/// <param name="variables"></param>
@@ -131,11 +260,13 @@ namespace Dapplo.Log.LogFile
 
 			return string.Format(stringToFormat, arguments.ToArray());
 		}
-#endregion
 
-#region Background processing
+		#endregion
+
+		#region Background processing
+
 		/// <summary>
-		/// This is the implementation of the background task
+		///     This is the implementation of the background task
 		/// </summary>
 		/// <returns>Task</returns>
 		private async Task<bool> BackgroundAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -145,14 +276,14 @@ namespace Dapplo.Log.LogFile
 				// ReSharper disable once MethodSupportsCancellation
 				await ProcessLinesAsync().ConfigureAwait(false);
 				// Wait a while before we process the next items
-				await Task.Delay(_fileLoggerConfiguration.WriteInterval, cancellationToken).ConfigureAwait(false);
+				await Task.Delay(WriteInterval, cancellationToken).ConfigureAwait(false);
 			}
 			return true;
 		}
 
 
 		/// <summary>
-		/// Process the lines
+		///     Process the lines
 		/// </summary>
 		/// <param name="cancellationToken">CancellationToken</param>
 		/// <returns>Task</returns>
@@ -162,20 +293,20 @@ namespace Dapplo.Log.LogFile
 			{
 				return;
 			}
-			IDictionary<string, object> variables = new Dictionary<string, object>()
+			IDictionary<string, object> variables = new Dictionary<string, object>
 			{
-				{ "Processname", _fileLoggerConfiguration.Processname},
-				{ "Timestamp" , DateTimeOffset.Now},
-				{ "Extension", _fileLoggerConfiguration.Extension }
+				{"Processname", Processname},
+				{"Timestamp", DateTimeOffset.Now},
+				{"Extension", Extension}
 			};
-			var expandedFilename = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.FilenamePattern);
-			var directory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.DirectoryPath), variables);
+			var expandedFilename = Environment.ExpandEnvironmentVariables(FilenamePattern);
+			var directory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(DirectoryPath), variables);
 
 			// Filename of the file to write to.
-			string filename = SimpleFormatWith(expandedFilename, variables);
+			var filename = SimpleFormatWith(expandedFilename, variables);
 			var filepath = Path.Combine(directory, filename);
 
-			bool isFilepathChange = !filepath.Equals(_previousFilePath);
+			var isFilepathChange = !filepath.Equals(_previousFilePath);
 
 			if (_previousFilePath != null && isFilepathChange)
 			{
@@ -224,11 +355,11 @@ namespace Dapplo.Log.LogFile
 				while (_logItems.TryDequeue(out logItem))
 				{
 					try
-					{	
-						var line = _fileLoggerConfiguration.Preformat ? logItem.Item2 : Format(logItem.Item1, logItem.Item2, logItem.Item3);
+					{
+						var line = Preformat ? logItem.Item2 : Format(logItem.Item1, logItem.Item2, logItem.Item3);
 						await streamWriter.WriteAsync(line).ConfigureAwait(false);
 						// Check if we exceeded our buffer
-						if (streamWriter.BaseStream.Length > _fileLoggerConfiguration.MaxBufferSize)
+						if (streamWriter.BaseStream.Length > MaxBufferSize)
 						{
 							break;
 						}
@@ -236,7 +367,9 @@ namespace Dapplo.Log.LogFile
 					catch (Exception ex)
 					{
 						Log.Error().WriteLine(ex, "Couldn't format passed log information, maybe this was owned by the UI?");
-						Log.Warn().WriteLine("LogInfo and messagetemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
+						Log.Warn()
+							.WriteLine("LogInfo and messagetemplate for the problematic log information: {0} {1}", logItem.Item1,
+								logItem.Item2);
 					}
 				}
 				// Check if we wrote anything, if so store it to the file
@@ -261,21 +394,22 @@ namespace Dapplo.Log.LogFile
 					}
 				}
 			}
-	    }
+		}
 
 
 		/// <summary>
-		/// Archive the finished file
+		///     Archive the finished file
 		/// </summary>
 		/// <returns>Task to await for</returns>
-		private async Task ArchiveFileAsync(string oldFile, IDictionary<string, object> oldVariables, CancellationToken cancellationToken = default(CancellationToken))
+		private async Task ArchiveFileAsync(string oldFile, IDictionary<string, object> oldVariables,
+			CancellationToken cancellationToken = default(CancellationToken))
 		{
-			var expandedArchiveFilename = Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.ArchiveFilenamePattern);
-			oldVariables["Extension"] = _fileLoggerConfiguration.ArchiveExtension;
-			var archiveDirectory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(_fileLoggerConfiguration.ArchiveDirectoryPath), oldVariables);
+			var expandedArchiveFilename = Environment.ExpandEnvironmentVariables(ArchiveFilenamePattern);
+			oldVariables["Extension"] = ArchiveExtension;
+			var archiveDirectory = SimpleFormatWith(Environment.ExpandEnvironmentVariables(ArchiveDirectoryPath), oldVariables);
 
 			// Filename of the file to write to.
-			string archiveFilename = SimpleFormatWith(expandedArchiveFilename, oldVariables);
+			var archiveFilename = SimpleFormatWith(expandedArchiveFilename, oldVariables);
 			var archiveFilepath = Path.Combine(archiveDirectory, archiveFilename);
 
 			Log.Info().WriteLine("Archiving {0} to {1}", oldFile, archiveFilepath);
@@ -284,14 +418,16 @@ namespace Dapplo.Log.LogFile
 			{
 				Directory.CreateDirectory(archiveDirectory);
 			}
-			_fileLoggerConfiguration.ArchiveHistory.Add(archiveFilepath);
-			if (!_fileLoggerConfiguration.ArchiveCompress)
+			ArchiveHistory.Add(archiveFilepath);
+			if (!ArchiveCompress)
 			{
 				await Task.Run(() => File.Move(oldFile, archiveFilepath), cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
-				using (var targetFileStream = new FileStream(archiveFilepath + ".tmp", FileMode.CreateNew, FileAccess.Write, FileShare.Read))
+				using (
+					var targetFileStream = new FileStream(archiveFilepath + ".tmp", FileMode.CreateNew, FileAccess.Write,
+						FileShare.Read))
 				using (var sourceFileStream = new FileStream(oldFile, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					using (var compressionStream = new GZipStream(targetFileStream, CompressionMode.Compress))
@@ -305,16 +441,18 @@ namespace Dapplo.Log.LogFile
 				File.Move(archiveFilepath + ".tmp", archiveFilepath);
 			}
 
-			while (_fileLoggerConfiguration.ArchiveHistory.Count > _fileLoggerConfiguration.ArchiveCount)
+			while (ArchiveHistory.Count > ArchiveCount)
 			{
-				var fileToRemove = _fileLoggerConfiguration.ArchiveHistory[0];
-				_fileLoggerConfiguration.ArchiveHistory.RemoveAt(0);
+				var fileToRemove = ArchiveHistory[0];
+				ArchiveHistory.RemoveAt(0);
 				File.Delete(fileToRemove);
 			}
 		}
-#endregion
 
-#region IDisposable Support
+		#endregion
+
+		#region IDisposable Support
+
 		private bool _disposedValue; // To detect redundant calls
 
 		private void Dispose(bool disposing)
@@ -360,7 +498,6 @@ namespace Dapplo.Log.LogFile
 					{
 						Log.Error().WriteLine(ex, "Exception in archiving.");
 					}
-
 				}
 
 				_disposedValue = true;
@@ -373,7 +510,7 @@ namespace Dapplo.Log.LogFile
 			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 			Dispose(true);
 		}
-#endregion
 
+		#endregion
 	}
 }

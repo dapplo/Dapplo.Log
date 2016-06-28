@@ -1,12 +1,42 @@
-﻿using System.Collections.Generic;
+﻿#region Dapplo 2016 - GNU Lesser General Public License
+
+//  Dapplo - building blocks for .NET applications
+//  Copyright (C) 2016 Dapplo
+// 
+//  For more information see: http://dapplo.net/
+//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
+// 
+//  This file is part of Dapplo.Log
+// 
+//  Dapplo.Log is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+// 
+//  Dapplo.Log is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+// 
+//  You should have a copy of the GNU Lesser General Public License
+//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+#endregion
+
+#region Usings
+
+using System.Collections.Generic;
 using System.ComponentModel;
+using Dapplo.Log.Facade;
+
+#endregion
 
 namespace Dapplo.Log.LogFile
 {
 	/// <summary>
 	/// Interface for the logfile configuration
 	/// </summary>
-	public interface IFileLoggerConfiguration
+	public interface IFileLoggerConfiguration : ILoggerConfiguration
 	{
 		/// <summary>
 		/// Setting this to true will format the message in the context of the write call.
@@ -19,7 +49,7 @@ namespace Dapplo.Log.LogFile
 		/// <summary>
 		/// Limit the internal stringbuilder size, 
 		/// </summary>
-		[DefaultValue(512 * 1024)]
+		[DefaultValue(512*1024)]
 		int MaxBufferSize { get; set; }
 
 		/// <summary>

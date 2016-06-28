@@ -1,5 +1,7 @@
-﻿//  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2015-2016 Dapplo
+﻿#region Dapplo 2016 - GNU Lesser General Public License
+
+//  Dapplo - building blocks for .NET applications
+//  Copyright (C) 2016 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -18,6 +20,8 @@
 // 
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+#endregion
 
 #region Usings
 
@@ -38,9 +42,10 @@ namespace Dapplo.Log.LogFile
 	/// Can be used to setup before everything is taken care of, to later replace with the file logger.
 	/// When disposed, everything in the queue is written to Trace.
 	/// </summary>
-    public class ForwardingLogger : AbstractLogger, IDisposable
+	public class ForwardingLogger : AbstractLogger, IDisposable
 	{
-		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
+		private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems =
+			new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
 
 		/// <summary>
 		/// Enqueue the current information so it can be written to the file, formatting is done later.. (improves performance for the UI)
@@ -73,6 +78,7 @@ namespace Dapplo.Log.LogFile
 		}
 
 		#region IDisposable Support
+
 		private bool _disposedValue; // To detect redundant calls
 
 		private void Dispose(bool disposing)
@@ -109,7 +115,7 @@ namespace Dapplo.Log.LogFile
 			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 			Dispose(true);
 		}
-#endregion
 
+		#endregion
 	}
 }

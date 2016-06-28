@@ -1,9 +1,13 @@
 # Dapplo.Log
 
-> As soon as the .NET Platform Standard is usable (more stable, less hacky) I will change the project to support this.
+> This project will be made .NET Platform standard compatible.
 
-This contains both a simple Facade as some simple loggers and log adaptors.
-The Facade allows a framework/library to log without forcing the project that uses this to use the same huge logger.
+This contains a simple logging facade in dapplo.log.facade, as well as some simple loggers, a file logger and also some adapters for other log frameworks.
+The facade allows a framework/library to have log statements without forcing the project that uses this to use the same huge logger.
+Without a logger and if used correctly the performance penalty is extremely small, as soon as you have issues you can set a logger and get some information.
+
+The project is build modular, currently the facade which is the least you will need, is about 17KB.
+Adding a file logger adds another 21KB, which totals to <40KB. Just as a comparison, log4net is about 300KB. 
 
 - Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log) (soon)
 - Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
@@ -66,16 +70,12 @@ You enable the logging like this:
 LogSettings.RegisterDefaultLogger<TraceLogger>(LogLevel)
 ```
 
-So, where is the file logger? There currently is none, I wanted to keep it as simple as possible. I will add a simple file logger later.
-
-One additional thing might need to be mentioned: there is a Format property in ILogger which can be used to set a function which accepts a string and object[], returns a string), normally string.Format is used but it can be changed to use your own formatting.
-An example with using FormatWith from Dapplo.Utils:
-```
-LogSettings.DefaultLogger = new TraceLogger { Level = LogLevel.Info, Format = StringExtensions.FormatWith };
-Log.Info().WriteLine("{Name} is {Age} years old", new { Name = "Jan", Age = 10 });
-```
-Would give an entry in your debug console with something like: Date time - Info - class:method(linenr) - Jan is 10 years old
-
+A file logger is also available, it supports:
+- Async writing to the file, it will only delay your application with a small overhead of accessing an internal queue. 
+- Rolling filenames
+- If rolling, the file can be moved to a directory and have a different filename.
+- If rolling, the file can be gzipped
+Available in Dapplo.Log.LogFile
 
 I have included examples of "wrappers" in the test project, these are not available in a NuGet Package.
 - a [NLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/NLogLogger.cs) for loggin with Dapplo.Log to NLog
