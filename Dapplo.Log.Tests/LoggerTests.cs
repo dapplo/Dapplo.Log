@@ -97,7 +97,7 @@ namespace Dapplo.Log.Tests
 			LoggerMapper.RegisterLoggerFor("Test", logger);
 
 			const string visibleMessage = "Should be visisble";
-			const string notVisibleMessage = "Should be NOT visisble in StringWriterLogger, but arrive in the normal log";
+			const string notVisibleMessage = "Should be NOT visisble in logger, but arrive in the defaultLogger";
 			differentLogSource.Info().WriteLine(visibleMessage);
 			Log.Info().WriteLine(notVisibleMessage);
 			Assert.True(logger.Output.Contains(visibleMessage));

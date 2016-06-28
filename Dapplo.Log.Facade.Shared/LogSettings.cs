@@ -68,6 +68,7 @@ namespace Dapplo.Log.Facade
 			{
 				newLogger.Configure(loggerConfiguration);
 			}
+			ReplaceDefaultLogger(newLogger);
 			return newLogger;
 		}
 
