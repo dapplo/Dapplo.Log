@@ -71,7 +71,7 @@ namespace Dapplo.Log.Facade
 			}
 			// Format the LogInfo
 			var source = UseShortSource ? logInfo.Source.ShortSource : logInfo.Source.Source;
-			var logInfoString = $"{logInfo.Timestamp.ToString(DateTimeFormat)} {LogLevel} {source}:{logInfo.Method}({logInfo.Line})";
+			var logInfoString = $"{logInfo.Timestamp.ToString(DateTimeFormat)} {logInfo.LogLevel} {source}:{logInfo.Method}({logInfo.Line})";
 			return string.Format(LogLineFormat, logInfoString, message);
 		}
 
