@@ -28,10 +28,7 @@
 using System;
 using System.Collections.Concurrent;
 using Dapplo.Log.Facade;
-
-#if !_PCL_
 using System.Diagnostics;
-#endif
 
 #endregion
 
@@ -91,7 +88,6 @@ namespace Dapplo.Log.LogFile
 					// Loop as long as there are items available
 					while (_logItems.TryDequeue(out logItem))
 					{
-#if !_PCL_
 						try
 						{
 							Trace.Write(Format(logItem.Item1, logItem.Item2, logItem.Item3));
@@ -101,7 +97,6 @@ namespace Dapplo.Log.LogFile
 							Trace.WriteLine($"Couldn't format passed log information, maybe this was owned by the UI? {ex.Message}");
 							Trace.WriteLine($"LogInfo and messagetemplate for the problematic log information: {logItem.Item1} {logItem.Item2}");
 						}
-#endif
 					}
 				}
 

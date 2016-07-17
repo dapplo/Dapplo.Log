@@ -27,14 +27,10 @@
 
 using System;
 using System.Linq;
-#if !_PCL_
 using System.Diagnostics;
-
-#else
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-#endif
 
 #endregion
 
@@ -72,7 +68,6 @@ namespace Dapplo.Log.Facade
 			// Nothing here, the properties are filled from the factory methods
 		}
 
-#if !_PCL_
 		/// <summary>
 		///     The desktop constructor takes care of creating StackTrace and setting the Source property
 		///     with the type where the LogSource was created.
@@ -80,10 +75,10 @@ namespace Dapplo.Log.Facade
 		public LogSource()
 		{
 			// Get the stacktrace, first frame, method and it's declaring type.
-			var callerType = new StackTrace().GetFrame(1).GetMethod().DeclaringType;
+			var callerType = new StackTrace(null, false).GetFrames().First().GetMethod().DeclaringType;
 			SetSourceFromType(callerType);
 		}
-#else
+
 		private static readonly Regex IllegalCharsRegex = new Regex("[^a-zA-Z0-9_]+");
 		/// <summary>
 		///     The NON desktop default constructor which should be called without an argument.
@@ -107,7 +102,6 @@ namespace Dapplo.Log.Facade
 			sourceFilePath = IllegalCharsRegex.Replace(sourceFilePath, ".");
 			SetSourceFromString(sourceFilePath);
 		}
-#endif
 
 		/// <summary>
 		///     Factory method where you can specify the type manually

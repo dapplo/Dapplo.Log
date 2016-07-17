@@ -82,9 +82,9 @@
       <Project>{ea4c99b4-fa8e-4faf-b9d5-1ee3b4d88e16}</Project>
       <Name>Dapplo.Log.Facade</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj">
-      <Project>{B2F8643D-E81D-4D1D-960D-7C66C632AED5}</Project>
-      <Name>Dapplo.Log.LogFile</Name>
+    <ProjectReference Include="..\Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj">
+      <Project>{8977a419-7a8e-4fc0-b27a-99aae58f0c8d}</Project>
+      <Name>Dapplo.Log.Loggers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
