@@ -1,103 +1,50 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Facade", "Dapplo.Log.Facade\Dapplo.Log.Facade.csproj", "{DF0302BD-C893-4424-9766-1E3360946E05}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Tests", "Dapplo.Log.Tests\Dapplo.Log.Tests.csproj", "{79F58E26-357C-4FF7-82F2-F68E58342D68}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Facade.PCL", "Dapplo.Log.Facade.PCL\Dapplo.Log.Facade.PCL.csproj", "{62B34EC3-005B-4540-8740-A37F8CD13C46}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dapplo.Log.Facade.Shared", "Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.shproj", "{0BB54C52-0E62-45B4-BDE2-5C420F006A45}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Facade.Xamarin", "Dapplo.Log.Facade.Xamarin\Dapplo.Log.Facade.Xamarin.csproj", "{C6DFAB45-30D0-4D6D-893C-450492717196}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dapplo.Log.LogFile.Shared", "Dapplo.Log.LogFile.Shared\Dapplo.Log.LogFile.Shared.shproj", "{9B8C9A88-9F7A-42DB-A572-6336A2C2D7B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.LogFile", "Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj", "{B2F8643D-E81D-4D1D-960D-7C66C632AED5}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dapplo.Log.XUnit.Shared", "Dapplo.Log.XUnit.Shared\Dapplo.Log.XUnit.Shared.shproj", "{AA520D12-7EC9-4C0C-A3E2-7053E2B5E915}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.XUnit", "Dapplo.Log.XUnit\Dapplo.Log.XUnit.csproj", "{AB7C6084-1BE8-4391-A9BC-06E2555D3787}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dapplo.Log.Loggers.Shared", "Dapplo.Log.Loggers.Shared\Dapplo.Log.Loggers.Shared.shproj", "{3CFDBA1D-8A68-4BA1-8F9A-5728C8BA2AF4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Loggers", "Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj", "{DA27A6F0-4CED-4D54-90A4-D16739AD9570}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Loggers.PCL", "Dapplo.Log.Loggers.PCL\Dapplo.Log.Loggers.PCL.csproj", "{02710B66-DEDF-4834-B737-5C049B737AED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Loggers.Xamarin", "Dapplo.Log.Loggers.Xamarin\Dapplo.Log.Loggers.Xamarin.csproj", "{3090151D-E6E4-46BF-AFA0-092008A7695A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.LogFile.PCL", "Dapplo.Log.LogFile.PCL\Dapplo.Log.LogFile.PCL.csproj", "{228D3CBC-CAC3-4893-9E84-E14764857120}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.ConsoleExample", "Dapplo.Log.ConsoleExample\Dapplo.Log.ConsoleExample.csproj", "{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Facade", "Dapplo.Log.Facade\Dapplo.Log.Facade.csproj", "{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.LogFile", "Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj", "{F762F88E-CB08-40F2-99D8-35A8AA5482C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Loggers", "Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj", "{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.XUnit", "Dapplo.Log.XUnit\Dapplo.Log.XUnit.csproj", "{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Dapplo.Log.Loggers.Shared\Dapplo.Log.Loggers.Shared.projitems*{02710b66-dedf-4834-b737-5c049b737aed}*SharedItemsImports = 4
-		Dapplo.Log.XUnit.Shared\Dapplo.Log.XUnit.Shared.projitems*{aa520d12-7ec9-4c0c-a3e2-7053e2b5e915}*SharedItemsImports = 13
-		Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.projitems*{c6dfab45-30d0-4d6d-893c-450492717196}*SharedItemsImports = 4
-		Dapplo.Log.XUnit.Shared\Dapplo.Log.XUnit.Shared.projitems*{ab7c6084-1be8-4391-a9bc-06e2555d3787}*SharedItemsImports = 4
-		Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.projitems*{62b34ec3-005b-4540-8740-a37f8cd13c46}*SharedItemsImports = 4
-		Dapplo.Log.Loggers.Shared\Dapplo.Log.Loggers.Shared.projitems*{3090151d-e6e4-46bf-afa0-092008a7695a}*SharedItemsImports = 4
-		Dapplo.Log.Loggers.Shared\Dapplo.Log.Loggers.Shared.projitems*{3cfdba1d-8a68-4ba1-8f9a-5728c8ba2af4}*SharedItemsImports = 13
-		Dapplo.Log.LogFile.Shared\Dapplo.Log.LogFile.Shared.projitems*{228d3cbc-cac3-4893-9e84-e14764857120}*SharedItemsImports = 4
-		Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.projitems*{df0302bd-c893-4424-9766-1e3360946e05}*SharedItemsImports = 4
-		Dapplo.Log.LogFile.Shared\Dapplo.Log.LogFile.Shared.projitems*{b2f8643d-e81d-4d1d-960d-7c66c632aed5}*SharedItemsImports = 4
-		Dapplo.Log.Loggers.Shared\Dapplo.Log.Loggers.Shared.projitems*{da27a6f0-4ced-4d54-90a4-d16739ad9570}*SharedItemsImports = 4
-		Dapplo.Log.Facade.Shared\Dapplo.Log.Facade.Shared.projitems*{0bb54c52-0e62-45b4-bde2-5c420f006a45}*SharedItemsImports = 13
-		Dapplo.Log.LogFile.Shared\Dapplo.Log.LogFile.Shared.projitems*{9b8c9a88-9f7a-42db-a572-6336a2c2d7b4}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AnyCPU = Debug|AnyCPU
 		Release|AnyCPU = Release|AnyCPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DF0302BD-C893-4424-9766-1E3360946E05}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{DF0302BD-C893-4424-9766-1E3360946E05}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{DF0302BD-C893-4424-9766-1E3360946E05}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{DF0302BD-C893-4424-9766-1E3360946E05}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{79F58E26-357C-4FF7-82F2-F68E58342D68}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
 		{79F58E26-357C-4FF7-82F2-F68E58342D68}.Debug|AnyCPU.Build.0 = Debug|Any CPU
 		{79F58E26-357C-4FF7-82F2-F68E58342D68}.Release|AnyCPU.ActiveCfg = Release|Any CPU
 		{79F58E26-357C-4FF7-82F2-F68E58342D68}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{62B34EC3-005B-4540-8740-A37F8CD13C46}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{62B34EC3-005B-4540-8740-A37F8CD13C46}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{62B34EC3-005B-4540-8740-A37F8CD13C46}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{62B34EC3-005B-4540-8740-A37F8CD13C46}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{C6DFAB45-30D0-4D6D-893C-450492717196}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{C6DFAB45-30D0-4D6D-893C-450492717196}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{C6DFAB45-30D0-4D6D-893C-450492717196}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{C6DFAB45-30D0-4D6D-893C-450492717196}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{B2F8643D-E81D-4D1D-960D-7C66C632AED5}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{B2F8643D-E81D-4D1D-960D-7C66C632AED5}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{B2F8643D-E81D-4D1D-960D-7C66C632AED5}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{B2F8643D-E81D-4D1D-960D-7C66C632AED5}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{AB7C6084-1BE8-4391-A9BC-06E2555D3787}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{AB7C6084-1BE8-4391-A9BC-06E2555D3787}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{AB7C6084-1BE8-4391-A9BC-06E2555D3787}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{AB7C6084-1BE8-4391-A9BC-06E2555D3787}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{DA27A6F0-4CED-4D54-90A4-D16739AD9570}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{DA27A6F0-4CED-4D54-90A4-D16739AD9570}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{DA27A6F0-4CED-4D54-90A4-D16739AD9570}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{DA27A6F0-4CED-4D54-90A4-D16739AD9570}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{02710B66-DEDF-4834-B737-5C049B737AED}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{02710B66-DEDF-4834-B737-5C049B737AED}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{02710B66-DEDF-4834-B737-5C049B737AED}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{02710B66-DEDF-4834-B737-5C049B737AED}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{3090151D-E6E4-46BF-AFA0-092008A7695A}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{3090151D-E6E4-46BF-AFA0-092008A7695A}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{3090151D-E6E4-46BF-AFA0-092008A7695A}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{3090151D-E6E4-46BF-AFA0-092008A7695A}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{228D3CBC-CAC3-4893-9E84-E14764857120}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{228D3CBC-CAC3-4893-9E84-E14764857120}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{228D3CBC-CAC3-4893-9E84-E14764857120}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{228D3CBC-CAC3-4893-9E84-E14764857120}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
 		{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}.Debug|AnyCPU.Build.0 = Debug|Any CPU
 		{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}.Release|AnyCPU.ActiveCfg = Release|Any CPU
 		{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}.Release|AnyCPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

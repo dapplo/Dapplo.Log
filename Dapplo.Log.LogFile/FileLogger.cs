@@ -35,10 +35,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapplo.Log.Facade;
-
-#if !_PCL_
 using System.Reflection;
-#endif
 
 #endregion
 
@@ -79,18 +76,15 @@ namespace Dapplo.Log.LogFile
 		{
 			// Start the processing in the background
 			_backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token).ConfigureAwait(false));
-#if !_PCL_
+
 			SetProcessName(this);
-#endif
 		}
 
-#if !_PCL_
 		private void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
 		{
 			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
 			fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(assembly.Location);
 		}
-#endif
 
 		/// <summary>
 		///     Configure this logger
