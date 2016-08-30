@@ -1,5 +1,4 @@
-﻿using Dapplo.Log.Facade;
-using Dapplo.Log.Loggers;
+﻿using Dapplo.Log.Loggers;
 using System;
 
 namespace Dapplo.Log.ConsoleExample

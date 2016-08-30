@@ -27,7 +27,6 @@
 
 using System;
 using System.Linq;
-using Dapplo.Log.Facade;
 using Dapplo.Log.Loggers;
 using Dapplo.Log.Tests.Logger;
 using Xunit;

@@ -29,7 +29,7 @@ using System;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     The extensions for making logging easy and flexible

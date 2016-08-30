@@ -26,22 +26,31 @@
 #region Usings
 
 using System;
+
+#if NETCOREAPP1_6 || NET45
 using System.Collections.Concurrent;
+#endif
+
 using System.Collections.Generic;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	/// The logic for the mapping of loggers
 	/// </summary>
 	public static class LoggerMapper
 	{
+
 		/// <summary>
 		/// The lookup table for finding the loggers for a LogSource.Source
 		/// </summary>
+#if NETCOREAPP1_6 || NET45
 		private static IDictionary<string, IList<ILogger>> LoggerMap { get; } = new ConcurrentDictionary<string, IList<ILogger>>();
+#else
+		private static IDictionary<string, IList<ILogger>> LoggerMap { get; } = new Dictionary<string, IList<ILogger>>();
+#endif
 
 		/// <summary>
 		/// The default lookup implementation

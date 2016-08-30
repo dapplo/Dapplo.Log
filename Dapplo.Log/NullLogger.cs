@@ -30,7 +30,7 @@
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     An null logger, doesn't log anything!

@@ -1,30 +1,31 @@
-﻿{
-	"title": "Dapplo.XUnit",
+{
+	"title": "Dapplo.Log",
 	"authors": ["Robin Krom"],
 	"copyright": "Copyright © Dapplo 2016",
-	"description": "A Dapplo.Log XUnit logger",
+	"description": "A small logger facade, usable in projects where a log framework should not be forced.",
 	"supports": {},
+	"version": "1.0.0",
 	"dependencies": {
-		"Dapplo.Log":  "1.0.0",
-		"xunit": "2.2.0-beta2-build3300"
 	},
 	"frameworks": {
 		"netstandard1.6": {
 			"dependencies": {
+				"Microsoft.NETCore.Portable.Compatibility": "1.0.1",
 				"NETStandard.Library": "1.6.0",
-				"Microsoft.NETCore.Portable.Compatibility": "1.0.1"
+				"System.Diagnostics.StackTrace": "4.0.1"
 			}
 		},
-		"net46": {}
+		"net45": {
+		}
 	},
 	"buildOptions": {
 		"xmlDoc": true
 	},
 	"packOptions": {
 		"owners": ["Dapplo"],
-		"summary": "A Dapplo.Log XUnit logger",
+		"summary": "A small logger facade",
 		"licenseUrl": "http://www.gnu.org/licenses/lgpl-3.0.en.html",
 		"projectUrl": "http://www.dapplo.net/blocks/Dapplo.Log",
-		"iconUrl": "http://www.dapplo.net/favicon.ico"
+				"iconUrl": "http://www.dapplo.net/favicon.ico"
 	}
 }

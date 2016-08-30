@@ -27,12 +27,7 @@
 
 #region Usings
 
-#if _XAMARIN_
-using System;
-#endif
-
 using System.Diagnostics;
-using Dapplo.Log.Facade;
 
 #endregion
 
@@ -51,12 +46,7 @@ namespace Dapplo.Log.Loggers
 		/// <param name="logParameters">object array with the parameters for the template</param>
 		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
-#if _XAMARIN_
-			messageTemplate =  messageTemplate.TrimEnd(Environment.NewLine.ToCharArray());
-			Debug.WriteLine(Format(logInfo, messageTemplate, logParameters));
-#else
 			Debug.Write(Format(logInfo, messageTemplate, logParameters));
-#endif
 		}
 	}
 }

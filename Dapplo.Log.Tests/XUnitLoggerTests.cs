@@ -26,7 +26,7 @@ using Xunit.Abstractions;
 namespace Dapplo.Log.Tests
 {
 	public class XUnitLoggerTests
-    {
+	{
 		private readonly ITestOutputHelper _testOutputHelper;
 		public XUnitLoggerTests(ITestOutputHelper testOutputHelper)
 		{

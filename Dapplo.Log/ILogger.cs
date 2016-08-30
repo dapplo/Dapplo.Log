@@ -27,9 +27,10 @@
 
 using System;
 
+
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     This is the interface used for internal logging.

@@ -27,7 +27,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using Dapplo.Log.Facade;
+using Dapplo.Log;
 
 #endregion
 

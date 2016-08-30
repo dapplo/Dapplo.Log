@@ -31,7 +31,7 @@ using System.Linq;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     This is to specify global settings for the Log "framework"

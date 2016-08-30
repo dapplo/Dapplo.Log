@@ -25,40 +25,51 @@
 
 #region Usings
 
-using System.ComponentModel;
+using System;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
-	///     Interface for the LoggerConfiguration
+	///     A simple wrapper for some information which is passed to the logger
 	/// </summary>
-	public interface ILoggerConfiguration
+	public class LogInfo
 	{
 		/// <summary>
-		///     The LogLevels enum a logger uses
+		///     The LogLevels enum for the log
 		/// </summary>
-		[DefaultValue(LogLevels.Info)]
-		LogLevels LogLevel { get; set; }
+		public LogLevels LogLevel { get; set; }
 
 		/// <summary>
-		///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.Facade.LoggerTest
+		///     The line of the log
 		/// </summary>
-		[DefaultValue(true)]
-		bool UseShortSource { get; set; }
+		public int Line { get; set; }
 
 		/// <summary>
-		///     Timestamp format which is used in the output, when outputting the LogInfo details
+		///     Method in the Caller (class) from where the log statement came
 		/// </summary>
-		[DefaultValue("yyyy-MM-dd HH:mm:ss.fff")]
-		string DateTimeFormat { get; set; }
+		public string Method { get; set; }
 
 		/// <summary>
-		///     Default line format for loggers which use the DefaultFormatter.
-		///     The first argument is the LogInfo, the second the message + parameters formatted
+		///     Class from where the log statement came
 		/// </summary>
-		[DefaultValue("{0} - {1}")]
-		string LogLineFormat { get; set; }
+		public LogSource Source { get; set; }
+
+		/// <summary>
+		///     Timestamp for the log
+		/// </summary>
+		public DateTimeOffset Timestamp { get; } = DateTimeOffset.Now;
+
+		/// <summary>
+		///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
+		///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
+		/// </summary>
+		/// <returns>string</returns>
+		public override string ToString()
+		{
+			return
+				$"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {LogLevel} {Source.Source}:{Method}({Line})";
+		}
 	}
 }

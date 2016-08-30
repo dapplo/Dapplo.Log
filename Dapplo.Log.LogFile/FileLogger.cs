@@ -34,8 +34,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapplo.Log.Facade;
-using System.Reflection;
+using Dapplo.Log;
+using System.Diagnostics;
 
 #endregion
 
@@ -82,8 +82,12 @@ namespace Dapplo.Log.LogFile
 
 		private void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
 		{
-			var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-			fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(assembly.Location);
+
+			using (var process = Process.GetCurrentProcess())
+			{
+				fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
+
+			}
 		}
 
 		/// <summary>

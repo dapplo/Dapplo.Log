@@ -25,13 +25,14 @@
 
 #define DEBUG
 
+
 #region Usings
 
 using System;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     Abstract implementation for ILogger, which safes some time.

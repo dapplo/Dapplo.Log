@@ -27,14 +27,12 @@
 
 using System;
 using System.Linq;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 #endregion
 
-namespace Dapplo.Log.Facade
+namespace Dapplo.Log
 {
 	/// <summary>
 	///     This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear
@@ -69,18 +67,6 @@ namespace Dapplo.Log.Facade
 		}
 
 		/// <summary>
-		///     The desktop constructor takes care of creating StackTrace and setting the Source property
-		///     with the type where the LogSource was created.
-		/// </summary>
-		public LogSource()
-		{
-			// Get the stacktrace, first frame, method and it's declaring type.
-			var callerType = new StackTrace(null, false).GetFrames().First().GetMethod().DeclaringType;
-			SetSourceFromType(callerType);
-		}
-
-		private static readonly Regex IllegalCharsRegex = new Regex("[^a-zA-Z0-9_]+");
-		/// <summary>
 		///     The NON desktop default constructor which should be called without an argument.
 		///     It will use the CallerFilePath attribute, to make sure the source file is passed as an argument.
 		/// </summary>
@@ -90,17 +76,22 @@ namespace Dapplo.Log.Facade
 			{
 				throw new ArgumentNullException(nameof(sourceFilePath));
 			}
-			var extension = Path.GetExtension(sourceFilePath);
-			if (!string.IsNullOrEmpty(extension))
+			var pathParts = sourceFilePath.Split(Path.DirectorySeparatorChar);
+
+			var typeName = Path.GetFileNameWithoutExtension(pathParts.Last());
+			var leftovers = sourceFilePath.Substring(0, sourceFilePath.LastIndexOf(typeName, StringComparison.Ordinal)-1);
+			var nameSpace = Path.GetFileName(leftovers);
+
+			var fqTypeName = $"{nameSpace}.{typeName}";
+			var type = Type.GetType(fqTypeName, false, true);
+			if (type != null)
 			{
-				var extensionIndex = sourceFilePath.LastIndexOf(extension, StringComparison.Ordinal);
-				if (extensionIndex >= 0)
-				{
-					sourceFilePath = sourceFilePath.Substring(0, extensionIndex);
-				}
+				SetSourceFromType(type);
 			}
-			sourceFilePath = IllegalCharsRegex.Replace(sourceFilePath, ".");
-			SetSourceFromString(sourceFilePath);
+			else
+			{
+				SetSourceFromString(fqTypeName);
+			}
 		}
 
 		/// <summary>

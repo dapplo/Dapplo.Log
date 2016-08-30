@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Tests", "Dapplo.Log.Tests\Dapplo.Log.Tests.csproj", "{79F58E26-357C-4FF7-82F2-F68E58342D68}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log.Tests", "Dapplo.Log.Tests\Dapplo.Log.Tests.xproj", "{79F58E26-357C-4FF7-82F2-F68E58342D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.ConsoleExample", "Dapplo.Log.ConsoleExample\Dapplo.Log.ConsoleExample.csproj", "{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log.ConsoleExample", "Dapplo.Log.ConsoleExample\Dapplo.Log.ConsoleExample.xproj", "{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Facade", "Dapplo.Log.Facade\Dapplo.Log.Facade.csproj", "{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log", "Dapplo.Log\Dapplo.Log.xproj", "{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.LogFile", "Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj", "{F762F88E-CB08-40F2-99D8-35A8AA5482C2}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log.LogFile", "Dapplo.Log.LogFile\Dapplo.Log.LogFile.xproj", "{F762F88E-CB08-40F2-99D8-35A8AA5482C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.Loggers", "Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj", "{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log.Loggers", "Dapplo.Log.Loggers\Dapplo.Log.Loggers.xproj", "{8977A419-7A8E-4FC0-B27A-99AAE58F0C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Log.XUnit", "Dapplo.Log.XUnit\Dapplo.Log.XUnit.csproj", "{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Dapplo.Log.XUnit", "Dapplo.Log.XUnit\Dapplo.Log.XUnit.xproj", "{7C8CED1C-7A77-439B-A2F4-E425E2CA33C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,8 +31,8 @@ Global
 		{3E75C2CD-646A-4F5C-9D8A-5D40D99EEB70}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
 		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.ActiveCfg = Debug|Any CPU
+		{EA4C99B4-FA8E-4FAF-B9D5-1EE3B4D88E16}.Release|AnyCPU.Build.0 = Debug|Any CPU
 		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
 		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Debug|AnyCPU.Build.0 = Debug|Any CPU
 		{F762F88E-CB08-40F2-99D8-35A8AA5482C2}.Release|AnyCPU.ActiveCfg = Release|Any CPU
