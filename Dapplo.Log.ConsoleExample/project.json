@@ -5,7 +5,7 @@
 	"description": "A demo for the console logger",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log.Loggers":  "1.0.0",
+		"Dapplo.Log.Loggers":  "1.0.0"
 	},
 	"frameworks": {
 		"net45": {
@@ -15,9 +15,7 @@
 		}
 	},
 	"buildOptions": {
-		"xmlDoc": true
-	},
-	"buildOptions": {
+		"xmlDoc": true,
 		"emitEntryPoint": true,
 		"preserveCompilationContext": true,
 		"warningsAsErrors": true

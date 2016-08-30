@@ -5,7 +5,7 @@ namespace Dapplo.Log.ConsoleExample
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			LogSource log = new LogSource();
 			var logger = LogSettings.RegisterDefaultLogger<ColorConsoleLogger>();

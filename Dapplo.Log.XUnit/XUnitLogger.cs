@@ -24,7 +24,6 @@
 using System;
 using System.Threading;
 using Xunit.Abstractions;
-using Dapplo.Log;
 
 #endregion
 

@@ -12,7 +12,7 @@
     "NLog": "4.3.7",
     "Serilog": "2.2.1",
     "xunit.runner.visualstudio": "2.1.0",
-    "xunit.runner.console": "2.1.0",
+    "xunit.runner.console": "2.1.0"
   },
 	"frameworks": {
 		"net46": {
@@ -20,9 +20,6 @@
 				"NETStandard.Library": "1.6.0"
 			}
 		}
-	},
-	"buildOptions": {
-		"xmlDoc": true
 	},
 	"buildOptions": {
 		"preserveCompilationContext": true,
