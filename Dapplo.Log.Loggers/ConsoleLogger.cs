@@ -26,7 +26,6 @@
 #region Usings
 
 using System;
-using Dapplo.Log.Facade;
 
 #endregion
 

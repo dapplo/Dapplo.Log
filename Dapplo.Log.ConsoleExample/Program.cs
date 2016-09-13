@@ -1,12 +1,11 @@
-﻿using Dapplo.Log.Facade;
-using Dapplo.Log.Loggers;
+﻿using Dapplo.Log.Loggers;
 using System;
 
 namespace Dapplo.Log.ConsoleExample
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			LogSource log = new LogSource();
 			var logger = LogSettings.RegisterDefaultLogger<ColorConsoleLogger>();

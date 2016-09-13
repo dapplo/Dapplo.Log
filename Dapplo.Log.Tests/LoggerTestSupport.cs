@@ -23,7 +23,6 @@
 
 #endregion
 using System;
-using Dapplo.Log.Facade;
 using Xunit;
 
 namespace Dapplo.Log.Tests
@@ -35,7 +34,7 @@ namespace Dapplo.Log.Tests
 		/// </summary>
 		public static void TestAllLogMethods(ILogger loggerUnderTest)
 		{
-			LogSource logSource = LogSource.ForCustomSource(Guid.NewGuid().ToString());
+			var logSource = LogSource.ForCustomSource(Guid.NewGuid().ToString());
 			logSource.LogTo(loggerUnderTest);
 			try
 			{

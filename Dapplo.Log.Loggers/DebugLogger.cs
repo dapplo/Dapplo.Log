@@ -23,6 +23,8 @@
 
 #endregion
 
+#define DEBUG
+
 #region Usings
 
 using System.Diagnostics;
@@ -32,19 +34,19 @@ using System.Diagnostics;
 namespace Dapplo.Log.Loggers
 {
 	/// <summary>
-	///     A trace logger, the simplest implementation for logging trace messages
+	///     A debug logger, the simplest implementation for logging debug messages
 	/// </summary>
-	public class TraceLogger : AbstractLogger
+	public class DebugLogger : AbstractLogger
 	{
 		/// <summary>
-		/// Write a message with parameters to the Trace
+		/// Write a message with parameters to Debug
 		/// </summary>
 		/// <param name="logInfo">LogInfo</param>
 		/// <param name="messageTemplate">string with the message template</param>
 		/// <param name="logParameters">object array with the parameters for the template</param>
 		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
-			Trace.Write(Format(logInfo, messageTemplate, logParameters));
+			Debug.Write(Format(logInfo, messageTemplate, logParameters));
 		}
 	}
 }

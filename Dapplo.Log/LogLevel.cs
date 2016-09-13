@@ -19,38 +19,41 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
-
-using NLog;
-
-#endregion
-
-namespace Dapplo.Log.Tests.Logger
+namespace Dapplo.Log
 {
 	/// <summary>
-	///     Wrapper for Dapplo.Log.Facade.ILogger -> NLog.Logger
+	///     Log level for the log facade, default(LogLevel) gives None which doesn't log anything
+	///     LogLevels.None is actually checked internally, before IsLogLevelEnabled.
 	/// </summary>
-	public class NLogLogger : AbstractLogger
+	public enum LogLevels
 	{
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
-		{
-			LogManager.GetLogger(logInfo.Source.Source).Log(Convert(logInfo.LogLevel), messageTemplate, logParameters);
-		}
-
-		private LogLevel Convert(LogLevels logLevel)
-		{
-			switch (logLevel)
-			{
-				case LogLevels.Info:
-					return NLog.LogLevel.Info;
-				case LogLevels.Warn:
-					return NLog.LogLevel.Warn;
-				case LogLevels.Error:
-					return NLog.LogLevel.Error;
-				case LogLevels.Fatal:
-					return NLog.LogLevel.Fatal;
-			}
-			return NLog.LogLevel.Debug;
-		}
+		/// <summary>
+		/// Default, no logging
+		/// </summary>
+		None,
+		/// <summary>
+		/// Verbose logs pretty much everything
+		/// </summary>
+		Verbose,
+		/// <summary>
+		/// Debugging information, usually needed when troubleshooting
+		/// </summary>
+		Debug,
+		/// <summary>
+		/// Informational logging
+		/// </summary>
+		Info,
+		/// <summary>
+		/// Warn that something didn't went well
+		/// </summary>
+		Warn,
+		/// <summary>
+		/// Used for logging real errors
+		/// </summary>
+		Error,
+		/// <summary>
+		/// Used for unrecoverable problems
+		/// </summary>
+		Fatal
 	}
 }

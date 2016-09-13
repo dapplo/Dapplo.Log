@@ -23,28 +23,30 @@
 
 #endregion
 
-#region Usings
 
-using System.Diagnostics;
+#define DEBUG
+
+#region using
 
 #endregion
 
-namespace Dapplo.Log.Loggers
+namespace Dapplo.Log
 {
 	/// <summary>
-	///     A trace logger, the simplest implementation for logging trace messages
+	///     An null logger, doesn't log anything!
+	///     This can be used to shut-up certain LogSources
 	/// </summary>
-	public class TraceLogger : AbstractLogger
+	public class NullLogger : AbstractLogger
 	{
 		/// <summary>
-		/// Write a message with parameters to the Trace
+		/// Always returns false, there is no logging
 		/// </summary>
-		/// <param name="logInfo">LogInfo</param>
-		/// <param name="messageTemplate">string with the message template</param>
-		/// <param name="logParameters">object array with the parameters for the template</param>
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+		/// <param name="level">LogLevel</param>
+		/// <param name="logSource">optional LogSource</param>
+		/// <returns>false</returns>
+		public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
 		{
-			Trace.Write(Format(logInfo, messageTemplate, logParameters));
+			return false;
 		}
 	}
 }
