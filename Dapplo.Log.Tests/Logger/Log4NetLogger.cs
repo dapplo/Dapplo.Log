@@ -25,7 +25,6 @@
 
 #region Usings
 
-using Dapplo.Log.Facade;
 using log4net;
 
 #endregion

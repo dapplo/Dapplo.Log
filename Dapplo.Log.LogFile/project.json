@@ -5,7 +5,7 @@
 	"description": "A file logger for Dapplo.Log",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log":  ""
+		"Dapplo.Log":  "*"
 	},
 	"frameworks": {
 		"netstandard1.6": {
