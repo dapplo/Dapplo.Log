@@ -14,8 +14,6 @@ assembly_info:
   assembly_informational_version: '{version}'
 install:
   - choco install gitlink -y
-  - choco install xunit -y
-  - choco install opencover -y
 before_build:
   - dotnet restore
   - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }

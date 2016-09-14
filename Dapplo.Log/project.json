@@ -4,7 +4,6 @@
 	"copyright": "Copyright © Dapplo 2016",
 	"description": "A small logger facade, usable in projects where a log framework should not be forced.",
 	"supports": {},
-	"version": "1.0.0",
 	"dependencies": {
 	},
 	"frameworks": {
