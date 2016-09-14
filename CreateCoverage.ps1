@@ -5,20 +5,18 @@
 
 $projectName = (gci *.Sln).BaseName
 $filter="-filter:+`"[$projectName]*`""
-$opencoverPath = ((gci packages\opencover* | sort-object name)[-1]).Fullname
-$xunitrunnerPath = ((gci packages\xunit.runner.console* | sort-object name)[-1]).Fullname
 $output="coverage.xml"
 
-$openCoverArguments = @("-register:user", "$filter", "-target:$xunitrunnerPath\tools\xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$projectName.Tests.dll -noshadow -xml xunit.xml`"","-output:`"$output`"")
-Start-Process -wait $opencoverPath\tools\OpenCover.Console.exe -NoNewWindow -ArgumentList $openCoverArguments
+$openCoverArguments = @("-register:user", "$filter", "-target:xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$projectName.Tests.dll -noshadow -xml xunit.xml`"","-output:`"$output`"")
+Start-Process -wait OpenCover.Console.exe -NoNewWindow -ArgumentList $openCoverArguments
 
 if (Test-Path Env:COVERALLS_REPO_TOKEN) {
-	$coverallsPath = ((gci packages\\coveralls.io* | sort-object name)[-1]).Fullname
+	$coverallsPath = ((gci $env:USERPROFILE\.nuget\packages\\coveralls.io* | sort-object name)[-1]).Fullname
 	$coverallsArguments = @("--opencover $output")
 	Start-Process -wait $coverallsPath\tools\coveralls.net.exe -NoNewWindow -ArgumentList $coverallsArguments
 }
 else {
-	$reportgeneratorPath = ((gci packages\ReportGenerator* | sort-object name)[-1]).Fullname
+	$reportgeneratorPath = ((gci $env:USERPROFILE\.nuget\packages\ReportGenerator* | sort-object name)[-1]).Fullname
 	$reportgeneratorArguments = @("-reports:$output", "-targetdir:CoverageReport")
 	Start-Process -wait $reportgeneratorPath\tools\ReportGenerator.exe -NoNewWindow -ArgumentList $reportgeneratorArguments
 }
