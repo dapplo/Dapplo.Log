@@ -38,8 +38,8 @@ after_build:
 - dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
 - dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
 - dotnet pack  Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
-cache:
-- '%USERPROFILE%\.nuget\packages'
+#cache:
+#- '%USERPROFILE%\.nuget\packages'
 artifacts:
 - path: artifacts\**\*.*
   name: NuGet package
