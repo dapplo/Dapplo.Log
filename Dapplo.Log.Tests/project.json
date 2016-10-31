@@ -1,4 +1,5 @@
 {
+	"version": "1.0.0-*",
 	"title": "Dapplo.Log.Tests",
 	"authors": [ "Robin Krom" ],
 	"copyright": "Copyright © Dapplo 2016",
