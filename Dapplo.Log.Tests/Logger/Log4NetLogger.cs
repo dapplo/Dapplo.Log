@@ -36,14 +36,9 @@ namespace Dapplo.Log.Tests.Logger
 	/// </summary>
 	public class Log4NetLogger : AbstractLogger
 	{
-		private ILog GetLogger(LogSource logSource)
+		private static ILog GetLogger(LogSource logSource)
 		{
-			ILog log;
-			if (logSource.SourceType != null)
-				log = LogManager.GetLogger(logSource.SourceType);
-			else
-				log = LogManager.GetLogger(logSource.Source);
-			return log;
+			return logSource.SourceType != null ? LogManager.GetLogger(logSource.SourceType) : LogManager.GetLogger(logSource.Source);
 		}
 
 		/// <summary>

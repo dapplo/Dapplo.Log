@@ -37,7 +37,7 @@ namespace Dapplo.Log.Tests.Logger
 			LogManager.GetLogger(logInfo.Source.Source).Log(Convert(logInfo.LogLevel), messageTemplate, logParameters);
 		}
 
-		private LogLevel Convert(LogLevels logLevel)
+		private static LogLevel Convert(LogLevels logLevel)
 		{
 			switch (logLevel)
 			{

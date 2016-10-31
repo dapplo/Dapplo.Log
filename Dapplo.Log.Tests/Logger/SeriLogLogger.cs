@@ -76,7 +76,7 @@ namespace Dapplo.Log.Tests.Logger
 		/// </summary>
 		/// <param name="logLevel">LogLevels</param>
 		/// <returns>LogEventLevel</returns>
-		private LogEventLevel ConvertLevel(LogLevels logLevel)
+		private static LogEventLevel ConvertLevel(LogLevels logLevel)
 		{
 			var seriLogLevel = LogEventLevel.Debug;
 			switch (logLevel)

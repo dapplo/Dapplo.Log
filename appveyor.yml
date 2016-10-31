@@ -1,4 +1,4 @@
-version: 1.0.{build}-beta
+version: {build}
 skip_tags: true
 configuration: Release
 platform: AnyCPU
@@ -6,22 +6,17 @@ clone_depth: 2
 branches:
   only:
   - master
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
 install:
 - choco install gitlink -y
 before_build:
 - appveyor-retry dotnet restore -v Minimal
 - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }
+- ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 before_package:
 - GitLink .\
-#after_test:
+after_test:
 # This runs the tests with OpenCover and publishes the report to Coverall
-#- ps: .\CreateCoverage.ps1
+- ps: .\CreateCoverage.ps1
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -29,22 +24,20 @@ environment:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
 build:
   publish_nuget: true
-  publish_nuget_symbols: false
+  publish_nuget_symbols: true
   verbosity: minimal
 build_script:
-- dotnet build Dapplo.Log -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.LogFile -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.Loggers -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.XUnit -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
+- dotnet build Dapplo.Log -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build Dapplo.Log.LogFile -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build Dapplo.Log.Loggers -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build Dapplo.Log.XUnit -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 after_build:
-- dotnet pack  Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.Tests -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack  Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
+- dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
+- dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
+- dotnet pack  Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts --version-suffix %LABEL%
 cache:
 - '%USERPROFILE%\.nuget\packages'
 artifacts:
