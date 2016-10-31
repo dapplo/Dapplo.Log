@@ -5,13 +5,10 @@
 	"description": "A demo for the console logger",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log.Loggers":  "1.0.0"
+		"Dapplo.Log.Loggers":  "*"
 	},
 	"frameworks": {
 		"net45": {
-			"dependencies": {
-				"NETStandard.Library": "1.6.0"
-			}
 		}
 	},
 	"buildOptions": {

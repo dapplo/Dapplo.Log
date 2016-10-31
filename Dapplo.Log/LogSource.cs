@@ -83,7 +83,11 @@ namespace Dapplo.Log
 			var nameSpace = Path.GetFileName(leftovers);
 
 			var fqTypeName = $"{nameSpace}.{typeName}";
+#if NET45
 			var type = Type.GetType(fqTypeName, false, true);
+#else
+			var type = Type.GetType(fqTypeName, false);
+#endif
 			if (type != null)
 			{
 				SetSourceFromType(type);
