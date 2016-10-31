@@ -1,11 +1,12 @@
 ﻿{
+	"version": "1.0.0-*",
 	"title": "Dapplo.Log.ConsoleExample",
-	"authors": ["Robin Krom"],
+	"authors": [ "Robin Krom" ],
 	"copyright": "Copyright © Dapplo 2016",
 	"description": "A demo for the console logger",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log.Loggers":  "*"
+		"Dapplo.Log.Loggers": "*"
 	},
 	"frameworks": {
 		"net45": {
@@ -18,13 +19,13 @@
 		"warningsAsErrors": true
 	},
 	"packOptions": {
-		"owners": ["Dapplo"],
+		"owners": [ "Dapplo" ],
 		"summary": "A collections of loggers for Dapplo.Log",
 		"licenseUrl": "http://www.gnu.org/licenses/lgpl-3.0.en.html",
 		"projectUrl": "http://www.dapplo.net/blocks/Dapplo.Log",
 		"iconUrl": "http://www.dapplo.net/favicon.ico"
 	},
 	"runtimes": {
-		"win7-x64": { }
+		"win7-x64": {}
 	}
 }
