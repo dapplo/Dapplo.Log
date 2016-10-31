@@ -7,5 +7,5 @@ Get-ChildItem . -recurse project.json |
 			$version = $jsonContent.version
 			echo "Changing Version: $version to $env:APPVEYOR_BUILD_VERSION"
 			$jsonContent.version = $env:APPVEYOR_BUILD_VERSION
-			$jsonContent | ConvertTo-Json  | set-content $_.FullName
+			$jsonContent | ConvertTo-Json  -Depth 5 | set-content $_.FullName
 		}
