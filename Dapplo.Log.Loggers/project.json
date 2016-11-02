@@ -6,7 +6,7 @@
 	"description": "A collections of loggers for Dapplo.Log",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log": "*",
+		"Dapplo.Log": "*"
 	},
 	"frameworks": {
 		"netstandard1.3": {
