@@ -38,12 +38,7 @@ namespace Dapplo.Log.Loggers
 	/// </summary>
 	public class DebugLogger : AbstractLogger
 	{
-		/// <summary>
-		/// Write a message with parameters to Debug
-		/// </summary>
-		/// <param name="logInfo">LogInfo</param>
-		/// <param name="messageTemplate">string with the message template</param>
-		/// <param name="logParameters">object array with the parameters for the template</param>
+		/// <inheritdoc />
 		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
 			Debug.Write(Format(logInfo, messageTemplate, logParameters));

@@ -26,6 +26,7 @@
 #region Usings
 
 using System.Threading;
+using System.Threading.Tasks;
 using Dapplo.Log.LogFile;
 using Dapplo.Log.XUnit;
 using Xunit;
@@ -45,7 +46,7 @@ namespace Dapplo.Log.Tests
 		private readonly ITestOutputHelper _testOutputHelper;
 
 		[Fact]
-		public void TestFileLogger()
+		public async Task TestFileLogger()
 		{
 			var xunitLogger = new XUnitLogger(_testOutputHelper)
 			{
@@ -66,7 +67,7 @@ namespace Dapplo.Log.Tests
 					forwardingLogger.ReplacedWith(fileLogger);
 					//LoggerTestSupport.TestAllLogMethods(fileLogger);
 					// Force archiving, as the filename changes
-					Thread.Sleep(2000);
+					await Task.Delay(2000);
 					LoggerTestSupport.TestAllLogMethods(fileLogger);
 				}
 			}

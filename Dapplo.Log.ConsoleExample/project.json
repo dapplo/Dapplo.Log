@@ -12,6 +12,18 @@
 		"net45": {
 		}
 	},
+	"configurations": {
+		"Release": {
+			"buildOptions": {
+				"optimize": true
+			}
+		},
+		"Debug": {
+			"buildOptions": {
+				"optimize": false
+			}
+		}
+	},
 	"buildOptions": {
 		"xmlDoc": true,
 		"emitEntryPoint": true,

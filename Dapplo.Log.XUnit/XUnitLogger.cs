@@ -22,8 +22,13 @@
 #region using
 
 using System;
-using System.Threading;
 using Xunit.Abstractions;
+
+#if NET45
+using Nito.AsyncEx.AsyncLocal;
+#else
+using System.Threading;
+#endif
 
 #endregion
 

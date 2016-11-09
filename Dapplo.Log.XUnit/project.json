@@ -6,15 +6,41 @@
 	"description": "A Dapplo.Log XUnit logger",
 	"supports": {},
 	"dependencies": {
-		"Dapplo.Log": "*",
-		"xunit": "2.1.0"
+		"Dapplo.Log": "*"
 	},
 	"frameworks": {
-		"net46": {}
+		"net45": {
+			"dependencies": {
+				"xunit": "2.1.0"
+			}
+		},
+		"net46": {
+			"dependencies": {
+				"xunit": "2.1.0"
+			}
+		},
+		"netstandard1.3": {
+			"dependencies": {
+				"NETStandard.Library": "1.6.0",
+				"Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+				"xunit": "2.2.0-*"
+			}
+		}
+	},
+	"configurations": {
+		"Release": {
+			"buildOptions": {
+				"optimize": true
+			}
+		},
+		"Debug": {
+			"buildOptions": {
+				"optimize": false
+			}
+		}
 	},
 	"buildOptions": {
-		"xmlDoc": true,
-		"optimize": true
+		"xmlDoc": true
 	},
 	"packOptions": {
 		"owners": [ "Dapplo" ],

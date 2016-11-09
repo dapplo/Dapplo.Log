@@ -28,7 +28,20 @@
 			}
 		}
 	},
+	"configurations": {
+		"Release": {
+			"buildOptions": {
+				"optimize": true
+			}
+		},
+		"Debug": {
+			"buildOptions": {
+				"optimize": false
+			}
+		}
+	},
 	"buildOptions": {
+		"xmlDoc": false,
 		"preserveCompilationContext": true,
 		"warningsAsErrors": true
 	}

@@ -26,10 +26,10 @@ using System.IO;
 
 #endregion
 
-namespace Dapplo.Log.Tests.Logger
+namespace Dapplo.Log.Loggers
 {
 	/// <summary>
-	///     Used for testing the logger, it will just append the content to a StringWriter
+	///     This logger will just append the content to a StringWriter
 	///     Use the Output property to get the "log" (result)
 	/// </summary>
 	public class StringWriterLogger : AbstractLogger, IDisposable
@@ -50,11 +50,13 @@ namespace Dapplo.Log.Tests.Logger
 			_writer.GetStringBuilder().Length = 0;
 		}
 
+		/// <inheritdoc />
 		public void Dispose()
 		{
 			_writer?.Dispose();
 		}
 
+		/// <inheritdoc />
 		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
 			_writer.Write(Format(logInfo, messageTemplate, logParameters));

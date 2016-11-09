@@ -17,9 +17,20 @@
 		"net45": {
 		}
 	},
+	"configurations": {
+		"Release": {
+			"buildOptions": {
+				"optimize": true
+			}
+		},
+		"Debug": {
+			"buildOptions": {
+				"optimize": false
+			}
+		}
+	},
 	"buildOptions": {
-		"xmlDoc": true,
-		"optimize": true
+		"xmlDoc": true
 	},
 	"packOptions": {
 		"owners": [ "Dapplo" ],
