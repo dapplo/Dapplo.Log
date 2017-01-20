@@ -25,7 +25,6 @@
 
 #region Usings
 
-using System.Threading;
 using System.Threading.Tasks;
 using Dapplo.Log.LogFile;
 using Dapplo.Log.XUnit;
