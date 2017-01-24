@@ -62,11 +62,11 @@ namespace Dapplo.Log
 		///     This function can be changed to format the line message differently
 		///     First argument is the LogInfo, second the messageTemplate, third the parameters
 		/// </summary>
-		public virtual string Format(LogInfo logInfo, string messageTemplate, object[] logParameters)
+		public virtual string Format(LogInfo logInfo, string messageTemplate, params object[] logParameters)
 		{
 			var message = messageTemplate;
 			// Test if there are parameters, if not there is no need to format it!
-			if (logParameters != null && logParameters.Length >= 0)
+			if (logParameters != null && logParameters.Length > 0)
 			{
 				message = string.Format(messageTemplate, logParameters);
 			}

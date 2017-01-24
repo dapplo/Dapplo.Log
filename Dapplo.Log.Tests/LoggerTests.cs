@@ -28,7 +28,6 @@
 using System;
 using System.Linq;
 using Dapplo.Log.Loggers;
-using Dapplo.Log.Tests.Logger;
 using Xunit;
 
 #endregion
@@ -117,6 +116,26 @@ namespace Dapplo.Log.Tests
 		public void TestTraceLogger()
 		{
 			LoggerTestSupport.TestAllLogMethods(new TraceLogger());
+		}
+
+
+		/// <summary>
+		///     Test formatting without arguments
+		/// </summary>
+		[Fact]
+		public void TestFormat()
+		{
+			var testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
+			var logger = new AbstractLogger();
+
+			var logInfo = new LogInfo
+			{
+				Source = new LogSource(),
+				Method = nameof(TestFormat),
+				Line = 1,
+				LogLevel = LogLevels.Debug
+			};
+			logger.Format(logInfo, testString, new object[] {});
 		}
 	}
 }
