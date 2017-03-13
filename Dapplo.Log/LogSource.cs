@@ -29,6 +29,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 #endregion
 
@@ -76,7 +77,12 @@ namespace Dapplo.Log
 			{
 				throw new ArgumentNullException(nameof(sourceFilePath));
 			}
-			var pathParts = sourceFilePath.Split(Path.DirectorySeparatorChar);
+#if NETSTANDARD1_3 || NET45
+			var directorySeparatorChar = Path.DirectorySeparatorChar;
+#else
+			var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
+#endif
+			var pathParts = sourceFilePath.Split(directorySeparatorChar);
 
 			var typeName = Path.GetFileNameWithoutExtension(pathParts.Last());
 			var leftovers = sourceFilePath.Substring(0, sourceFilePath.LastIndexOf(typeName, StringComparison.Ordinal)-1);
