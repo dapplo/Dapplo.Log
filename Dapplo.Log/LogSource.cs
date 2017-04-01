@@ -82,7 +82,10 @@ namespace Dapplo.Log
 #else
 			var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
 #endif
-			var pathParts = sourceFilePath.Split(directorySeparatorChar);
+
+            sourceFilePath = sourceFilePath.Replace('\\', directorySeparatorChar).Replace('/', directorySeparatorChar);
+
+            var pathParts = sourceFilePath.Split(directorySeparatorChar);
 
 			var typeName = Path.GetFileNameWithoutExtension(pathParts.Last());
 			var leftovers = sourceFilePath.Substring(0, sourceFilePath.LastIndexOf(typeName, StringComparison.Ordinal)-1);
