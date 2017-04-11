@@ -32,21 +32,21 @@
 
 namespace Dapplo.Log
 {
-	/// <summary>
-	///     An null logger, doesn't log anything!
-	///     This can be used to shut-up certain LogSources
-	/// </summary>
-	public class NullLogger : AbstractLogger
-	{
-		/// <summary>
-		/// Always returns false, there is no logging
-		/// </summary>
-		/// <param name="level">LogLevel</param>
-		/// <param name="logSource">optional LogSource</param>
-		/// <returns>false</returns>
-		public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
-		{
-			return false;
-		}
-	}
+    /// <summary>
+    ///     An null logger, doesn't log anything!
+    ///     This can be used to shut-up certain LogSources
+    /// </summary>
+    public class NullLogger : AbstractLogger
+    {
+        /// <summary>
+        ///     Always returns false, there is no logging
+        /// </summary>
+        /// <param name="level">LogLevel</param>
+        /// <param name="logSource">optional LogSource</param>
+        /// <returns>false</returns>
+        public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
+        {
+            return false;
+        }
+    }
 }

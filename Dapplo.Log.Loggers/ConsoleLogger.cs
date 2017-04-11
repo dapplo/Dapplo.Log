@@ -23,6 +23,7 @@
 
 #endregion
 
+#if !PROFILE328
 #region Usings
 
 using System;
@@ -31,15 +32,16 @@ using System;
 
 namespace Dapplo.Log.Loggers
 {
-	/// <summary>
-	///     A console logger, the simplest implementation for logging messages to a console
-	/// </summary>
-	public class ConsoleLogger : AbstractLogger
-	{
-		/// <inheritdoc />
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
-		{
-			Console.Write(Format(logInfo, messageTemplate, logParameters));
-		}
-	}
+    /// <summary>
+    ///     A console logger, the simplest implementation for logging messages to a console
+    /// </summary>
+    public class ConsoleLogger : AbstractLogger
+    {
+        /// <inheritdoc />
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+        {
+            Console.Write(Format(logInfo, messageTemplate, logParameters));
+        }
+    }
 }
+#endif

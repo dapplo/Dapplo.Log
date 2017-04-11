@@ -1,49 +1,50 @@
 {
-	"version": "1.0.0-*",
-	"title": "Dapplo.Log.Tests",
-	"authors": [ "Robin Krom" ],
-	"copyright": "Copyright © Dapplo 2016",
-	"description": "Tests for the dapplo log projects",
-	"supports": {},
+    "version": "1.0.0-*",
+    "title": "Dapplo.Log.Tests",
+    "authors": ["Robin Krom"],
+    "copyright": "Copyright © Dapplo 2016",
+    "description": "Tests for the dapplo log projects",
+    "supports": {},
     "dependencies": {
+        "NETStandard.Library": "1.6.1",
         "Dapplo.Log.Loggers": "*",
         "Dapplo.Log.LogFile": "*",
         "Dapplo.Log": "*",
         "Dapplo.Log.XUnit": "*",
-        "xunit.runner.visualstudio": "2.1.0",
+        "xunit.runner.visualstudio": "2.2.0",
         "NLog": "4.4.1",
         "Serilog": "2.3.0",
         "log4net": "2.0.5",
         "ReportGenerator": "2.5.1"
     },
-	"tools": {
-		"coveralls.io": "1.3.4",
-		"OpenCover": "4.6.519",
-		"ReportGenerator": "2.4.5.0",
-		"xunit.runner.console": "2.1.0"
-	},
-	"frameworks": {
-		"net46": {
-			"dependencies": {
-				"NETStandard.Library": "1.6.0"
-			}
-		}
-	},
-	"configurations": {
-		"Release": {
-			"buildOptions": {
-				"optimize": true
-			}
-		},
-		"Debug": {
-			"buildOptions": {
-				"optimize": false
-			}
-		}
-	},
-	"buildOptions": {
-		"xmlDoc": false,
-		"preserveCompilationContext": true,
-		"warningsAsErrors": true
-	}
+    "tools": {
+        "coveralls.io": "1.3.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.5.0",
+        "xunit.runner.console": "2.1.0"
+    },
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+            
+            }
+        }
+    },
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "optimize": true
+            }
+        },
+        "Debug": {
+            "buildOptions": {
+                "optimize": false
+            }
+        }
+    },
+    "buildOptions": {
+        "xmlDoc": false,
+        "preserveCompilationContext": true,
+        "warningsAsErrors": true
+    }
 }

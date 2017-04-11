@@ -34,108 +34,117 @@ using Xunit;
 
 namespace Dapplo.Log.Tests
 {
-	public class LoggerTests
-	{
-		private static readonly LogSource Log = new LogSource();
+    public class LoggerTests
+    {
+        private static readonly LogSource Log = new LogSource();
 
-		/// <summary>
-		///     Test ConsoleLogger
-		/// </summary>
-		[Fact]
-		public void TestConsoleLogger()
-		{
-			LoggerTestSupport.TestAllLogMethods(new ConsoleLogger());
-		}
+        /// <summary>
+        ///     Test Constructor
+        /// </summary>
+        [Fact]
+        public void TestConstructor()
+        {
+            Assert.Equal(GetType().FullName, Log.Source);
+        }
 
-		/// <summary>
-		///     Test DebugLogger
-		/// </summary>
-		[Fact]
-		public void TestDebugLogger()
-		{
-			LoggerTestSupport.TestAllLogMethods(new DebugLogger());
-		}
+        /// <summary>
+        ///     Test ConsoleLogger
+        /// </summary>
+        [Fact]
+        public void TestConsoleLogger()
+        {
+            LoggerTestSupport.TestAllLogMethods(new ConsoleLogger());
+        }
 
-		/// <summary>
-		///     Test to check if the Logger doesn't write when the level isn't set
-		/// </summary>
-		[Fact]
-		public void TestLoggerVisibility()
-		{
-			var stringwriterLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
+        /// <summary>
+        ///     Test DebugLogger
+        /// </summary>
+        [Fact]
+        public void TestDebugLogger()
+        {
+            LoggerTestSupport.TestAllLogMethods(new DebugLogger());
+        }
 
-			Assert.NotNull(stringwriterLogger);
-			Log.Verbose().WriteLine("This is a test, should NOT be visisble");
-			Log.Debug().WriteLine("This is a test, should NOT be visisble");
-			Log.Info().WriteLine("This is a test");
-			Log.Warn().WriteLine("This is a test");
-			Log.Error().WriteLine("This is a test");
-			Log.Fatal().WriteLine("This is a test");
+        /// <summary>
+        ///     Test to check if the Logger doesn't write when the level isn't set
+        /// </summary>
+        [Fact]
+        public void TestLoggerVisibility()
+        {
+            var stringwriterLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
 
-			Log.Error().WriteLine(new Exception("Test"), "This is a test exception");
+            Assert.NotNull(stringwriterLogger);
+            Log.Verbose().WriteLine("This is a test, should NOT be visisble");
+            Log.Debug().WriteLine("This is a test, should NOT be visisble");
+            Log.Info().WriteLine("This is a test");
+            Log.Warn().WriteLine("This is a test");
+            Log.Error().WriteLine("This is a test");
+            Log.Fatal().WriteLine("This is a test");
 
-			Assert.False(stringwriterLogger.Output.Contains("should NOT be visisble"));
+            Log.Error().WriteLine(new ArgumentNullException(nameof(stringwriterLogger)), "This is a test exception");
 
-			var lines = stringwriterLogger.Output.Count(x => x.ToString() == Environment.NewLine);
-			// Info + Warn + Error + Fatal = 4
-			Assert.False(lines == 4);
-		}
+            Assert.False(stringwriterLogger.Output.Contains("should NOT be visisble"));
 
-		/// <summary>
-		///     Test RegisterLoggerFor and DeregisterLoggerFor
-		/// </summary>
-		[Fact]
-		public void TestMapping()
-		{
-			var defaultLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
+            var lines = stringwriterLogger.Output.Count(x => x.ToString() == Environment.NewLine);
+            // Info + Warn + Error + Fatal = 4
+            Assert.False(lines == 4);
+        }
 
-			var differentLogSource = LogSource.ForCustomSource("Test");
-			var logger = new StringWriterLogger();
+        /// <summary>
+        ///     Test RegisterLoggerFor and DeregisterLoggerFor
+        /// </summary>
+        [Fact]
+        public void TestMapping()
+        {
+            var defaultLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
 
-			LoggerMapper.RegisterLoggerFor("Test", logger);
+            var differentLogSource = LogSource.ForCustomSource("Test");
+            var logger = new StringWriterLogger();
 
-			const string visibleMessage = "Should be visisble";
-			const string notVisibleMessage = "Should be NOT visisble in logger, but arrive in the defaultLogger";
-			differentLogSource.Info().WriteLine(visibleMessage);
-			Log.Info().WriteLine(notVisibleMessage);
-			Assert.True(logger.Output.Contains(visibleMessage));
-			Assert.False(logger.Output.Contains(notVisibleMessage));
-			Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
+            LoggerMapper.RegisterLoggerFor("Test", logger);
 
-			defaultLogger.Clear();
-			LoggerMapper.DeregisterLoggerFor("Test", logger);
-			differentLogSource.Info().WriteLine(notVisibleMessage);
-			Assert.False(logger.Output.Contains(notVisibleMessage));
-			Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
-		}
+            const string visibleMessage = "Should be visisble";
+            const string notVisibleMessage = "Should be NOT visisble in logger, but arrive in the defaultLogger";
+            differentLogSource.Info().WriteLine(visibleMessage);
+            Log.Info().WriteLine(notVisibleMessage);
+            Assert.True(logger.Output.Contains(visibleMessage));
+            Assert.False(logger.Output.Contains(notVisibleMessage));
+            Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
 
-		/// <summary>
-		///     Test TraceLogger
-		/// </summary>
-		[Fact]
-		public void TestTraceLogger()
-		{
-			LoggerTestSupport.TestAllLogMethods(new TraceLogger());
-		}
+            defaultLogger.Clear();
+            LoggerMapper.DeregisterLoggerFor("Test", logger);
+            differentLogSource.Info().WriteLine(notVisibleMessage);
+            Assert.False(logger.Output.Contains(notVisibleMessage));
+            Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
+        }
+
+        /// <summary>
+        ///     Test TraceLogger
+        /// </summary>
+        [Fact]
+        public void TestTraceLogger()
+        {
+            LoggerTestSupport.TestAllLogMethods(new TraceLogger());
+        }
 
 
-		/// <summary>
-		///     Test formatting without arguments
-		/// </summary>
-		[Fact]
-		public void TestFormat()
-		{
-			var testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
-			var logger = new AbstractLogger();
+        /// <summary>
+        ///     Test formatting without arguments
+        /// </summary>
+        [Fact]
+        public void TestFormat()
+        {
+            var testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
+            var logger = new AbstractLogger();
 
-			var logInfo = new LogInfo
-			{
-				Source = new LogSource(),
-				Method = nameof(TestFormat),
-				Line = 1,
-				LogLevel = LogLevels.Debug
-			};
-			logger.Format(logInfo, testString, new object[] {});
-		}
-	}
+            var logInfo = new LogInfo
+            {
+                Source = new LogSource(),
+                Method = nameof(TestFormat),
+                Line = 1,
+                LogLevel = LogLevels.Debug
+            };
+            logger.Format(logInfo, testString);
+        }
+    }
 }

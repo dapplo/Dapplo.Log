@@ -26,147 +26,172 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Runtime.CompilerServices;
+#if NET45
+using System.IO;
+#endif
+#if NETSTANDARD1_1
 using System.Runtime.InteropServices;
+#endif
 
 #endregion
 
 namespace Dapplo.Log
 {
-	/// <summary>
-	///     This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear
-	///     where the log
-	///     entries come from. In general this should be instanciated with the default constructor without arguments, which
-	///     takes care of initiating it.
-	///     For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
-	///     For other platforms this uses the CallerFilePath, which supplies the source-file.
-	/// </summary>
-	public class LogSource
-	{
-		/// <summary>
-		///     The constructor for specifying the type manually
-		/// </summary>
-		/// <param name="callerType">Type for the LogSource, not null</param>
-		public LogSource(Type callerType)
-		{
-			if (callerType == null)
-			{
-				throw new ArgumentNullException(nameof(callerType));
-			}
-			SetSourceFromType(callerType);
-		}
+    /// <summary>
+    ///     This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear
+    ///     where the log
+    ///     entries come from. In general this should be instanciated with the default constructor without arguments, which
+    ///     takes care of initiating it.
+    ///     For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
+    ///     For other platforms this uses the CallerFilePath, which supplies the source-file.
+    /// </summary>
+    public class LogSource
+    {
+        /// <summary>
+        ///     The constructor for specifying the type manually
+        /// </summary>
+        /// <param name="callerType">Type for the LogSource, not null</param>
+        public LogSource(Type callerType)
+        {
+            if (callerType == null)
+            {
+                throw new ArgumentNullException(nameof(callerType));
+            }
+            SetSourceFromType(callerType);
+        }
 
-		/// <summary>
-		///     Private constructor used internally, to differenciate from the empty constructor
-		/// </summary>
-		// ReSharper disable once UnusedParameter.Local
-		private LogSource(bool ignore)
-		{
-			// Nothing here, the properties are filled from the factory methods
-		}
+        /// <summary>
+        ///     Private constructor used internally, to differenciate from the empty constructor
+        /// </summary>
+        // ReSharper disable once UnusedParameter.Local
+        private LogSource(bool ignore)
+        {
+            // Nothing here, the properties are filled from the factory methods
+        }
 
-		/// <summary>
-		///     The NON desktop default constructor which should be called without an argument.
-		///     It will use the CallerFilePath attribute, to make sure the source file is passed as an argument.
-		/// </summary>
-		public LogSource([CallerFilePath] string sourceFilePath = null)
-		{
-			if (sourceFilePath == null)
-			{
-				throw new ArgumentNullException(nameof(sourceFilePath));
-			}
+        private string GetFilenameWithoutExtension(IEnumerable<string> filePath)
+        {
+            var filenameParts = GetFilename(filePath).Split('.').ToList();
+            filenameParts.RemoveAt(filenameParts.Count - 1);
+            return string.Join(".", filenameParts);
+        }
+
+        private string GetFilename(IEnumerable<string> filePath)
+        {
+            return filePath.Last();
+        }
+
+        private IEnumerable<string> GetDirectory(IEnumerable<string> filePath)
+        {
+            var fileParts = filePath.ToList();
+            fileParts.RemoveAt(fileParts.Count - 1);
+            return fileParts;
+        }
+
+        /// <summary>
+        ///     The NON desktop default constructor which should be called without an argument.
+        ///     It will use the CallerFilePath attribute, to make sure the source file is passed as an argument.
+        /// </summary>
+        public LogSource([CallerFilePath] string sourceFilePath = null)
+        {
+            if (sourceFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(sourceFilePath));
+            }
 #if NETSTANDARD1_3 || NET45
-			var directorySeparatorChar = Path.DirectorySeparatorChar;
+            var directorySeparatorChar = Path.DirectorySeparatorChar;
+#elif NETSTANDARD1_1
+            var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
 #else
-			var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
+            var directorySeparatorChar = '\\';
 #endif
-
             sourceFilePath = sourceFilePath.Replace('\\', directorySeparatorChar).Replace('/', directorySeparatorChar);
 
             var pathParts = sourceFilePath.Split(directorySeparatorChar);
 
-			var typeName = Path.GetFileNameWithoutExtension(pathParts.Last());
-			var leftovers = sourceFilePath.Substring(0, sourceFilePath.LastIndexOf(typeName, StringComparison.Ordinal)-1);
-			var nameSpace = Path.GetFileName(leftovers);
+            var typeName = GetFilenameWithoutExtension(pathParts);
 
-			var fqTypeName = $"{nameSpace}.{typeName}";
+            var nameSpace = GetFilename(GetDirectory(pathParts));
+
+            var fqTypeName = $"{nameSpace}.{typeName}";
 #if NET45
-			var type = Type.GetType(fqTypeName, false, true);
+            var type = Type.GetType(fqTypeName, false, true);
 #else
-			var type = Type.GetType(fqTypeName, false);
+            var type = Type.GetType(fqTypeName, false);
 #endif
-			if (type != null)
-			{
-				SetSourceFromType(type);
-			}
-			else
-			{
-				SetSourceFromString(fqTypeName);
-			}
-		}
+            if (type != null)
+            {
+                SetSourceFromType(type);
+            }
+            else
+            {
+                SetSourceFromString(fqTypeName);
+            }
+        }
 
-		/// <summary>
-		///     Factory method where you can specify the type manually
-		/// </summary>
-		/// <param name="source">A custom identifier for the LogSource</param>
-		/// <returns>LogSource</returns>
-		public static LogSource ForCustomSource(string source)
-		{
-			var result = new LogSource(false);
-			result.SetSourceFromString(source);
-			return result;
-		}
+        /// <summary>
+        ///     Factory method where you can specify the type manually
+        /// </summary>
+        /// <param name="source">A custom identifier for the LogSource</param>
+        /// <returns>LogSource</returns>
+        public static LogSource ForCustomSource(string source)
+        {
+            var result = new LogSource(false);
+            result.SetSourceFromString(source);
+            return result;
+        }
 
-		/// <summary>
-		///     Use a string to set the source information
-		/// </summary>
-		/// <param name="source">Source to se</param>
-		private void SetSourceFromString(string source)
-		{
-			Source = source;
-			var parts = Source.Split('.');
-			if (parts.Length > 0)
-			{
-				ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));
-			}
-			else
-			{
-				ShortSource = Source;
-			}
-		}
+        /// <summary>
+        ///     Use a string to set the source information
+        /// </summary>
+        /// <param name="source">Source to se</param>
+        private void SetSourceFromString(string source)
+        {
+            Source = source;
+            var parts = Source.Split('.');
+            if (parts.Length > 0)
+            {
+                ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));
+            }
+            else
+            {
+                ShortSource = Source;
+            }
+        }
 
-		/// <summary>
-		///     Use a type to set the source information
-		/// </summary>
-		/// <param name="sourceType"></param>
-		private void SetSourceFromType(Type sourceType)
-		{
-			if (sourceType == null)
-			{
-				throw new ArgumentNullException(nameof(sourceType));
-			}
-			SourceType = sourceType;
-			SetSourceFromString(sourceType.FullName);
-		}
+        /// <summary>
+        ///     Use a type to set the source information
+        /// </summary>
+        /// <param name="sourceType"></param>
+        private void SetSourceFromType(Type sourceType)
+        {
+            if (sourceType == null)
+            {
+                throw new ArgumentNullException(nameof(sourceType));
+            }
+            SourceType = sourceType;
+            SetSourceFromString(sourceType.FullName);
+        }
 
-		/// <summary>
-		///     The Type where this LogSource was created
-		/// </summary>
-		public Type SourceType { get; private set; }
+        /// <summary>
+        ///     The Type where this LogSource was created
+        /// </summary>
+        public Type SourceType { get; private set; }
 
-		/// <summary>
-		///     The Type, as string, where this LogSource was created
-		///     Every part of the namespace is shortened to one letter.
-		///     e.g. this class would return d.l.LogSource
-		/// </summary>
-		public string ShortSource { get; set; }
+        /// <summary>
+        ///     The Type, as string, where this LogSource was created
+        ///     Every part of the namespace is shortened to one letter.
+        ///     e.g. this class would return d.l.LogSource
+        /// </summary>
+        public string ShortSource { get; set; }
 
-		/// <summary>
-		///     The Type, as string, where this LogSource was created
-		///     e.g. this class would return Dapplo.Log.Facade.LogSource
-		/// </summary>
-		public string Source { get; set; }
-	}
+        /// <summary>
+        ///     The Type, as string, where this LogSource was created
+        ///     e.g. this class would return Dapplo.Log.Facade.LogSource
+        /// </summary>
+        public string Source { get; set; }
+    }
 }

@@ -33,15 +33,31 @@ using System.Diagnostics;
 
 namespace Dapplo.Log.Loggers
 {
-	/// <summary>
-	///     A debug logger, the simplest implementation for logging debug messages
-	/// </summary>
-	public class DebugLogger : AbstractLogger
-	{
-		/// <inheritdoc />
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
-		{
-			Debug.Write(Format(logInfo, messageTemplate, logParameters));
-		}
-	}
+    /// <summary>
+    ///     A debug logger, the simplest implementation for logging debug messages
+    /// </summary>
+    public class DebugLogger : AbstractLogger
+    {
+#if !PROFILE328
+        /// <inheritdoc />
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+        {
+            Debug.Write(Format(logInfo, messageTemplate, logParameters));
+        }
+#else
+        /// <inheritdoc />
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+        {
+            // This outputs a Write to a new line, which is unfortunate but better than nothing...
+            Debug.WriteLine(Format(logInfo, messageTemplate, logParameters));
+        }
+
+        /// <inheritdoc />
+        public override void WriteLine(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+        {
+            Debug.WriteLine(Format(logInfo, messageTemplate, logParameters));
+        }
+
+#endif
+    }
 }

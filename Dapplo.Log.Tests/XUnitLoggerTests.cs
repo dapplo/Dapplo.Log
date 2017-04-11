@@ -19,27 +19,32 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.LogFacade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+#region Usings
+
 using Dapplo.Log.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 
+#endregion
+
 namespace Dapplo.Log.Tests
 {
-	public class XUnitLoggerTests
-	{
-		private readonly ITestOutputHelper _testOutputHelper;
-		public XUnitLoggerTests(ITestOutputHelper testOutputHelper)
-		{
-			_testOutputHelper = testOutputHelper;
-		}
+    public class XUnitLoggerTests
+    {
+        private readonly ITestOutputHelper _testOutputHelper;
 
-		/// <summary>
-		///     Test XUnitLogger
-		/// </summary>
-		[Fact]
-		public void TestXUnitLogger()
-		{
-			LoggerTestSupport.TestAllLogMethods(new XUnitLogger(_testOutputHelper));
-		}
-	}
+        public XUnitLoggerTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
+        /// <summary>
+        ///     Test XUnitLogger
+        /// </summary>
+        [Fact]
+        public void TestXUnitLogger()
+        {
+            LoggerTestSupport.TestAllLogMethods(new XUnitLogger(_testOutputHelper));
+        }
+    }
 }

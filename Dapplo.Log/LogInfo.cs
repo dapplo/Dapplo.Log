@@ -31,45 +31,45 @@ using System;
 
 namespace Dapplo.Log
 {
-	/// <summary>
-	///     A simple wrapper for some information which is passed to the logger
-	/// </summary>
-	public class LogInfo
-	{
-		/// <summary>
-		///     The LogLevels enum for the log
-		/// </summary>
-		public LogLevels LogLevel { get; set; }
+    /// <summary>
+    ///     A simple wrapper for some information which is passed to the logger
+    /// </summary>
+    public class LogInfo
+    {
+        /// <summary>
+        ///     The LogLevels enum for the log
+        /// </summary>
+        public LogLevels LogLevel { get; set; }
 
-		/// <summary>
-		///     The line of the log
-		/// </summary>
-		public int Line { get; set; }
+        /// <summary>
+        ///     The line of the log
+        /// </summary>
+        public int Line { get; set; }
 
-		/// <summary>
-		///     Method in the Caller (class) from where the log statement came
-		/// </summary>
-		public string Method { get; set; }
+        /// <summary>
+        ///     Method in the Caller (class) from where the log statement came
+        /// </summary>
+        public string Method { get; set; }
 
-		/// <summary>
-		///     Class from where the log statement came
-		/// </summary>
-		public LogSource Source { get; set; }
+        /// <summary>
+        ///     Class from where the log statement came
+        /// </summary>
+        public LogSource Source { get; set; }
 
-		/// <summary>
-		///     Timestamp for the log
-		/// </summary>
-		public DateTimeOffset Timestamp { get; } = DateTimeOffset.Now;
+        /// <summary>
+        ///     Timestamp for the log
+        /// </summary>
+        public DateTimeOffset Timestamp { get; } = DateTimeOffset.Now;
 
-		/// <summary>
-		///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
-		///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
-		/// </summary>
-		/// <returns>string</returns>
-		public override string ToString()
-		{
-			return
-				$"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {LogLevel} {Source.Source}:{Method}({Line})";
-		}
-	}
+        /// <summary>
+        ///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
+        ///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
+        /// </summary>
+        /// <returns>string</returns>
+        public override string ToString()
+        {
+            return
+                $"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {LogLevel} {Source.Source}:{Method}({Line})";
+        }
+    }
 }

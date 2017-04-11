@@ -19,7 +19,7 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
+#region Usings
 
 using NLog;
 
@@ -27,30 +27,30 @@ using NLog;
 
 namespace Dapplo.Log.Tests.Logger
 {
-	/// <summary>
-	///     Wrapper for Dapplo.Log.Facade.ILogger -> NLog.Logger
-	/// </summary>
-	public class NLogLogger : AbstractLogger
-	{
-		public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
-		{
-			LogManager.GetLogger(logInfo.Source.Source).Log(Convert(logInfo.LogLevel), messageTemplate, logParameters);
-		}
+    /// <summary>
+    ///     Wrapper for Dapplo.Log.Facade.ILogger -> NLog.Logger
+    /// </summary>
+    public class NLogLogger : AbstractLogger
+    {
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
+        {
+            LogManager.GetLogger(logInfo.Source.Source).Log(Convert(logInfo.LogLevel), messageTemplate, logParameters);
+        }
 
-		private static LogLevel Convert(LogLevels logLevel)
-		{
-			switch (logLevel)
-			{
-				case LogLevels.Info:
-					return NLog.LogLevel.Info;
-				case LogLevels.Warn:
-					return NLog.LogLevel.Warn;
-				case LogLevels.Error:
-					return NLog.LogLevel.Error;
-				case LogLevels.Fatal:
-					return NLog.LogLevel.Fatal;
-			}
-			return NLog.LogLevel.Debug;
-		}
-	}
+        private static LogLevel Convert(LogLevels logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevels.Info:
+                    return NLog.LogLevel.Info;
+                case LogLevels.Warn:
+                    return NLog.LogLevel.Warn;
+                case LogLevels.Error:
+                    return NLog.LogLevel.Error;
+                case LogLevels.Fatal:
+                    return NLog.LogLevel.Fatal;
+            }
+            return NLog.LogLevel.Debug;
+        }
+    }
 }

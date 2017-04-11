@@ -1,52 +1,52 @@
-﻿{
-	"version": "1.0.0-*",
-	"title": "Dapplo.XUnit",
-	"authors": [ "Robin Krom" ],
-	"copyright": "Copyright © Dapplo 2016",
-	"description": "A Dapplo.Log XUnit logger",
-	"supports": {},
-	"dependencies": {
-		"Dapplo.Log": "*"
-	},
-	"frameworks": {
-		"net45": {
-			"dependencies": {
-				"xunit": "2.1.0"
-			}
-		},
-		"net46": {
-			"dependencies": {
-				"xunit": "2.1.0"
-			}
-		},
-		"netstandard1.3": {
-			"dependencies": {
-				"NETStandard.Library": "1.6.0",
-				"Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-				"xunit": "2.2.0-*"
-			}
-		}
-	},
-	"configurations": {
-		"Release": {
-			"buildOptions": {
-				"optimize": true
-			}
-		},
-		"Debug": {
-			"buildOptions": {
-				"optimize": false
-			}
-		}
-	},
-	"buildOptions": {
-		"xmlDoc": true
-	},
-	"packOptions": {
-		"owners": [ "Dapplo" ],
-		"summary": "A Dapplo.Log XUnit logger",
-		"licenseUrl": "http://www.gnu.org/licenses/lgpl-3.0.en.html",
-		"projectUrl": "http://www.dapplo.net/blocks/Dapplo.Log",
-		"iconUrl": "http://www.dapplo.net/favicon.ico"
-	}
+{
+    "version": "1.0.0-*",
+    "title": "Dapplo.XUnit",
+    "authors": ["Robin Krom"],
+    "copyright": "Copyright © Dapplo 2016",
+    "description": "A Dapplo.Log XUnit logger",
+    "supports": {},
+    "dependencies": {
+        "NETStandard.Library": "1.6.1",
+        "Dapplo.Log": "*",
+        "xunit": "2.2.0"
+    },
+    "frameworks": {
+        "net45": {
+            "dependencies": {
+            
+            }
+        },
+        "net46": {
+            "dependencies": {
+            
+            }
+        },
+        "netstandard1.3": {
+            "dependencies": {
+                "Microsoft.NETCore.Portable.Compatibility": "1.0.1"
+            }
+        }
+    },
+    "configurations": {
+        "Release": {
+            "buildOptions": {
+                "optimize": true
+            }
+        },
+        "Debug": {
+            "buildOptions": {
+                "optimize": false
+            }
+        }
+    },
+    "buildOptions": {
+        "xmlDoc": true
+    },
+    "packOptions": {
+        "owners": ["Dapplo"],
+        "summary": "A Dapplo.Log XUnit logger",
+        "licenseUrl": "http://www.gnu.org/licenses/lgpl-3.0.en.html",
+        "projectUrl": "http://www.dapplo.net/blocks/Dapplo.Log",
+        "iconUrl": "http://www.dapplo.net/favicon.ico"
+    }
 }

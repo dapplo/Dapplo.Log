@@ -35,41 +35,41 @@ using Xunit.Abstractions;
 
 namespace Dapplo.Log.Tests
 {
-	public class FileLoggerTests
-	{
-		public FileLoggerTests(ITestOutputHelper testOutputHelper)
-		{
-			_testOutputHelper = testOutputHelper;
-		}
+    public class FileLoggerTests
+    {
+        public FileLoggerTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
 
-		private readonly ITestOutputHelper _testOutputHelper;
+        private readonly ITestOutputHelper _testOutputHelper;
 
-		[Fact]
-		public async Task TestFileLogger()
-		{
-			var xunitLogger = new XUnitLogger(_testOutputHelper)
-			{
-				LogLevel = LogLevels.Verbose
-			};
-			LoggerMapper.RegisterLoggerFor<FileLogger>(xunitLogger);
+        [Fact]
+        public async Task TestFileLogger()
+        {
+            var xunitLogger = new XUnitLogger(_testOutputHelper)
+            {
+                LogLevel = LogLevels.Verbose
+            };
+            LoggerMapper.RegisterLoggerFor<FileLogger>(xunitLogger);
 
-			// Define a pattern with seconds in it...
-			var filenamePattern = "{Processname}-{Timestamp:yyyyMMddHHmmss}{Extension}";
+            // Define a pattern with seconds in it...
+            var filenamePattern = "{Processname}-{Timestamp:yyyyMMddHHmmss}{Extension}";
 
-			using (var forwardingLogger = new ForwardingLogger {LogLevel = LogLevels.Verbose})
-			{
-				LoggerTestSupport.TestAllLogMethods(forwardingLogger);
-				using (var fileLogger = new FileLogger())
-				{
-					fileLogger.FilenamePattern = filenamePattern;
-					fileLogger.ArchiveFilenamePattern = filenamePattern;
-					forwardingLogger.ReplacedWith(fileLogger);
-					//LoggerTestSupport.TestAllLogMethods(fileLogger);
-					// Force archiving, as the filename changes
-					await Task.Delay(2000);
-					LoggerTestSupport.TestAllLogMethods(fileLogger);
-				}
-			}
-		}
-	}
+            using (var forwardingLogger = new ForwardingLogger {LogLevel = LogLevels.Verbose})
+            {
+                LoggerTestSupport.TestAllLogMethods(forwardingLogger);
+                using (var fileLogger = new FileLogger())
+                {
+                    fileLogger.FilenamePattern = filenamePattern;
+                    fileLogger.ArchiveFilenamePattern = filenamePattern;
+                    forwardingLogger.ReplacedWith(fileLogger);
+                    //LoggerTestSupport.TestAllLogMethods(fileLogger);
+                    // Force archiving, as the filename changes
+                    await Task.Delay(2000);
+                    LoggerTestSupport.TestAllLogMethods(fileLogger);
+                }
+            }
+        }
+    }
 }
