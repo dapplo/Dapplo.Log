@@ -13,8 +13,6 @@ before_build:
 - ps: .\SetVersion.ps1
 - appveyor-retry dotnet restore -v Minimal
 - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }
-before_package:
-- GitLink .\
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -32,6 +30,7 @@ build_script:
 - dotnet build Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies
 - dotnet build Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
 after_build:
+- GitLink .\
 - dotnet pack  Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
