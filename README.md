@@ -1,18 +1,16 @@
 # Dapplo.Log
 
-> This project will be made .NET Platform standard compatible.
-
-This contains a simple logging facade in dapplo.log.facade, as well as some simple loggers, a file logger and also some adapters for other log frameworks.
+This contains a simple logging facade in dapplo.log, as well as some simple loggers, a file logger and also some (currently example) adapters for other log frameworks.
 The facade allows a framework/library to have log statements without forcing the project that uses this to use the same huge logger.
 Without a logger and if used correctly the performance penalty is extremely small, as soon as you have issues you can set a logger and get some information.
 
 The project is build modular, currently the facade which is the least you will need, is about 17KB.
-Adding a file logger adds another 21KB, which totals to <40KB. Just as a comparison, log4net is about 300KB. 
+Adding a file logger adds another 21KB, which totals to <40KB. Just as a comparison, log4net is about 300KB. (although unfair, it can do a lot more)
 
 - Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log) (soon)
 - Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
 - Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
-- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.facade.svg)](https://badge.fury.io/nu/dapplo.facade.log)
+- NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.svg)](https://badge.fury.io/nu/dapplo.log)
 - NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.loggers.svg)](https://badge.fury.io/nu/dapplo.log.loggers)
 - NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.logfile.svg)](https://badge.fury.io/nu/dapplo.log.logfile)
 - NuGet package: [![NuGet package](https://badge.fury.io/nu/dapplo.log.xunit.svg)](https://badge.fury.io/nu/dapplo.log.xunit)
@@ -26,7 +24,7 @@ This project will help you out, and make it possible for your user to decide whe
 To you this, you add the nuget package.
 Add the using statement to your class:
 ```
-using Dapplo.Log.Facade;
+using Dapplo.Log;
 ```
 
 Include a static one-liner in your class:
@@ -75,10 +73,11 @@ A file logger is also available, it supports:
 - Rolling filenames
 - If rolling, the file can be moved to a directory and have a different filename.
 - If rolling, the file can be gzipped
-Available in Dapplo.Log.LogFile
+Available in the package Dapplo.Log.LogFile
 
 I have included examples of "wrappers" in the test project, these are not available in a NuGet Package.
 - a [NLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/NLogLogger.cs) for loggin with Dapplo.Log to NLog
+- a [Log4NetLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/Log4NetLogger.cs) for loggin with Dapplo.Log to Log4Net
 - a [SeriLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/SeriLogLogger.cs) for loggin with Dapplo.Log to SeriLog
 - a special [StringWriterLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/StringWriterLogger.cs) for loggin with Dapplo.Log to a StringWriter, this is Thread/Task aware and takes care of separating the StringWriters for your tests. (e.g. works with xUnit tests)
 
