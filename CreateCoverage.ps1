@@ -10,7 +10,7 @@ $nugetPackages="$env:USERPROFILE\.nuget\packages"
 $opencoverPath = ((gci $nugetPackages\opencover\*\tools | sort-object name)[-1]).Fullname
 $xunitrunnerPath = ((gci $nugetPackages\xunit.runner.console\*\tools | sort-object name)[-1]).Fullname
 $dotversion="net46"
-$openCoverArguments = @("-register:user", "$filter", "-target:$xunitrunnerPath\xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$dotversion\$projectName.Tests.dll -noshadow -xml xunit.xml`"","-output:`"$output`"")
+$openCoverArguments = @("-register:user", "$filter", "-returntargetcode", "-target:$xunitrunnerPath\xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$dotversion\$projectName.Tests.dll -noshadow -xml xunit.xml`"","-output:`"$output`"")
 Start-Process -wait $opencoverPath\OpenCover.Console.exe -NoNewWindow -ArgumentList $openCoverArguments
 
 if (Test-Path Env:COVERALLS_REPO_TOKEN) {

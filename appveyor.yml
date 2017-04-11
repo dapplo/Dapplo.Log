@@ -3,6 +3,7 @@ skip_tags: true
 configuration: Release
 platform: AnyCPU
 clone_depth: 2
+test: off
 branches:
   only:
   - master
@@ -14,9 +15,6 @@ before_build:
 - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }
 before_package:
 - GitLink .\
-after_test:
-# This runs the tests with OpenCover and publishes the report to Coverall
-- ps: .\CreateCoverage.ps1
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -38,6 +36,8 @@ after_build:
 - dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack  Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
+# This runs the tests with OpenCover and publishes the report to Coverall
+- ps: .\CreateCoverage.ps1
 #cache:
 #- '%USERPROFILE%\.nuget\packages'
 artifacts:
