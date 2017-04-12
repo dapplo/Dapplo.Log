@@ -1,12 +1,11 @@
 {
     "version": "1.0.0-*",
     "title": "Dapplo.Log",
-    "authors": ["Robin Krom"],
+    "authors": [ "Robin Krom" ],
     "copyright": "Copyright © Dapplo 2016",
     "description": "A small logger facade, usable in projects where a log framework should not be forced.",
     "supports": {},
     "dependencies": {
-        "NETStandard.Library": "1.6.1"
     },
     "frameworks": {
         ".NETPortable,Version=v4.0,Profile=Profile328": {
@@ -19,20 +18,22 @@
                 "System.Core": ""
             },
             "dependencies": {
+                "NETStandard.Library": "1.6.1",
                 "Microsoft.Bcl": "1.1.10"
             }
         },
         "netstandard1.1": {
             "dependencies": {
+                "NETStandard.Library": "1.6.1",
                 "Microsoft.NETCore.Portable.Compatibility": "1.0.1"
             }
-            },
-            "net45": {
-                "dependencies": {
-
-                }
-            }
         },
+        "net45": {
+            "dependencies": {
+
+            }
+        }
+    },
     "configurations": {
         "Release": {
             "buildOptions": {
@@ -49,7 +50,7 @@
         "xmlDoc": true
     },
     "packOptions": {
-        "owners": ["Dapplo"],
+        "owners": [ "Dapplo" ],
         "summary": "A small logger facade",
         "licenseUrl": "http://www.gnu.org/licenses/lgpl-3.0.en.html",
         "projectUrl": "http://www.dapplo.net/blocks/Dapplo.Log",

@@ -6,12 +6,12 @@
     "description": "A collections of loggers for Dapplo.Log",
     "supports": {},
     "dependencies": {
-        "Dapplo.Log": "*",
-        "NETStandard.Library": "1.6.1"
+        "Dapplo.Log": "*"
     },
     "frameworks": {
         "netstandard1.3": {
             "dependencies": {
+                "NETStandard.Library": "1.6.1",
                 "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
                 "System.Diagnostics.TraceSource": "4.0.0"
             }
@@ -26,6 +26,7 @@
                 "System.Core": ""
             },
             "dependencies": {
+                "NETStandard.Library": "1.6.1"
             }
         },
         "net45": {}

@@ -6,12 +6,12 @@
     "description": "A file logger for Dapplo.Log",
     "supports": {},
     "dependencies": {
-        "Dapplo.Log": "*",
-        "NETStandard.Library": "1.6.1"
+        "Dapplo.Log": "*"
     },
     "frameworks": {
         "netstandard1.3": {
             "dependencies": {
+                "NETStandard.Library": "1.6.1",
                 "System.Diagnostics.Process": "4.3.0",
                 "System.Diagnostics.TraceSource": "4.3.0",
                 "System.IO": "4.3.0",
