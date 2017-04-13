@@ -1,0 +1,53 @@
+### YamlMime:TableOfContent
+- uid: Dapplo.Log
+  name: Dapplo.Log
+  items:
+  - uid: Dapplo.Log.AbstractLogger
+    name: AbstractLogger
+  - uid: Dapplo.Log.ILogger
+    name: ILogger
+  - uid: Dapplo.Log.ILoggerConfiguration
+    name: ILoggerConfiguration
+  - uid: Dapplo.Log.LoggerMapper
+    name: LoggerMapper
+  - uid: Dapplo.Log.LogInfo
+    name: LogInfo
+  - uid: Dapplo.Log.LogInfoExtensions
+    name: LogInfoExtensions
+  - uid: Dapplo.Log.LogLevels
+    name: LogLevels
+  - uid: Dapplo.Log.LogSettings
+    name: LogSettings
+  - uid: Dapplo.Log.LogSource
+    name: LogSource
+  - uid: Dapplo.Log.LogSourceExtensions
+    name: LogSourceExtensions
+  - uid: Dapplo.Log.NullLogger
+    name: NullLogger
+- uid: Dapplo.Log.LogFile
+  name: Dapplo.Log.LogFile
+  items:
+  - uid: Dapplo.Log.LogFile.FileLogger
+    name: FileLogger
+  - uid: Dapplo.Log.LogFile.ForwardingLogger
+    name: ForwardingLogger
+  - uid: Dapplo.Log.LogFile.IFileLoggerConfiguration
+    name: IFileLoggerConfiguration
+- uid: Dapplo.Log.Loggers
+  name: Dapplo.Log.Loggers
+  items:
+  - uid: Dapplo.Log.Loggers.ColorConsoleLogger
+    name: ColorConsoleLogger
+  - uid: Dapplo.Log.Loggers.ConsoleLogger
+    name: ConsoleLogger
+  - uid: Dapplo.Log.Loggers.DebugLogger
+    name: DebugLogger
+  - uid: Dapplo.Log.Loggers.StringWriterLogger
+    name: StringWriterLogger
+  - uid: Dapplo.Log.Loggers.TraceLogger
+    name: TraceLogger
+- uid: Dapplo.Log.XUnit
+  name: Dapplo.Log.XUnit
+  items:
+  - uid: Dapplo.Log.XUnit.XUnitLogger
+    name: XUnitLogger

@@ -23,7 +23,7 @@
 
 #endregion
 
-#if !PROFILE328
+#if !PCL
 #region Usings
 
 using System;

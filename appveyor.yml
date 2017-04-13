@@ -23,18 +23,18 @@ build:
   publish_nuget_symbols: true
   verbosity: minimal
 build_script:
-- dotnet build Dapplo.Log -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.LogFile -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.Loggers -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.XUnit -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies
-- dotnet build Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies
+- dotnet build src/Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
 after_build:
 - GitLink .\
-- dotnet pack  Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack  src/Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack  src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack  src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack  src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
 # This runs the tests with OpenCover and publishes the report to Coverall
 - ps: .\CreateCoverage.ps1
 #cache:

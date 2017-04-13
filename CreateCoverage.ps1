@@ -3,23 +3,26 @@
 # 2: ReportGenerator for the HTML report (if COVERALLS_REPO_TOKEN NOT available)
 # 3: Coveralls.net to export the generated OpenCover report to coveralls.io (if COVERALLS_REPO_TOKEN available)
 
+cd src
 $projectName = (gci *.Sln).BaseName
 $filter="-filter:+`"[$projectName]*`""
-$output="coverage.xml"
+$coverageXmlOutput="..\coverage.xml"
+$xUnitOutput="..\xunit.xml"
+$reportOutputDir="..\CoverageReport"
 $nugetPackages="$env:USERPROFILE\.nuget\packages"
 $opencoverPath = ((gci $nugetPackages\opencover\*\tools | sort-object name)[-1]).Fullname
 $xunitrunnerPath = ((gci $nugetPackages\xunit.runner.console\*\tools | sort-object name)[-1]).Fullname
 $dotversion="net46"
-$openCoverArguments = @("-register:user", "$filter", "-returntargetcode", "-target:$xunitrunnerPath\xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$dotversion\$projectName.Tests.dll -noshadow -xml xunit.xml`"","-output:`"$output`"")
+$openCoverArguments = @("-register:user", "$filter", "-returntargetcode", "-target:$xunitrunnerPath\xunit.console.exe","-targetargs:`"$projectName.Tests\bin\release\$dotversion\$projectName.Tests.dll -noshadow -xml $xUnitOutput`"","-output:`"$coverageXmlOutput`"")
 Start-Process -wait $opencoverPath\OpenCover.Console.exe -NoNewWindow -ArgumentList $openCoverArguments
 
 if (Test-Path Env:COVERALLS_REPO_TOKEN) {
 	$coverallsPath = ((gci $nugetPackages\coveralls.io\*\tools | sort-object name)[-1]).Fullname
-	$coverallsArguments = @("--opencover $output")
+	$coverallsArguments = @("--opencover $coverageXmlOutput")
 	Start-Process -wait $coverallsPath\coveralls.net.exe -NoNewWindow -ArgumentList $coverallsArguments
 }
 else {
 	$reportgeneratorPath = ((gci $nugetPackages\ReportGenerator\*\tools | sort-object name)[-1]).Fullname
-	$reportgeneratorArguments = @("-reports:$output", "-targetdir:CoverageReport")
+	$reportgeneratorArguments = @("-reports:$coverageXmlOutput", "-targetdir:$reportOutputDir")
 	Start-Process -wait $reportgeneratorPath\ReportGenerator.exe -NoNewWindow -ArgumentList $reportgeneratorArguments
 }

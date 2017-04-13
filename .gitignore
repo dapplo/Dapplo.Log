@@ -235,3 +235,14 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# DocFX
+_site/
+/**/DROP/
+/**/TEMP/
+_api/
+
+# Coverage
+CoverageReport
+coverage.xml
+xunit.xml

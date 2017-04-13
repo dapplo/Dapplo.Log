@@ -1,0 +1,71 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+		  "src": "../src",
+          "files": [
+            "Dapplo.Log*/**.cs"
+          ],
+          "exclude": [
+			"**/bin/**",
+			"**/obj/**",
+			"**Tests/**.cs",
+          ]
+        }
+      ],
+      "dest": "_api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "_api/**.yml"
+        ],
+		"dest": "api"
+      },
+      {
+        "files": [
+          "api/index.md",
+		  "api/toc.*",
+          "articles/**.md",
+          "articles/**/toc.yml",
+          "toc.yml",
+          "*.md"
+        ],
+        "exclude": [
+          "_site/**",
+		  "README.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ],
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+      }
+    ],
+    "dest": "_site",
+	"globalMetadata": {
+		"_appTitle": "Dapplo.Log",
+		"_appLogoPath": "images/d.svg",
+		"_appFaviconPath": "images/favicon.ico",
+	},
+    "globalMetadataFiles": [],
+	"template": [
+      "statictoc"
+    ],
+    "fileMetadataFiles": [],
+    "postProcessors": [],
+    "noLangKeyword": false
+  }
+}

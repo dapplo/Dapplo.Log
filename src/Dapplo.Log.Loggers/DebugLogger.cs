@@ -38,7 +38,7 @@ namespace Dapplo.Log.Loggers
     /// </summary>
     public class DebugLogger : AbstractLogger
     {
-#if !PROFILE328
+#if !PCL
         /// <inheritdoc />
         public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
