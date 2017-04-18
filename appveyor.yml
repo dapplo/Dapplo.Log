@@ -35,7 +35,7 @@ build_script:
 after_build:
 - GitLink .\
 - docfx doc\docfx.json
-- 7z a %APPVEYOR_BUILD_FOLDER%\artifacts\site.zip %APPVEYOR_BUILD_FOLDER%\doc\_site\*.*
+- 7z a -tzip %APPVEYOR_BUILD_FOLDER%\artifacts\site.zip -r %APPVEYOR_BUILD_FOLDER%\doc\_site\
 - dotnet pack src/Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
