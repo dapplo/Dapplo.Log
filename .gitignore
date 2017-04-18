@@ -240,7 +240,8 @@ _Pvt_Extensions
 _site/
 /**/DROP/
 /**/TEMP/
-_api/
+doc/api/**/*.yml
+doc/api/.manifest
 
 # Coverage
 CoverageReport

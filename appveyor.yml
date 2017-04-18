@@ -9,6 +9,7 @@ branches:
   - master
 install:
 - choco install gitlink -y
+- choco install docfx -y
 before_build:
 - ps: .\SetVersion.ps1
 - appveyor-retry dotnet restore -v Minimal
@@ -16,6 +17,8 @@ before_build:
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  NuGetApiKey:
+    secure: xkDQ385+smLqdzhESsXBJvnUjK4FZ4Djjrqi9tFR29dwESIvPYOrQAqgri5Nf/fA
   COVERALLS_REPO_TOKEN:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
 build:
@@ -31,17 +34,19 @@ build_script:
 - dotnet build src/Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
 after_build:
 - GitLink .\
-- dotnet pack  src/Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack  src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
+- docfx doc\docfx.json
+- 7z a %APPVEYOR_BUILD_FOLDER%\artifacts\site.zip %APPVEYOR_BUILD_FOLDER%\doc\_site\*.*
+- dotnet pack src/Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
 # This runs the tests with OpenCover and publishes the report to Coverall
 - ps: .\CreateCoverage.ps1
 #cache:
 #- '%USERPROFILE%\.nuget\packages'
 artifacts:
-- path: artifacts\**\*.*
-  name: NuGet package
+- path: artifacts\**\*.nupkg
+- path: artifacts\**\site.zip
 notifications:
 - provider: Email
   to:

@@ -190,7 +190,7 @@ namespace Dapplo.Log
 
         /// <summary>
         ///     The Type, as string, where this LogSource was created
-        ///     e.g. this class would return Dapplo.Log.Facade.LogSource
+        ///     e.g. this class would return Dapplo.Log.LogSource
         /// </summary>
         public string Source { get; set; }
     }

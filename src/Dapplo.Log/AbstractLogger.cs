@@ -81,7 +81,7 @@ namespace Dapplo.Log
         public virtual LogLevels LogLevel { get; set; } = LogLevels.Info;
 
         /// <summary>
-        ///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.Facade.LoggerTest
+        ///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.LoggerTest
         /// </summary>
         public bool UseShortSource { get; set; } = true;
 

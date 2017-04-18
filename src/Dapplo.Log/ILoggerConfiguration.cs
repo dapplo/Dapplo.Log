@@ -43,7 +43,7 @@ namespace Dapplo.Log
         LogLevels LogLevel { get; set; }
 
         /// <summary>
-        ///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.Facade.LoggerTest
+        ///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.LoggerTest
         /// </summary>
         [DefaultValue(true)]
         bool UseShortSource { get; set; }

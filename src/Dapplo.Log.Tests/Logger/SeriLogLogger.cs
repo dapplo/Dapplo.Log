@@ -4,20 +4,20 @@
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
 // 
-//  This file is part of Dapplo.Log.Facade
+//  This file is part of Dapplo.Log
 // 
-//  Dapplo.Log.Facade is free software: you can redistribute it and/or modify
+//  Dapplo.Log is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Lesser General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 // 
-//  Dapplo.Log.Facade is distributed in the hope that it will be useful,
+//  Dapplo.Log is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU Lesser General Public License for more details.
 // 
 //  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log.Facade. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 #region Usings
 
@@ -28,7 +28,7 @@ using Serilog.Events;
 namespace Dapplo.Log.Tests.Logger
 {
     /// <summary>
-    ///     Dapplo.Log.Facade.ILogger implementation for Serilog
+    ///     Dapplo.Log.ILogger implementation for Serilog
     /// </summary>
     public class SeriLogLogger : AbstractLogger
     {
@@ -72,7 +72,7 @@ namespace Dapplo.Log.Tests.Logger
         }
 
         /// <summary>
-        ///     Convert the Dapplo.Log.Facade.LogLevels to a Serilog.Events.LogEventLevel
+        ///     Convert the Dapplo.Log.LogLevels to a Serilog.Events.LogEventLevel
         /// </summary>
         /// <param name="logLevel">LogLevels</param>
         /// <returns>LogEventLevel</returns>
