@@ -1,0 +1,4 @@
+apiRules:
+- exclude:
+    uidRegex: ^Nito\.AsyncEx\.AsyncLocal$
+    type: Namespace

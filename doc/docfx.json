@@ -5,16 +5,17 @@
         {
 		  "src": "../src",
           "files": [
-            "Dapplo.Log*/**.cs"
+            "Dapplo.Log*/project.json"
           ],
           "exclude": [
 			"**/bin/**",
 			"**/obj/**",
-			"**Tests/**.cs",
+			"**Tests/project.json",
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+	  "filter": "filterConfig.yml"
     }
   ],
   "build": {
