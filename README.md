@@ -7,7 +7,7 @@ Without a logger and if used correctly the performance penalty is extremely smal
 The project is build modular, currently the facade which is the least you will need, is about 17KB.
 Adding a file logger adds another 21KB, which totals to <40KB. Just as a comparison, log4net is about 300KB. (although unfair, it can do a lot more)
 
-- Documentation can be found [here](http://www.dapplo.net/blocks/Dapplo.Log) (soon)
+- Documentation can be found [here](http://www.dapplo.net/documentation/Dapplo.Log)
 - Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
 - Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
 - NuGet package Dapplo.Log: [![NuGet package](https://badge.fury.io/nu/dapplo.log.svg)](https://badge.fury.io/nu/dapplo.log)
