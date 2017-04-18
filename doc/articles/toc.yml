@@ -1,2 +1,8 @@
 - name: Introduction
   href: intro.md
+- name: Logging in XUnit tests
+  href: xunit.md
+- name: Logging to files
+  href: file.md
+- name: Other log frameworks
+  href: adapters.md
