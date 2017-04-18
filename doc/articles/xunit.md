@@ -1,9 +1,10 @@
 # Dapplo.Log.XUnit
 
 XUnit runs your unit tests parallel, which can make reading your log output for the tests extremely hard.
-Fortunately Dapplo.Log also has a XUnit logger, which takes care of matching your log output to your facts.
+Fortunately Dapplo.Log also has a XUnit logger, which can be found here:@Dapplo.Log.XUnit
+This takes care of matching log output to facts, simplifying your ouput.
 
-To you this, you add the nuget package:
+To use this, you add the nuget package:
 ```
 Install-Package Dapplo.Log.XUnit
 ```

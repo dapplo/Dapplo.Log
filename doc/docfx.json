@@ -14,21 +14,15 @@
           ]
         }
       ],
-      "dest": "_api"
+      "dest": "api"
     }
   ],
   "build": {
     "content": [
       {
         "files": [
-          "_api/**.yml"
-        ],
-		"dest": "api"
-      },
-      {
-        "files": [
-          "api/index.md",
-		  "api/toc.*",
+          "api/**.md",
+          "api/**.yml",
           "articles/**.md",
           "articles/**/toc.yml",
           "toc.yml",
