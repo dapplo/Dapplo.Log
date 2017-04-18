@@ -54,6 +54,7 @@
 		"_appTitle": "Dapplo.Log",
 		"_appLogoPath": "images/d.svg",
 		"_appFaviconPath": "images/favicon.ico",
+		"_appFooter": "Copyright © 2017 Dapplo"
 	},
     "globalMetadataFiles": [],
 	"template": [

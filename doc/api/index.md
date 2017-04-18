@@ -1,3 +1,3 @@
-# Dallo.Log API Description
+# Dapplo.Log API Description
 
 Here is the API described..
