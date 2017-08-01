@@ -76,9 +76,9 @@ A file logger is also available, it supports:
 Available in the package Dapplo.Log.LogFile
 
 I have included examples of "wrappers" in the test project, these are not available in a NuGet Package.
-- a [NLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/NLogLogger.cs) for loggin with Dapplo.Log to NLog
-- a [Log4NetLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/Log4NetLogger.cs) for loggin with Dapplo.Log to Log4Net
-- a [SeriLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/SeriLogLogger.cs) for loggin with Dapplo.Log to SeriLog
-- a special [StringWriterLogger](https://github.com/dapplo/Dapplo.Log/blob/master/Dapplo.Log.Tests/Logger/StringWriterLogger.cs) for loggin with Dapplo.Log to a StringWriter, this is Thread/Task aware and takes care of separating the StringWriters for your tests. (e.g. works with xUnit tests)
+- a [NLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/src/Dapplo.Log.Tests/Logger/NLogLogger.cs) for loggin with Dapplo.Log to NLog
+- a [Log4NetLogger](https://github.com/dapplo/Dapplo.Log/blob/master/src/Dapplo.Log.Tests/Logger/Log4NetLogger.cs) for loggin with Dapplo.Log to Log4Net
+- a [Log4NetDapploAppender](https://github.com/dapplo/Dapplo.Log/blob/master/src/Dapplo.Log.Tests/Logger/Log4NetDapploAppender.cs) for loggin with Log4Net to Dapplo.Log
+- a [SeriLogLogger](https://github.com/dapplo/Dapplo.Log/blob/master/src/Dapplo.Log.Tests/Logger/SeriLogLogger.cs) for loggin with Dapplo.Log to SeriLog
 
 That is all for now...
