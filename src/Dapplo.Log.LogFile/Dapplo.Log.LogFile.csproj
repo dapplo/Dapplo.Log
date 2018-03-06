@@ -17,11 +17,12 @@
     <RepositoryType>git</RepositoryType>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	<IsPackable>true</IsPackable>
+	<DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
-	<DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>

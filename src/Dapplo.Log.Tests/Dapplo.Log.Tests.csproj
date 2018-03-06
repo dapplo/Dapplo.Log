@@ -11,6 +11,7 @@
     <AssemblyName>Dapplo.Log.Tests</AssemblyName>
     <PackageId>Dapplo.Log.Tests</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+	<IsPackable>false</IsPackable>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>

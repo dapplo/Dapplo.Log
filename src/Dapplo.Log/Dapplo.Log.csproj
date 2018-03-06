@@ -18,11 +18,12 @@
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.1</NetStandardImplicitPackageVersion>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.1</NetStandardImplicitPackageVersion>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	<IsPackable>true</IsPackable>
+	<DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
-	<DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'portable40-net40+sl5+win8+wp8+wpa81' ">
