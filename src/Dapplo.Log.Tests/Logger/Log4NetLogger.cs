@@ -46,8 +46,8 @@ namespace Dapplo.Log.Tests.Logger
         /// </summary>
         /// <param name="logInfo">LogInfo</param>
         /// <param name="messageTemplate">string</param>
-        /// <param name="propertyValues">params object[]</param>
-        public override void Write(LogInfo logInfo, string messageTemplate, params object[] propertyValues)
+        /// <param name="logParameters">params object[]</param>
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
             var log = GetLogger(logInfo.Source);
 
@@ -55,9 +55,9 @@ namespace Dapplo.Log.Tests.Logger
             {
                 case LogLevels.Verbose:
                 case LogLevels.Debug:
-                    if (propertyValues != null)
+                    if (logParameters != null)
                     {
-                        log.DebugFormat(messageTemplate, propertyValues);
+                        log.DebugFormat(messageTemplate, logParameters);
                     }
                     else
                     {
@@ -65,9 +65,9 @@ namespace Dapplo.Log.Tests.Logger
                     }
                     break;
                 case LogLevels.Error:
-                    if (propertyValues != null)
+                    if (logParameters != null)
                     {
-                        log.ErrorFormat(messageTemplate, propertyValues);
+                        log.ErrorFormat(messageTemplate, logParameters);
                     }
                     else
                     {
@@ -75,9 +75,9 @@ namespace Dapplo.Log.Tests.Logger
                     }
                     break;
                 case LogLevels.Fatal:
-                    if (propertyValues != null)
+                    if (logParameters != null)
                     {
-                        log.FatalFormat(messageTemplate, propertyValues);
+                        log.FatalFormat(messageTemplate, logParameters);
                     }
                     else
                     {
@@ -85,9 +85,9 @@ namespace Dapplo.Log.Tests.Logger
                     }
                     break;
                 case LogLevels.Info:
-                    if (propertyValues != null)
+                    if (logParameters != null)
                     {
-                        log.InfoFormat(messageTemplate, propertyValues);
+                        log.InfoFormat(messageTemplate, logParameters);
                     }
                     else
                     {
@@ -95,9 +95,9 @@ namespace Dapplo.Log.Tests.Logger
                     }
                     break;
                 case LogLevels.Warn:
-                    if (propertyValues != null)
+                    if (logParameters != null)
                     {
-                        log.WarnFormat(messageTemplate, propertyValues);
+                        log.WarnFormat(messageTemplate, logParameters);
                     }
                     else
                     {
@@ -121,13 +121,13 @@ namespace Dapplo.Log.Tests.Logger
         /// <summary>
         ///     Test if a certain LogLevels enum is enabled
         /// </summary>
-        /// <param name="level">LogLevels value</param>
+        /// <param name="logLevel">LogLevels value</param>
         /// <param name="logSource">LogSource to check for</param>
         /// <returns>bool true if the LogLevels enum is enabled</returns>
-        public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
+        public override bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
         {
             var log = GetLogger(logSource);
-            switch (level)
+            switch (logLevel)
             {
                 case LogLevels.Verbose:
                 case LogLevels.Debug:

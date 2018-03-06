@@ -54,7 +54,7 @@ namespace Dapplo.Log.Tests
             LoggerMapper.RegisterLoggerFor<FileLogger>(xunitLogger);
 
             // Define a pattern with seconds in it...
-            var filenamePattern = "{Processname}-{Timestamp:yyyyMMddHHmmss}{Extension}";
+            const string filenamePattern = "{Processname}-{Timestamp:yyyyMMddHHmmss}{Extension}";
 
             using (var forwardingLogger = new ForwardingLogger {LogLevel = LogLevels.Verbose})
             {
@@ -64,7 +64,6 @@ namespace Dapplo.Log.Tests
                     fileLogger.FilenamePattern = filenamePattern;
                     fileLogger.ArchiveFilenamePattern = filenamePattern;
                     forwardingLogger.ReplacedWith(fileLogger);
-                    //LoggerTestSupport.TestAllLogMethods(fileLogger);
                     // Force archiving, as the filename changes
                     await Task.Delay(2000);
                     LoggerTestSupport.TestAllLogMethods(fileLogger);

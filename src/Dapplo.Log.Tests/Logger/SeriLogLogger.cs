@@ -40,8 +40,8 @@ namespace Dapplo.Log.Tests.Logger
         /// </summary>
         /// <param name="logInfo">LogInfo</param>
         /// <param name="messageTemplate">string</param>
-        /// <param name="propertyValues">params object[]</param>
-        public override void Write(LogInfo logInfo, string messageTemplate, params object[] propertyValues)
+        /// <param name="logParameters">params object[]</param>
+        public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
             Serilog.ILogger seriLogger;
             if (logInfo.Source.SourceType != null)
@@ -52,23 +52,23 @@ namespace Dapplo.Log.Tests.Logger
             {
                 seriLogger = Log.ForContext("SourceContext", logInfo.Source.Source);
             }
-            seriLogger.Write(ConvertLevel(logInfo.LogLevel), messageTemplate, propertyValues);
+            seriLogger.Write(ConvertLevel(logInfo.LogLevel), messageTemplate, logParameters);
         }
 
         /// <summary>
         ///     Test if a certain LogLevels enum is enabled
         /// </summary>
-        /// <param name="level">LogLevels value</param>
+        /// <param name="logLevel">LogLevels value</param>
         /// <param name="logSource">LogSource to check for</param>
         /// <returns>bool true if the LogLevels enum is enabled</returns>
-        public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
+        public override bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
         {
             Serilog.ILogger seriLogger = Log;
             if (logSource?.SourceType != null)
             {
                 seriLogger = Log.ForContext(logSource.SourceType);
             }
-            return level != LogLevels.None && seriLogger.IsEnabled(ConvertLevel(level));
+            return logLevel != LogLevels.None && seriLogger.IsEnabled(ConvertLevel(logLevel));
         }
 
         /// <summary>

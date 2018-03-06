@@ -134,7 +134,7 @@ namespace Dapplo.Log.Tests
         [Fact]
         public void TestFormat()
         {
-            var testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
+            const string testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
             var logger = new AbstractLogger();
 
             var logInfo = new LogInfo

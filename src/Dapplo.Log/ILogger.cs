@@ -48,6 +48,10 @@ namespace Dapplo.Log
         /// <summary>
         ///     This can be overriden to format the line message differently
         /// </summary>
+        /// <param name="logInfo">LogInfo</param>
+        /// <param name="messageTemplate">string</param>
+        /// <param name="parameters">object array with the parameters</param>
+        /// <returns>string formatted</returns>
         string Format(LogInfo logInfo, string messageTemplate, object[] parameters);
 
         /// <summary>

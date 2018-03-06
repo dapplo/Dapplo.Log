@@ -97,8 +97,7 @@ namespace Dapplo.Log.LogFile
             base.Configure(configuration);
 
             // Test if it's a IFileLoggerConfiguration
-            var fileLoggerConfiguration = configuration as IFileLoggerConfiguration;
-            if (fileLoggerConfiguration == null)
+            if (!(configuration is IFileLoggerConfiguration fileLoggerConfiguration))
             {
                 return;
             }
@@ -244,13 +243,15 @@ namespace Dapplo.Log.LogFile
             foreach (var key in variables.Keys)
             {
                 var index = arguments.Count;
-                if (stringToFormat.Contains(key))
+                if (!stringToFormat.Contains(key))
                 {
-                    // Replace the key with the index, so we can use normal formatting
-                    stringToFormat = stringToFormat.Replace(key, index.ToString());
-                    // Add the argument to the index, so the normal formatting can find this
-                    arguments.Add(variables[key]);
+                    continue;
                 }
+
+                // Replace the key with the index, so we can use normal formatting
+                stringToFormat = stringToFormat.Replace(key, index.ToString());
+                // Add the argument to the index, so the normal formatting can find this
+                arguments.Add(variables[key]);
             }
 
             return string.Format(stringToFormat, arguments.ToArray());
@@ -344,10 +345,8 @@ namespace Dapplo.Log.LogFile
             using (var streamWriter = new StreamWriter(new MemoryStream(), Encoding.UTF8))
             {
                 streamWriter.AutoFlush = true;
-                // Item to process
-                Tuple<LogInfo, string, object[]> logItem;
                 // Loop as long as there are items available
-                while (_logItems.TryDequeue(out logItem))
+                while (_logItems.TryDequeue(out var logItem))
                 {
                     try
                     {
@@ -452,51 +451,53 @@ namespace Dapplo.Log.LogFile
 
         private void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (_disposedValue)
             {
-                if (disposing)
-                {
-                    _backgroundCancellationTokenSource.Cancel();
-                    try
-                    {
-                        _backgroundTask.GetAwaiter().GetResult();
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        // Expected!
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error().WriteLine(ex, "Exception in background task.");
-                    }
+                return;
+            }
 
-                    // Process leftovers
-                    try
-                    {
-                        ProcessLinesAsync().Wait();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error().WriteLine(ex, "Exception in cleanup.");
-                    }
-                    // Wait for archiving
-                    try
-                    {
-                        IList<Task> archiveTasksToWaitFor;
-                        lock (_archiveTaskList)
-                        {
-                            archiveTasksToWaitFor = _archiveTaskList.ToList();
-                        }
-                        Task.WhenAll(archiveTasksToWaitFor).Wait();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error().WriteLine(ex, "Exception in archiving.");
-                    }
+            if (disposing)
+            {
+                _backgroundCancellationTokenSource.Cancel();
+                try
+                {
+                    _backgroundTask.GetAwaiter().GetResult();
+                }
+                catch (TaskCanceledException)
+                {
+                    // Expected!
+                }
+                catch (Exception ex)
+                {
+                    Log.Error().WriteLine(ex, "Exception in background task.");
                 }
 
-                _disposedValue = true;
+                // Process leftovers
+                try
+                {
+                    ProcessLinesAsync().Wait();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error().WriteLine(ex, "Exception in cleanup.");
+                }
+                // Wait for archiving
+                try
+                {
+                    IList<Task> archiveTasksToWaitFor;
+                    lock (_archiveTaskList)
+                    {
+                        archiveTasksToWaitFor = _archiveTaskList.ToList();
+                    }
+                    Task.WhenAll(archiveTasksToWaitFor).Wait();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error().WriteLine(ex, "Exception in archiving.");
+                }
             }
+
+            _disposedValue = true;
         }
 
         // This code added to correctly implement the disposable pattern.

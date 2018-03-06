@@ -60,17 +60,19 @@ namespace Dapplo.Log
             {
                 yield break;
             }
-            IList<ILogger> loggers;
+
             var foundLogger = false;
-            if (LoggerMap.TryGetValue(logSource.Source, out loggers))
+            if (LoggerMap.TryGetValue(logSource.Source, out var loggers))
             {
                 foreach (var logger in loggers)
                 {
-                    if (logger != null)
+                    if (logger == null)
                     {
-                        foundLogger = true;
-                        yield return logger;
+                        continue;
                     }
+
+                    foundLogger = true;
+                    yield return logger;
                 }
             }
             var defaultLogger = LogSettings.DefaultLogger;
@@ -87,8 +89,7 @@ namespace Dapplo.Log
         /// <param name="logger">ILogger to register</param>
         public static void RegisterLoggerFor(string source, ILogger logger)
         {
-            IList<ILogger> loggersForSource;
-            if (!LoggerMap.TryGetValue(source, out loggersForSource))
+            if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
                 loggersForSource = new List<ILogger>();
                 LoggerMap.Add(source, loggersForSource);
@@ -136,14 +137,15 @@ namespace Dapplo.Log
         /// <param name="logger">ILogger to register</param>
         public static void DeregisterLoggerFor(string source, ILogger logger)
         {
-            IList<ILogger> loggersForSource;
-            if (LoggerMap.TryGetValue(source, out loggersForSource))
+            if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
-                loggersForSource.Remove(logger);
-                if (loggersForSource.Count == 0)
-                {
-                    LoggerMap.Remove(source);
-                }
+                return;
+            }
+
+            loggersForSource.Remove(logger);
+            if (loggersForSource.Count == 0)
+            {
+                LoggerMap.Remove(source);
             }
         }
 

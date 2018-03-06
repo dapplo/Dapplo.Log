@@ -129,8 +129,8 @@ namespace Dapplo.Log.Tests
         private static void AssertWriteLines(LogSource logSource)
         {
             // Now call all write lines
-            string message = "Test log line";
-            string messageWithArguments = "Test log line with argument {0}";
+            const string message = "Test log line";
+            const string messageWithArguments = "Test log line with argument {0}";
             var exception = new Exception("Test");
 
             logSource.Verbose().WriteLine(message);

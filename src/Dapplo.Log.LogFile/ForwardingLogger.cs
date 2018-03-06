@@ -63,9 +63,8 @@ namespace Dapplo.Log.LogFile
         /// <param name="newLogger">ILogger which replaces this</param>
         public override void ReplacedWith(ILogger newLogger)
         {
-            Tuple<LogInfo, string, object[]> logItem;
             // Loop as long as there are items available
-            while (_logItems.TryDequeue(out logItem))
+            while (_logItems.TryDequeue(out var logItem))
             {
                 // Only forward those items of which the log level is supported
                 if (newLogger.IsLogLevelEnabled(logItem.Item1.LogLevel))
@@ -88,9 +87,9 @@ namespace Dapplo.Log.LogFile
             {
                 return;
             }
-            Tuple<LogInfo, string, object[]> logItem;
+
             // Loop as long as there are items available
-            while (_logItems.TryDequeue(out logItem))
+            while (_logItems.TryDequeue(out var logItem))
             {
                 try
                 {

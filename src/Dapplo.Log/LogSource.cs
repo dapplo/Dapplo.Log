@@ -79,12 +79,12 @@ namespace Dapplo.Log
             return string.Join(".", filenameParts);
         }
 
-        private string GetFilename(IEnumerable<string> filePath)
+        private static string GetFilename(IEnumerable<string> filePath)
         {
             return filePath.Last();
         }
 
-        private IEnumerable<string> GetDirectory(IEnumerable<string> filePath)
+        private static IEnumerable<string> GetDirectory(IEnumerable<string> filePath)
         {
             var fileParts = filePath.ToList();
             fileParts.RemoveAt(fileParts.Count - 1);
@@ -106,7 +106,7 @@ namespace Dapplo.Log
 #elif NETSTANDARD1_1
             var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
 #else
-            var directorySeparatorChar = '\\';
+            const char directorySeparatorChar = '\\';
 #endif
             sourceFilePath = sourceFilePath.Replace('\\', directorySeparatorChar).Replace('/', directorySeparatorChar);
 
@@ -168,11 +168,7 @@ namespace Dapplo.Log
         /// <param name="sourceType"></param>
         private void SetSourceFromType(Type sourceType)
         {
-            if (sourceType == null)
-            {
-                throw new ArgumentNullException(nameof(sourceType));
-            }
-            SourceType = sourceType;
+            SourceType = sourceType ?? throw new ArgumentNullException(nameof(sourceType));
             SetSourceFromString(sourceType.FullName);
         }
 
