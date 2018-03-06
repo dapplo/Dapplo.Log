@@ -1,5 +1,6 @@
-version: 1.0.{build}
+version: 1.1.{build}
 skip_tags: true
+os: Visual Studio 2017
 configuration: Release
 platform: AnyCPU
 clone_depth: 2
@@ -7,12 +8,7 @@ test: off
 branches:
   only:
   - master
-install:
-- choco install gitlink -y
-- choco install docfx -y
 before_build:
-- ps: .\SetVersion.ps1
-- appveyor-retry dotnet restore -v Minimal
 - ps: if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) { $env:is_not_pr = "true"; }
 environment:
   # Don't report back to the mothership
@@ -23,25 +19,9 @@ environment:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
 build:
   publish_nuget: true
-  publish_nuget_symbols: true
   verbosity: minimal
 build_script:
-- dotnet build src/Dapplo.Log -c %CONFIGURATION% --no-dependencies
-- dotnet build src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-dependencies
-- dotnet build src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-dependencies
-- dotnet build src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-dependencies
-- dotnet build src/Dapplo.Log.Tests -c %CONFIGURATION% --no-dependencies
-- dotnet build src/Dapplo.Log.ConsoleExample -c %CONFIGURATION% --no-dependencies
-after_build:
-- GitLink .\
-- docfx doc\docfx.json
-- 7z a -tzip %APPVEYOR_BUILD_FOLDER%\artifacts\site.zip -r %APPVEYOR_BUILD_FOLDER%\doc\_site\*.*
-- dotnet pack src/Dapplo.Log -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack src/Dapplo.Log.LogFile -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack src/Dapplo.Log.Loggers -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack src/Dapplo.Log.XUnit -c %CONFIGURATION% --no-build -o artifacts
-# This runs the tests with OpenCover and publishes the report to Coverall
-- ps: .\CreateCoverage.ps1
+- ps: .\build.ps1 --settings_skipverification=true
 #cache:
 #- '%USERPROFILE%\.nuget\packages'
 artifacts:

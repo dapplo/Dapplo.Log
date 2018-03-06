@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dapplo")]
 [assembly: AssemblyProduct("Dapplo.Log.ConsoleExample")]
-[assembly: AssemblyCopyright("Copyright © Dapplo 2016")]
+[assembly: AssemblyCopyright("Copyright © Dapplo 2016-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

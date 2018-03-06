@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016 Dapplo
+// Copyright (C) 2016-2018 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -81,9 +81,9 @@ namespace Dapplo.Log.Tests
             Log.Error().WriteLine("This is a test");
             Log.Fatal().WriteLine("This is a test");
 
-            Log.Error().WriteLine(new ArgumentNullException(nameof(stringwriterLogger)), "This is a test exception");
+            Log.Error().WriteLine(new Exception(nameof(stringwriterLogger)), "This is a test exception");
 
-            Assert.False(stringwriterLogger.Output.Contains("should NOT be visisble"));
+            Assert.DoesNotContain("should NOT be visisble", stringwriterLogger.Output);
 
             var lines = stringwriterLogger.Output.Count(x => x.ToString() == Environment.NewLine);
             // Info + Warn + Error + Fatal = 4
@@ -107,15 +107,15 @@ namespace Dapplo.Log.Tests
             const string notVisibleMessage = "Should be NOT visisble in logger, but arrive in the defaultLogger";
             differentLogSource.Info().WriteLine(visibleMessage);
             Log.Info().WriteLine(notVisibleMessage);
-            Assert.True(logger.Output.Contains(visibleMessage));
-            Assert.False(logger.Output.Contains(notVisibleMessage));
-            Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
+            Assert.Contains(visibleMessage, logger.Output);
+            Assert.DoesNotContain(notVisibleMessage, logger.Output);
+            Assert.Contains(notVisibleMessage, defaultLogger.Output);
 
             defaultLogger.Clear();
             LoggerMapper.DeregisterLoggerFor("Test", logger);
             differentLogSource.Info().WriteLine(notVisibleMessage);
-            Assert.False(logger.Output.Contains(notVisibleMessage));
-            Assert.True(defaultLogger.Output.Contains(notVisibleMessage));
+            Assert.DoesNotContain(notVisibleMessage, logger.Output);
+            Assert.Contains(notVisibleMessage, defaultLogger.Output);
         }
 
         /// <summary>
