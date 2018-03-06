@@ -17,13 +17,10 @@ environment:
     secure: xkDQ385+smLqdzhESsXBJvnUjK4FZ4Djjrqi9tFR29dwESIvPYOrQAqgri5Nf/fA
   COVERALLS_REPO_TOKEN:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
-build:
-  publish_nuget: true
-  verbosity: minimal
 build_script:
 - ps: .\build.ps1 --settings_skipverification=true
-#cache:
-#- '%USERPROFILE%\.nuget\packages'
+cache:
+  - tools -> tools/packages.config
 artifacts:
 - path: artifacts\**\*.nupkg
 - path: artifacts\**\site.zip
@@ -34,12 +31,3 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: false
-deploy:
-- provider: NuGet
-  skip_symbols: true
-  api_key:
-    secure: xkDQ385+smLqdzhESsXBJvnUjK4FZ4Djjrqi9tFR29dwESIvPYOrQAqgri5Nf/fA
-  on:
-    branch: master
-    is_not_pr: true
-    appveyor_repo_commit_message_extended: /\[release\]/
