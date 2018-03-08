@@ -59,6 +59,7 @@ Task("PublishCoverage")
 // Publish the Artifacts of the Package Task to NuGet
 Task("PublishPackages")
     .IsDependentOn("Package")
+	.IsDependentOn("Coverage")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .WithCriteria(() => !string.IsNullOrEmpty(nugetApiKey))
     .WithCriteria(() => !isPullRequest)
