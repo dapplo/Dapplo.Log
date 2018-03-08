@@ -2,7 +2,7 @@
 #tool "OpenCover"
 #tool "GitVersion.CommandLine"
 #tool "docfx.console"
-#tool "coveralls.io"
+#tool "coveralls.net"
 #tool "PdbGit"
 // Needed for Cake.Compression, as described here: https://github.com/akordowski/Cake.Compression/issues/3
 #addin "SharpZipLib"
@@ -18,10 +18,11 @@ var configuration = Argument("configuration", "release");
 var nugetApiKey = Argument("nugetApiKey", EnvironmentVariable("NuGetApiKey"));
 
 // Used to publish coverage report
-var coverallsRepoToken = Argument("coverallsRepoToken", EnvironmentVariable("COVERALLS_REPO_TOKEN"));
+var coverallsRepoToken = Argument("coverallsRepoToken", EnvironmentVariable("CoverallsRepoToken"));
 
 // where is our solution located?
 var solutionFilePath = GetFiles("src/*.sln").First();
+var solutionName = solutionFilePath.GetDirectory().GetDirectoryName();
 
 // Check if we are in a pull request, publishing of packages and coverage should be skipped
 var isPullRequest = !string.IsNullOrEmpty(EnvironmentVariable("APPVEYOR_PULL_REQUEST_NUMBER"));
@@ -37,8 +38,8 @@ Task("Default")
 
 // Publish taks depends on publish specifics
 Task("Publish")
-	.IsDependentOn("PublishCoverage")
 	.IsDependentOn("PublishPackages")
+	.IsDependentOn("PublishCoverage")
     .WithCriteria(() => !BuildSystem.IsLocalBuild);
 
 // Publish the coveralls report to Coveralls.NET
@@ -49,7 +50,7 @@ Task("PublishCoverage")
     .WithCriteria(() => !isPullRequest)
     .Does(()=>
 {
-	CoverallsIo("./artifacts/coverage.xml", new CoverallsIoSettings()
+	CoverallsNet("./artifacts/coverage.xml", CoverallsNetReportType.OpenCover, new CoverallsNetSettings
     {
         RepoToken = coverallsRepoToken
     });
@@ -65,7 +66,7 @@ Task("PublishPackages")
     .Does(()=>
 {
     var settings = new NuGetPushSettings {
-	    Source = "https://www.nuget.org/api/v2/package",
+        Source = "https://www.nuget.org/api/v2/package",
         ApiKey = nugetApiKey
     };
 
@@ -77,6 +78,7 @@ Task("PublishPackages")
 Task("Package")
 	.IsDependentOn("Build")
 	.IsDependentOn("Documentation")
+	.IsDependentOn("GitLink")
     .Does(()=>
 {
     var settings = new DotNetCorePackSettings  
@@ -104,9 +106,9 @@ Task("Documentation")
     .Does(() =>
 {
 	// Run DocFX
-    DocFxMetadata("./doc/docfx.json");
+	DocFxMetadata("./doc/docfx.json");
     DocFxBuild("./doc/docfx.json");
-
+	
 	CreateDirectory("artifacts");
 	// Archive the generated site
 	ZipCompress("./doc/_site", "./artifacts/site.zip");
@@ -115,7 +117,6 @@ Task("Documentation")
 // Run the XUnit tests via OpenCover, so be get an coverage.xml report
 Task("Coverage")
     .IsDependentOn("Build")
-	.WithCriteria(() => !isPullRequest)
     .Does(() =>
 {
     CreateDirectory("artifacts");
@@ -124,45 +125,43 @@ Task("Coverage")
         // Forces error in build when tests fail
         ReturnTargetCodeOffset = 0
     };
-
-    var projectFiles = GetFiles("./**/*.csproj")
-		.Where(p => !p.FullPath.ToLower().Contains("test"))
+	
+    var projectFilePaths = GetFiles("./**/*.csproj")
+		.Where(p => !p.FullPath.ToLower().Contains("demo"))
+		.Where(p => !p.FullPath.ToLower().Contains("packages"))
 		.Where(p => !p.FullPath.ToLower().Contains("tools"))
-		.Where(p => !p.FullPath.ToLower().Contains("packages"));
-    foreach(var projectFile in projectFiles)
+		.Where(p => !p.FullPath.ToLower().Contains("example"));
+	foreach(var projectFile in projectFilePaths)
     {
         var projectName = projectFile.GetDirectory().GetDirectoryName();
         if (projectName.ToLower().Contains("test")) {
-            openCoverSettings.WithFilter("-["+projectName+"]*");
-            Information("OpenCover added filter -" + projectName);
+           openCoverSettings.WithFilter("-["+projectName+"]*");
         }
         else {
-            openCoverSettings.WithFilter("+["+projectName+"]*");
-            Information("OpenCover added filter +" + projectName);
+           openCoverSettings.WithFilter("+["+projectName+"]*");
         }
     }
+	
+	var xunit2Settings = new XUnit2Settings {
+		// Add AppVeyor output, this "should" take care of a report inside AppVeyor
+		ArgumentCustomization = args => {
+			if (!BuildSystem.IsLocalBuild) {
+				args.Append("-appveyor");
+			}
+			return args;
+		},
+		ShadowCopy = false,
+		XmlReport = true,
+		HtmlReport = true,
+		ReportName = solutionName,
+		OutputDirectory = "./artifacts",
+		WorkingDirectory = "./src"
+	};
 
     // Make XUnit 2 run via the OpenCover process
     OpenCover(
         // The test tool Lamdba
-        tool => {
-            tool.XUnit2("./**/bin/**/*.Tests.dll",
-                new XUnit2Settings {
-                    // Add AppVeyor output, this "should" take care of a report inside AppVeyor
-                    ArgumentCustomization = args => {
-                        if (!BuildSystem.IsLocalBuild) {
-                            args.Append("-appveyor");
-                        }
-                        return args;
-                    },
-                    ShadowCopy = false,
-                    XmlReport = true,
-                    HtmlReport = true,
-                    ReportName = "Dapplo.Log",
-                    OutputDirectory = "./artifacts",
-                    WorkingDirectory = "./src"
-                });
-            },
+        tool => tool.XUnit2("./**/bin/**/*.Tests.dll", xunit2Settings),
         // The output path
         new FilePath("./artifacts/coverage.xml"),
         // Settings
@@ -183,12 +182,15 @@ Task("Build")
 		NoIncremental = true,
 		NoRestore = true
 	});
+});
 
+// Generate Git links in the PDB files
+Task("GitLink")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
 	FilePath pdbGitPath = Context.Tools.Resolve("PdbGit.exe");
-	
-	// Generate Git links in the PDB files
 	var pdbFiles = GetFiles("./**/*.pdb")
-		// Ignore netstandard pdb files, as these currently don't work
 		.Where(p => !p.FullPath.ToLower().Contains("test"))
 		.Where(p => !p.FullPath.ToLower().Contains("tools"))
 		.Where(p => !p.FullPath.ToLower().Contains("packages"))
@@ -240,7 +242,6 @@ Task("Versioning")
 		XmlPoke(xmlFile, "/Project/PropertyGroup/FileVersion", version);
     }
 });
-
 
 // Clean all unneeded files, so we build on a clean file system
 Task("Clean")
