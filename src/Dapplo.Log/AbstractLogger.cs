@@ -114,8 +114,7 @@ namespace Dapplo.Log
         }
 
         /// <inheritdoc />
-        public virtual void WriteLine(LogInfo logInfo, Exception exception, string messageTemplate = null,
-            params object[] logParameters)
+        public virtual void WriteLine(LogInfo logInfo, Exception exception, string messageTemplate = null, params object[] logParameters)
         {
             if (messageTemplate != null)
             {
@@ -123,7 +122,7 @@ namespace Dapplo.Log
             }
             if (exception != null)
             {
-                WriteLine(logInfo, exception.ToString());
+                WriteLine(logInfo, LogSettings.ExceptionToStacktrace(exception));
             }
         }
     }

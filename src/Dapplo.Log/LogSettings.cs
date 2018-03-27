@@ -55,6 +55,12 @@ namespace Dapplo.Log
         public static Func<LogSource, IEnumerable<ILogger>> LoggerLookup { get; set; } = x => x.Loggers().ToList();
 
         /// <summary>
+        /// This function converts an exception to a stacktrace string.
+        /// This can come in handy if replaced with exception => exception.Demystify().ToString() from the NuGet package Ben.Demystifier
+        /// </summary>
+        public static Func<Exception, string> ExceptionToStacktrace { get; set; } = exception => exception.ToString();
+
+        /// <summary>
         ///     Takes care of registering the default logger with a logger, configuration and arguments
         /// </summary>
         /// <typeparam name="TLogger">Type for the logger</typeparam>
