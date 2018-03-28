@@ -79,7 +79,7 @@ namespace Dapplo.Log.LogFile
             SetProcessName(this);
         }
 
-        private void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
+        private static void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
         {
             using (var process = Process.GetCurrentProcess())
             {
@@ -90,14 +90,14 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Configure this logger
         /// </summary>
-        /// <param name="configuration"></param>
-        public override void Configure(ILoggerConfiguration configuration)
+        /// <param name="loggerConfiguration"></param>
+        public override void Configure(ILoggerConfiguration loggerConfiguration)
         {
             // Copy all values from the ILoggerConfiguration
-            base.Configure(configuration);
+            base.Configure(loggerConfiguration);
 
             // Test if it's a IFileLoggerConfiguration
-            if (!(configuration is IFileLoggerConfiguration fileLoggerConfiguration))
+            if (!(loggerConfiguration is IFileLoggerConfiguration fileLoggerConfiguration))
             {
                 return;
             }
@@ -164,7 +164,7 @@ namespace Dapplo.Log.LogFile
         ///     Environment variablen are also expanded.
         /// </summary>
 #if _PCL_
-		public string DirectoryPath { get; set; } = @"";
+		public string DirectoryPath { get; set; } = string.Empty;
 #else
         public string DirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
 #endif
@@ -178,7 +178,7 @@ namespace Dapplo.Log.LogFile
         ///     The path of the archived file
         /// </summary>
 #if _PCL_
-		public string ArchiveDirectoryPath { get; set; } = @"";
+		public string ArchiveDirectoryPath { get; set; } = string.Empty;
 #else
         public string ArchiveDirectoryPath { get; set; } = @"%LOCALAPPDATA%\{Processname}";
 #endif
@@ -265,7 +265,7 @@ namespace Dapplo.Log.LogFile
         ///     This is the implementation of the background task
         /// </summary>
         /// <returns>Task</returns>
-        private async Task<bool> BackgroundAsync(CancellationToken cancellationToken = default(CancellationToken))
+        private async Task<bool> BackgroundAsync(CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -283,7 +283,7 @@ namespace Dapplo.Log.LogFile
         /// </summary>
         /// <param name="cancellationToken">CancellationToken</param>
         /// <returns>Task</returns>
-        private async Task ProcessLinesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        private async Task ProcessLinesAsync(CancellationToken cancellationToken = default)
         {
             if (_logItems.IsEmpty)
             {
@@ -396,7 +396,7 @@ namespace Dapplo.Log.LogFile
         /// </summary>
         /// <returns>Task to await for</returns>
         private async Task ArchiveFileAsync(string oldFile, IDictionary<string, object> oldVariables,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var expandedArchiveFilename = Environment.ExpandEnvironmentVariables(ArchiveFilenamePattern);
             oldVariables["Extension"] = ArchiveExtension;

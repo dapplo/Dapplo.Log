@@ -215,6 +215,9 @@ ModelManifest.xml
 tools/**/
 tools/packages.config.md5sum
 
+# Benchmark.net
+BenchmarkDotNet.Artifacts/
+
 # DocFX
 _site/
 /**/DROP/

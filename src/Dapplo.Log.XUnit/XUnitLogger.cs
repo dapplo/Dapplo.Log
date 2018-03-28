@@ -61,8 +61,8 @@ namespace Dapplo.Log.XUnit
         /// </summary>
         public override LogLevels LogLevel
         {
-            get { return LogLevelAsyncLocal.Value; }
-            set { LogLevelAsyncLocal.Value = value; }
+            get => LogLevelAsyncLocal.Value;
+            set => LogLevelAsyncLocal.Value = value;
         }
 
         /// <summary>
@@ -99,8 +99,7 @@ namespace Dapplo.Log.XUnit
             var testOutputHelper = TestOutputHelperAsyncLocal.Value;
             if (testOutputHelper == null)
             {
-                throw new ArgumentNullException(nameof(testOutputHelper),
-                    "Couldn't find a ITestOutputHelper in the CallContext, maybe you are trying to log outside your testcase?");
+                throw new ArgumentNullException(nameof(testOutputHelper), "Couldn't find a ITestOutputHelper in the CallContext, maybe you are trying to log outside your testcase?");
             }
             testOutputHelper.WriteLine(Format(logInfo, messageTemplate, logParameters));
         }

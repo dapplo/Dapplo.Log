@@ -27,6 +27,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 #if NETCOREAPP1_6 || NET45
 using System.Collections.Concurrent;
 #endif
@@ -40,13 +42,14 @@ namespace Dapplo.Log
     /// </summary>
     public static class LoggerMapper
     {
+        private static readonly ILogger[] EmptyLoggerArray = {};
         /// <summary>
         ///     The lookup table for finding the loggers for a LogSource.Source
         /// </summary>
 #if NETCOREAPP1_6 || NET45
-		private static IDictionary<string, IList<ILogger>> LoggerMap { get; } = new ConcurrentDictionary<string, IList<ILogger>>();
+		private static IDictionary<string, ILogger[]> LoggerMap { get; } = new ConcurrentDictionary<string, ILogger[]>();
 #else
-        private static IDictionary<string, IList<ILogger>> LoggerMap { get; } = new Dictionary<string, IList<ILogger>>();
+        private static IDictionary<string, ILogger[]> LoggerMap { get; } = new Dictionary<string, ILogger[]>();
 #endif
 
         /// <summary>
@@ -54,32 +57,19 @@ namespace Dapplo.Log
         /// </summary>
         /// <param name="logSource">LogSource to find loggers for</param>
         /// <returns>enumerable with loggers</returns>
-        public static IEnumerable<ILogger> Loggers(this LogSource logSource)
+        public static ILogger[] Loggers(this LogSource logSource)
         {
             if (logSource == null)
             {
-                yield break;
+                return EmptyLoggerArray;
             }
 
-            var foundLogger = false;
-            if (LoggerMap.TryGetValue(logSource.Source, out var loggers))
+            if (LoggerMap.TryGetValue(logSource.Source, out var possibleLoggers) && possibleLoggers.Length > 0)
             {
-                foreach (var logger in loggers)
-                {
-                    if (logger == null)
-                    {
-                        continue;
-                    }
+                return possibleLoggers;
+            }
 
-                    foundLogger = true;
-                    yield return logger;
-                }
-            }
-            var defaultLogger = LogSettings.DefaultLogger;
-            if (!foundLogger && defaultLogger != null)
-            {
-                yield return defaultLogger;
-            }
+            return LogSettings.DefaultLoggerArray;
         }
 
         /// <summary>
@@ -89,15 +79,25 @@ namespace Dapplo.Log
         /// <param name="logger">ILogger to register</param>
         public static void RegisterLoggerFor(string source, ILogger logger)
         {
+            if (source == null)
+            {
+                return;
+            }
             if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
-                loggersForSource = new List<ILogger>();
+                loggersForSource = new[]{ logger };
                 LoggerMap.Add(source, loggersForSource);
             }
-            if (!loggersForSource.Contains(logger))
+
+            // Only add if it's not yet set
+            if (loggersForSource.Contains(logger))
             {
-                loggersForSource.Add(logger);
+                return;
             }
+
+            // Take a small penalty for creating a new list, vs having the need to lock when evaluating
+            var newLoggersForSource = loggersForSource.Concat(new[]{ logger }).ToArray();
+            LoggerMap[source] = newLoggersForSource;
         }
 
         /// <summary>
@@ -141,9 +141,11 @@ namespace Dapplo.Log
             {
                 return;
             }
+            // Take penalty of creating a new list vs locking
+            var newLoggersForSource = loggersForSource.Where(l => l != logger).ToArray();
+            LoggerMap[source] = newLoggersForSource;
 
-            loggersForSource.Remove(logger);
-            if (loggersForSource.Count == 0)
+            if (newLoggersForSource.Length == 0)
             {
                 LoggerMap.Remove(source);
             }

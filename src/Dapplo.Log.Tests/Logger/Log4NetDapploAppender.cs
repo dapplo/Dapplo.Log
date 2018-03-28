@@ -78,33 +78,30 @@ namespace Dapplo.Log.Tests.Logger
             var log = new LogSource(locationInformation.FullInfo);
 
             // Map the Log4NET level, including the method and line number, to Dapplo.Log.LogInfo
-            LogInfo logInfo = null;
+            var number = int.Parse(locationInformation.LineNumber);
+            var logInfo = log.Info(number, locationInformation.MethodName);
             if (LevelIn(loggingEvent.Level, Level.Error))
             {
-                logInfo = log.Error(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
+                logInfo = log.Error(number, locationInformation.MethodName);
             }
             if (LevelIn(loggingEvent.Level, Level.Fatal, Level.Critical, Level.Alert, Level.Emergency))
             {
-                logInfo = log.Fatal(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
+                logInfo = log.Fatal(number, locationInformation.MethodName);
             }
             if (LevelIn(loggingEvent.Level, Level.Warn, Level.Severe))
             {
-                logInfo = log.Warn(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
-            }
-            if (LevelIn(loggingEvent.Level, Level.Info, Level.Notice))
-            {
-                logInfo = log.Info(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
+                logInfo = log.Warn(number, locationInformation.MethodName);
             }
             if (LevelIn(loggingEvent.Level, Level.Debug))
             {
-                logInfo = log.Debug(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
+                logInfo = log.Debug(number, locationInformation.MethodName);
             }
             if (LevelIn(loggingEvent.Level, Level.Verbose, Level.Fine, Level.Finer, Level.Finest, Level.Trace))
             {
-                logInfo = log.Verbose(int.Parse(locationInformation.LineNumber), locationInformation.MethodName);
+                logInfo = log.Verbose(number, locationInformation.MethodName);
             }
             // Log the actual message, use Log4Net for the rendering
-            logInfo?.WriteLine(loggingEvent.RenderedMessage);
+            logInfo.WriteLine(loggingEvent.RenderedMessage);
         }
     }
 }

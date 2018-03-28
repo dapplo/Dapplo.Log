@@ -26,8 +26,6 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 #endregion
 
@@ -46,17 +44,25 @@ namespace Dapplo.Log
         /// <summary>
         ///     The default logger used, if the logger implements IDisposable it will be disposed if another logger is assigned
         /// </summary>
-        public static ILogger DefaultLogger { get; set; }
+        public static ILogger DefaultLogger {
+            get => DefaultLoggerArray.Length > 0 ? DefaultLoggerArray[0] : null;
+            set => DefaultLoggerArray = new[] {value};
+        }
+
+        /// <summary>
+        ///     The constructed default logger array
+        /// </summary>
+        internal static ILogger[] DefaultLoggerArray { get; private set; } = {};
 
         /// <summary>
         ///     This function is responsible for finding the right loggers for a LogSource.
         ///     Default implementation is from the LoggerMapper.
         /// </summary>
-        public static Func<LogSource, IEnumerable<ILogger>> LoggerLookup { get; set; } = x => x.Loggers().ToList();
+        public static Func<LogSource, ILogger[]> LoggerLookup { get; set; } = x => x.Loggers();
 
         /// <summary>
         /// This function converts an exception to a stacktrace string.
-        /// This can come in handy if replaced with exception => exception.Demystify().ToString() from the NuGet package Ben.Demystifier
+        /// This can come in handy if replaced with exception => exception.ToStringDemystified() from the NuGet package Ben.Demystifier
         /// </summary>
         public static Func<Exception, string> ExceptionToStacktrace { get; set; } = exception => exception.ToString();
 

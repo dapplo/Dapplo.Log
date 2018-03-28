@@ -21,7 +21,7 @@
 
 #region Usings
 
-using System.Linq;
+
 using System.Runtime.CompilerServices;
 
 #endregion
@@ -106,7 +106,16 @@ namespace Dapplo.Log
             }
 
             // Check if there are any loggers
-            return LogSettings.LoggerLookup(logSource)?.Any(x => x.LogLevel != LogLevels.None && x.IsLogLevelEnabled(logLevel, logSource)) == true;
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var x in LogSettings.LoggerLookup(logSource))
+            {
+                if (x.LogLevel != LogLevels.None && x.IsLogLevelEnabled(logLevel, logSource))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
@@ -121,18 +130,11 @@ namespace Dapplo.Log
         /// <returns>LogInfo</returns>
         private static LogInfo CreateLogInfo(LogSource logSource, LogLevels logLevel, int lineNumber, string methodName)
         {
-            if (!IsLogLevelEnabled(logSource, logLevel))
+            if (logSource == null || !IsLogLevelEnabled(logSource, logLevel))
             {
                 return null;
             }
-
-            return new LogInfo
-            {
-                Source = logSource,
-                Method = methodName,
-                Line = lineNumber,
-                LogLevel = logLevel
-            };
+            return new LogInfo(logSource, methodName, lineNumber, logLevel);
         }
 
         /// <summary>

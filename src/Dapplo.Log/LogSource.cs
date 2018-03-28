@@ -48,9 +48,10 @@ namespace Dapplo.Log
     ///     For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
     ///     For other platforms this uses the CallerFilePath, which supplies the source-file.
     /// </summary>
-    public class LogSource
+    public sealed class LogSource
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogSource"/> class. 
         ///     The constructor for specifying the type manually
         /// </summary>
         /// <param name="callerType">Type for the LogSource, not null</param>
@@ -64,7 +65,7 @@ namespace Dapplo.Log
         }
 
         /// <summary>
-        ///     Private constructor used internally, to differenciate from the empty constructor
+        ///     Private constructor used internally, to differentiate from the empty constructor
         /// </summary>
         // ReSharper disable once UnusedParameter.Local
         private LogSource(bool ignore)
@@ -72,7 +73,7 @@ namespace Dapplo.Log
             // Nothing here, the properties are filled from the factory methods
         }
 
-        private string GetFilenameWithoutExtension(IEnumerable<string> filePath)
+        private static string GetFilenameWithoutExtension(IEnumerable<string> filePath)
         {
             var filenameParts = GetFilename(filePath).Split('.').ToList();
             filenameParts.RemoveAt(filenameParts.Count - 1);

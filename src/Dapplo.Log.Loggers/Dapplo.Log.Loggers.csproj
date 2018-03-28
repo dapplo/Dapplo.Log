@@ -5,7 +5,7 @@
     <Copyright>Copyright © Dapplo 2016-2018</Copyright>
     <AssemblyTitle>Dapplo.Log.Loggers</AssemblyTitle>
     <Authors>Dapplo</Authors>
-    <TargetFrameworks>netstandard1.0;netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Dapplo.Log.Loggers</AssemblyName>
     <PackageId>Dapplo.Log.Loggers</PackageId>
@@ -19,6 +19,8 @@
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.0' ">1.6.1</NetStandardImplicitPackageVersion>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 	<IsPackable>true</IsPackable>
+	<LangVersion>latest</LangVersion>
+	<Optimize>true</Optimize>
 	<DebugType>pdbonly</DebugType>
     <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>

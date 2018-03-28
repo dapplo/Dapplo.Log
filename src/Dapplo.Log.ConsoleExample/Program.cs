@@ -7,11 +7,11 @@ using Dapplo.Log.Loggers;
 
 namespace Dapplo.Log.ConsoleExample
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main()
         {
-            LogSource log = new LogSource();
+            var log = new LogSource();
             var logger = LogSettings.RegisterDefaultLogger<ColorConsoleLogger>();
             logger.LogLevel = LogLevels.Verbose;
             log.Verbose().WriteLine("This is {0}", LogLevels.Verbose);

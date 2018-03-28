@@ -54,8 +54,7 @@ namespace Nito.AsyncEx.AsyncLocal
         /// <summary>
         ///     Creates a new async-local variable with the default value of <typeparamref name="TImmutableType" />.
         /// </summary>
-        public AsyncLocal()
-            : this(default(TImmutableType))
+        public AsyncLocal() : this(default)
         {
         }
 
@@ -70,10 +69,7 @@ namespace Nito.AsyncEx.AsyncLocal
         /// <summary>
         ///     Returns a value indicating whether the value of this async-local variable has been set for the local context.
         /// </summary>
-        public bool IsValueSet
-        {
-            get { return CallContext.LogicalGetData(_slotName) != null; }
-        }
+        public bool IsValueSet => CallContext.LogicalGetData(_slotName) != null;
 
         /// <summary>
         ///     Gets or sets the value of this async-local variable for the local context.
@@ -90,7 +86,7 @@ namespace Nito.AsyncEx.AsyncLocal
                 return (TImmutableType) ret;
             }
 
-            set { CallContext.LogicalSetData(_slotName, value); }
+            set => CallContext.LogicalSetData(_slotName, value);
         }
 
         /// <summary>

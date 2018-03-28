@@ -137,13 +137,7 @@ namespace Dapplo.Log.Tests
             const string testString = "{\"valueNormal\":\"normal\",\"valueNotReadOnly\":\"notReadonly\"}";
             var logger = new AbstractLogger();
 
-            var logInfo = new LogInfo
-            {
-                Source = new LogSource(),
-                Method = nameof(TestFormat),
-                Line = 1,
-                LogLevel = LogLevels.Debug
-            };
+            var logInfo = new LogInfo(new LogSource(), nameof(TestFormat), 1, LogLevels.Debug);
             logger.Format(logInfo, testString);
         }
     }

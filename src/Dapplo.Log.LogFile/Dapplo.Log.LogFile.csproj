@@ -18,6 +18,8 @@
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 	<IsPackable>true</IsPackable>
+	<LangVersion>latest</LangVersion>
+	<Optimize>true</Optimize>
 	<DebugType>pdbonly</DebugType>
     <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>

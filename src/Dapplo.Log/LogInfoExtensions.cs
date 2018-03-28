@@ -48,6 +48,7 @@ namespace Dapplo.Log
             {
                 return;
             }
+
             foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
             {
                 logger.Write(logInfo, messageTemplate, logParameters);
@@ -66,6 +67,7 @@ namespace Dapplo.Log
             {
                 return;
             }
+
             foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
             {
                 logger.WriteLine(logInfo, messageTemplate, logParameters);
@@ -79,13 +81,13 @@ namespace Dapplo.Log
         /// <param name="exception">Exception to log</param>
         /// <param name="messageTemplate">string with formatting</param>
         /// <param name="logParameters">parameters for the formatting</param>
-        public static void WriteLine(this LogInfo logInfo, Exception exception, string messageTemplate = null,
-            params object[] logParameters)
+        public static void WriteLine(this LogInfo logInfo, Exception exception, string messageTemplate = null, params object[] logParameters)
         {
             if (logInfo == null)
             {
                 return;
             }
+
             foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
             {
                 logger.WriteLine(logInfo, exception, messageTemplate, logParameters);

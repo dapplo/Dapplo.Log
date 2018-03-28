@@ -41,10 +41,10 @@ namespace Dapplo.Log
         /// <summary>
         ///     Always returns false, there is no logging
         /// </summary>
-        /// <param name="level">LogLevel</param>
+        /// <param name="logLevel">LogLevel</param>
         /// <param name="logSource">optional LogSource</param>
         /// <returns>false</returns>
-        public override bool IsLogLevelEnabled(LogLevels level, LogSource logSource = null)
+        public override bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
         {
             return false;
         }

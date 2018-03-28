@@ -68,13 +68,12 @@ namespace Dapplo.Log.Loggers
         /// <inheritdoc />
         public override void Write(LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
-            ConsoleColor backgroundColor;
-            if (!BackgroundColors.TryGetValue(logInfo.LogLevel, out backgroundColor))
+            if (!BackgroundColors.TryGetValue(logInfo.LogLevel, out var backgroundColor))
             {
                 backgroundColor = ConsoleColor.Black;
             }
-            ConsoleColor foregroundColor;
-            if (!ForegroundColors.TryGetValue(logInfo.LogLevel, out foregroundColor))
+
+            if (!ForegroundColors.TryGetValue(logInfo.LogLevel, out var foregroundColor))
             {
                 foregroundColor = ConsoleColor.White;
             }
