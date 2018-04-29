@@ -12,7 +12,7 @@ environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
   NuGetApiKey:
-    secure: xkDQ385+smLqdzhESsXBJvnUjK4FZ4Djjrqi9tFR29dwESIvPYOrQAqgri5Nf/fA
+    secure: 0+4uMr/wsyh8BisfHCwkDbaWwzmKNvvB2MwFz45/ePwbOMB6WT1AfhzujeddcN/2
   CoverallsRepoToken:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
 build_script:
