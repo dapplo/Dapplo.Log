@@ -19,7 +19,7 @@ build_script:
 cache:
   - tools -> tools/packages.config
 artifacts:
-- path: **\*.nupkg
+- path: src\**\*.nupkg
 - path: artifacts\**\site.zip
 notifications:
 - provider: Email
