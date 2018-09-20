@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Columns;
 
 namespace Dapplo.Log.BenchmarkTests
 {
@@ -21,6 +20,13 @@ namespace Dapplo.Log.BenchmarkTests
         public void WriteLine()
         {
             Log.Debug().WriteLine("Test");
+        }
+
+        [Benchmark]
+        public void WriteLineFormat()
+        {
+            const string testString = "Dapplo";
+            Log.Debug().WriteLine("Formatting test {0}", testString);
         }
     }
 }
