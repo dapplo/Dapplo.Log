@@ -1,15 +1,11 @@
 #tool "xunit.runner.console"
 #tool "OpenCover"
-#tool "GitVersion.CommandLine"
 #tool "docfx.console"
 #tool "coveralls.net"
 #tool "PdbGit"
-// Needed for Cake.Compression, as described here: https://github.com/akordowski/Cake.Compression/issues/3
-#addin "SharpZipLib"
 #addin "Cake.FileHelpers"
 #addin "Cake.DocFx"
 #addin "Cake.Coveralls"
-#addin "Cake.Compression"
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "release");
@@ -30,8 +26,6 @@ var isPullRequest = !string.IsNullOrEmpty(EnvironmentVariable("APPVEYOR_PULL_REQ
 // Check if the commit is marked as release
 var isRelease = Argument<bool>("isRelease", string.Compare("[release]", EnvironmentVariable("appveyor_repo_commit_message_extended"), true) == 0);
 
-// Used to store the version, which is needed during the build and the packaging
-var version = EnvironmentVariable("APPVEYOR_BUILD_VERSION") ?? "1.0.0";
 
 Task("Default")
     .IsDependentOn("Publish");
@@ -112,7 +106,7 @@ Task("Documentation")
 	
 	CreateDirectory("artifacts");
 	// Archive the generated site
-	ZipCompress("./doc/_site", "./artifacts/site.zip");
+	Zip("./doc/_site", "./artifacts/site.zip");
 });
 
 // Run the XUnit tests via OpenCover, so be get an coverage.xml report
@@ -174,7 +168,6 @@ Task("Coverage")
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("RestoreNuGetPackages")
-    .IsDependentOn("Versioning")
     .Does(() =>
 {
 	DotNetCoreBuild(solutionFilePath.FullPath, new DotNetCoreBuildSettings 
@@ -213,35 +206,6 @@ Task("RestoreNuGetPackages")
 			"https://api.nuget.org/v3/index.json"
 		}
 	});
-});
-
-// Update the versioning
-Task("Versioning")
-    .Does(() =>
-{
-	Information("Version of this build: " + version);
-	
-	// Overwrite version if it's not set.
-	if (string.IsNullOrEmpty(version)) {
-		var gitVersion = GitVersion();
-		Information("Git Version of this build: " + gitVersion.AssemblySemVer);
-		version = gitVersion.AssemblySemVer;
-	}
-    	
-	var projectFilePaths = GetFiles("./**/*.csproj")
-		// Ignore netstandard pdb files, as these currently don't work
-		.Where(p => !p.FullPath.ToLower().Contains("test"))
-		.Where(p => !p.FullPath.ToLower().Contains("tools"))
-		.Where(p => !p.FullPath.ToLower().Contains("packages"))
-		.Where(p => !p.FullPath.ToLower().Contains("example"));
-    foreach(var projectFilePath in projectFilePaths)
-    {
-        Information("Changing version in : " + projectFilePath.FullPath + " to " + version);
-		var xmlFile = File(projectFilePath.FullPath);
-		XmlPoke(xmlFile, "/Project/PropertyGroup/Version", version);
-		XmlPoke(xmlFile, "/Project/PropertyGroup/AssemblyVersion", version);
-		XmlPoke(xmlFile, "/Project/PropertyGroup/FileVersion", version);
-    }
 });
 
 // Clean all unneeded files, so we build on a clean file system
