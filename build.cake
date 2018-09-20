@@ -2,8 +2,6 @@
 #tool "OpenCover"
 #tool "docfx.console"
 #tool nuget:?package=coveralls.net&version=0.7.0
-#tool "PdbGit"
-#addin "Cake.FileHelpers"
 #addin "Cake.DocFx"
 #addin "Cake.Coveralls"
 
@@ -25,7 +23,6 @@ var isPullRequest = !string.IsNullOrEmpty(EnvironmentVariable("APPVEYOR_PULL_REQ
 
 // Check if the commit is marked as release
 var isRelease = Argument<bool>("isRelease", string.Compare("[release]", EnvironmentVariable("appveyor_repo_commit_message_extended"), true) == 0);
-
 
 Task("Default")
     .IsDependentOn("Publish");
@@ -52,7 +49,6 @@ Task("PublishCoverage")
 
 // Publish the Artifacts of the Package Task to NuGet
 Task("PublishPackages")
-    .IsDependentOn("Package")
 	.IsDependentOn("Coverage")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .WithCriteria(() => !string.IsNullOrEmpty(nugetApiKey))
@@ -65,35 +61,8 @@ Task("PublishPackages")
         ApiKey = nugetApiKey
     };
 
-    var packages = GetFiles("./artifacts/*.nupkg").Where(p => !p.FullPath.ToLower().Contains("symbols"));
+    var packages = GetFiles("./src/**/*.nupkg").Where(p => !p.FullPath.ToLower().Contains("symbols"));
     NuGetPush(packages, settings);
-});
-
-// Package the results of the build, if the tests worked, into a NuGet Package
-Task("Package")
-	.IsDependentOn("Build")
-	.IsDependentOn("Documentation")
-	.IsDependentOn("GitLink")
-    .Does(()=>
-{
-    var settings = new DotNetCorePackSettings  
-    {
-        OutputDirectory = "./artifacts/",
-        Configuration = configuration,
-		NoRestore = true
-    };
-
-    var projectFilePaths = GetFiles("./**/*.csproj")
-		.Where(p => !p.FullPath.ToLower().Contains("test"))
-		.Where(p => !p.FullPath.ToLower().Contains("packages"))
-		.Where(p => !p.FullPath.ToLower().Contains("tools"))
-		.Where(p => !p.FullPath.ToLower().Contains("power"))
-		.Where(p => !p.FullPath.ToLower().Contains("example"));
-    foreach(var projectFilePath in projectFilePaths)
-    {
-        Information("Packaging: " + projectFilePath.FullPath);
-		DotNetCorePack(projectFilePath.GetDirectory().FullPath, settings);
-    }
 });
 
 // Build the DocFX documentation site
@@ -176,24 +145,6 @@ Task("Build")
 		NoIncremental = true,
 		NoRestore = true
 	});
-});
-
-// Generate Git links in the PDB files
-Task("GitLink")
-    .IsDependentOn("Build")
-    .Does(() =>
-{
-	FilePath pdbGitPath = Context.Tools.Resolve("PdbGit.exe");
-	var pdbFiles = GetFiles("./**/*.pdb")
-		.Where(p => !p.FullPath.ToLower().Contains("test"))
-		.Where(p => !p.FullPath.ToLower().Contains("tools"))
-		.Where(p => !p.FullPath.ToLower().Contains("packages"))
-		.Where(p => !p.FullPath.ToLower().Contains("example"));
-    foreach(var pdbFile in pdbFiles)
-    {
-		Information("Processing: " + pdbFile.FullPath);
-		StartProcess(pdbGitPath, new ProcessSettings { Arguments = new ProcessArgumentBuilder().Append(pdbFile.FullPath)});
-	}
 });
 
 // Load the needed NuGet packages to make the build work
