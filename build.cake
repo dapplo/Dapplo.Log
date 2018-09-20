@@ -1,7 +1,7 @@
 #tool "xunit.runner.console"
 #tool "OpenCover"
 #tool "docfx.console"
-#tool "coveralls.net"
+#tool nuget:?package=coveralls.net&version=0.7.0
 #tool "PdbGit"
 #addin "Cake.FileHelpers"
 #addin "Cake.DocFx"
