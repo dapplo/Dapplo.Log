@@ -2,22 +2,14 @@
 
   <PropertyGroup>
     <Description>A demo for the console logger</Description>
-    <Copyright>Copyright © Dapplo 2016-2018</Copyright>
     <AssemblyTitle>Dapplo.Log.ConsoleExample</AssemblyTitle>
-    <Authors>Dapplo</Authors>
     <TargetFramework>net45</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>Dapplo.Log.ConsoleExample</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Dapplo.Log.ConsoleExample</PackageId>
-    <PackageIconUrl>http://www.dapplo.net/favicon.ico</PackageIconUrl>
-    <PackageProjectUrl>http://www.dapplo.net/blocks/Dapplo.Log</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.gnu.org/licenses/lgpl-3.0.en.html</PackageLicenseUrl>
 	<PackageTags>log;dapplo</PackageTags>
-	<RepositoryUrl>https://github.com/dapplo/Dapplo.Log</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
@@ -28,8 +20,6 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
 	<IsPackable>false</IsPackable>
-	<DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>

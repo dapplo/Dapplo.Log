@@ -2,26 +2,14 @@
 
   <PropertyGroup>
     <Description>A file logger for Dapplo.Log</Description>
-    <Copyright>Copyright © Dapplo 2016-2018</Copyright>
     <AssemblyTitle>Dapplo.Log.LogFile</AssemblyTitle>
-    <Authors>Dapplo</Authors>
     <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Dapplo.Log.LogFile</AssemblyName>
     <PackageId>Dapplo.Log.LogFile</PackageId>
-    <PackageIconUrl>http://www.dapplo.net/favicon.ico</PackageIconUrl>
-    <PackageProjectUrl>http://www.dapplo.net/blocks/Dapplo.Log</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.gnu.org/licenses/lgpl-3.0.en.html</PackageLicenseUrl>
 	<PackageTags>file;logger;dapplo</PackageTags>
-	<RepositoryUrl>https://github.com/dapplo/Dapplo.Log</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.1</NetStandardImplicitPackageVersion>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 	<IsPackable>true</IsPackable>
-	<LangVersion>latest</LangVersion>
-	<Optimize>true</Optimize>
-	<DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>

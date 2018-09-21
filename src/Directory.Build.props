@@ -1,0 +1,27 @@
+﻿<Project>
+  <PropertyGroup>
+    <Copyright>Copyright © Dapplo 2016-2018</Copyright>
+    <Authors>Dapplo</Authors>
+    <PackageIconUrl>http://www.dapplo.net/favicon.ico</PackageIconUrl>
+	<RepositoryUrl>https://github.com/dapplo/Dapplo.Log</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>http://www.dapplo.net/blocks/Dapplo.Log</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.gnu.org/licenses/lgpl-3.0.en.html</PackageLicenseUrl>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(MSBuildProjectName.Contains('Tests')) And !$(MSBuildProjectName.Contains('Example'))">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+	<DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+	<Optimize>true</Optimize>
+	<DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+</Project>

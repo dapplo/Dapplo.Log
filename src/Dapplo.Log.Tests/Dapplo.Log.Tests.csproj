@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <Description>Tests for the dapplo log projects</Description>
-    <Copyright>Copyright © Dapplo 2016-2018</Copyright>
     <AssemblyTitle>Dapplo.Log.Tests</AssemblyTitle>
-    <Authors>Dapplo</Authors>
     <TargetFramework>net46</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PreserveCompilationContext>true</PreserveCompilationContext>
@@ -12,8 +10,6 @@
     <PackageId>Dapplo.Log.Tests</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
 	<IsPackable>false</IsPackable>
-	<LangVersion>latest</LangVersion>
-	<Optimize>false</Optimize>
 	<Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
