@@ -54,11 +54,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="gitlink" Version="3.1.0">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.2.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nerdbank.GitVersioning" Version="2.2.13">
+    <PackageReference Include="PdbGit" Version="3.0.41">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
