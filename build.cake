@@ -1,7 +1,7 @@
 #tool "xunit.runner.console"
 #tool "OpenCover"
 #tool "docfx.console"
-#tool nuget:?package=coveralls.net&version=0.7.0
+#tool "coveralls.io"
 #addin "Cake.DocFx"
 #addin "Cake.Coveralls"
 
@@ -34,7 +34,7 @@ Task("Publish")
 	.IsDependentOn("Documentation")
 	.WithCriteria(() => !BuildSystem.IsLocalBuild);
 
-// Publish the coveralls report to Coveralls.NET
+// Publish the coveralls report to Coveralls.io
 Task("PublishCoverage")
 	.IsDependentOn("Coverage")
 	.WithCriteria(() => !BuildSystem.IsLocalBuild)
@@ -42,7 +42,7 @@ Task("PublishCoverage")
 	.WithCriteria(() => !isPullRequest)
 	.Does(()=>
 {
-	CoverallsNet("./artifacts/coverage.xml", CoverallsNetReportType.OpenCover, new CoverallsNetSettings
+	CoverallsIo("./artifacts/coverage.xml", new CoverallsIoSettings
 	{
 		RepoToken = coverallsRepoToken
 	});
