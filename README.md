@@ -8,8 +8,10 @@ The project is build modular, currently the facade which is the least you will n
 Adding a file logger adds another 21KB, which totals to <40KB. Just as a comparison, log4net is about 300KB. (although unfair, it can do a lot more)
 
 - Documentation can be found [here](http://www.dapplo.net/documentation/Dapplo.Log)
-- Current build status: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
-- Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
+- Current build status Azure DevOps: [![Build Status](https://dev.azure.com/Dapplo/Dapplo.Log/_apis/build/status/dapplo.Dapplo.Log)](https://dev.azure.com/Dapplo/Dapplo.Log/_build/latest?definitionId=1)
+- Coverage Status Azure DevOps: [![Coverage Status](https://img.shields.io/azure-devops/coverage/Dapplo/Dapplo.Log/1.svg)](https://dapplo.visualstudio.com/Dapplo.Log/_build?definitionId=1)
+- Current build status AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true)](https://ci.appveyor.com/project/dapplo/dapplo-log)
+- Coverage Status coveralls: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
 - NuGet package Dapplo.Log: [![NuGet package](https://badge.fury.io/nu/dapplo.log.svg)](https://badge.fury.io/nu/dapplo.log)
 - NuGet package Dapplo.Log.Loggers: [![NuGet package](https://badge.fury.io/nu/dapplo.log.loggers.svg)](https://badge.fury.io/nu/dapplo.log.loggers)
 - NuGet package Dapplo.Log.LogFile: [![NuGet package](https://badge.fury.io/nu/dapplo.log.logfile.svg)](https://badge.fury.io/nu/dapplo.log.logfile)
