@@ -60,8 +60,8 @@ namespace Dapplo.Log.Tests
                 LoggerTestSupport.TestAllLogMethods(forwardingLogger);
                 using (var fileLogger = new FileLogger())
                 {
-                    fileLogger.FilenamePattern = filenamePattern;
-                    fileLogger.ArchiveFilenamePattern = filenamePattern;
+                    fileLogger.LoggerConfiguration.FilenamePattern = filenamePattern;
+                    fileLogger.LoggerConfiguration.ArchiveFilenamePattern = filenamePattern;
                     forwardingLogger.ReplacedWith(fileLogger);
                     // Force archiving, as the filename changes
                     await Task.Delay(2000);

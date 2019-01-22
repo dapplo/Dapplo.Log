@@ -26,28 +26,41 @@
 #define DEBUG
 
 using System;
+using Dapplo.Log.Impl;
 
 namespace Dapplo.Log
 {
+    /// <summary>
+    /// The simplest AbstractLogger
+    /// </summary>
+    public class AbstractLogger : AbstractLogger<ILoggerConfiguration>
+    {
+        /// <summary>
+        /// Make sure a configuration is available
+        /// </summary>
+        public AbstractLogger()
+        {
+            LoggerConfiguration = new SimpleLoggerConfiguration();
+        }
+    }
+
     /// <summary>
     ///     Abstract implementation for ILogger, which safes some time.
     ///     In general you will only need to implement Write (without exception) as:
     ///     1) WriteLine in calls Write after appending a newline.
     ///     2) WriteLine with Exception calls WriteLine with the template/parameters and again with the Exception.ToString()
     /// </summary>
-    public class AbstractLogger : ILogger
+    public class AbstractLogger<TLoggerConfiguration> : ILogger<TLoggerConfiguration> where TLoggerConfiguration : class, ILoggerConfiguration
     {
         /// <inheritdoc />
-        public virtual void Configure(ILoggerConfiguration loggerConfiguration)
+        public TLoggerConfiguration LoggerConfiguration { get; protected set; }
+
+        /// <inheritdoc />
+        public virtual void Configure(TLoggerConfiguration loggerConfiguration)
         {
-            if (loggerConfiguration is null)
-            {
-                return;
-            }
-            LogLevel = loggerConfiguration.LogLevel;
-            UseShortSource = loggerConfiguration.UseShortSource;
-            LogLineFormat = loggerConfiguration.LogLineFormat;
-            DateTimeFormat = loggerConfiguration.DateTimeFormat;
+            LoggerConfiguration = loggerConfiguration ?? throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            LogLevel = LoggerConfiguration.DefaultLogLevel;
         }
 
         /// <inheritdoc />
@@ -70,20 +83,11 @@ namespace Dapplo.Log
             }
 
             // Format the LogInfo
-            return string.Format(LogLineFormat, logInfo.ToString(UseShortSource), message);
+            return string.Format(LoggerConfiguration.LogLineFormat, logInfo.ToString(LoggerConfiguration.UseShortSource), message);
         }
 
         /// <inheritdoc />
         public virtual LogLevels LogLevel { get; set; } = LogLevels.Info;
-
-        /// <inheritdoc />
-        public bool UseShortSource { get; set; } = true;
-
-        /// <inheritdoc />
-        public string DateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
-
-        /// <inheritdoc />
-        public string LogLineFormat { get; set; } = "{0} - {1}";
 
         /// <inheritdoc />
         public virtual bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)

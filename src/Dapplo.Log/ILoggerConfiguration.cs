@@ -36,7 +36,7 @@ namespace Dapplo.Log
         ///     The LogLevels enum a logger uses
         /// </summary>
         [DefaultValue(LogLevels.Info)]
-        LogLevels LogLevel { get; set; }
+        LogLevels DefaultLogLevel { get; set; }
 
         /// <summary>
         ///     Defines if the Source is written like d.l.LoggerTest (default) or Dapplo.Log.LoggerTest

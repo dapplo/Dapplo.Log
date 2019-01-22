@@ -83,7 +83,7 @@ namespace Dapplo.Log
         public override string ToString()
         {
             ref var logLevelRef = ref _logLevel;
-            return $"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {logLevelRef.RefLogLevelToString()} {Source.Source}:{Method}({Line.ToString()})";
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {Source.Source}:{Method}({Line.ToString()})";
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Dapplo.Log
         {
             var source = useShortSource ? Source.ShortSource : Source.Source;
             ref var logLevelRef = ref _logLevel;
-            return $"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {logLevelRef.RefLogLevelToString()} {source}:{Method}({Line.ToString()})";
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {source}:{Method}({Line.ToString()})";
         }
     }
 }
