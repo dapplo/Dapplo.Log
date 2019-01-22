@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,11 +23,7 @@
 
 #endregion
 
-#region Usings
-
 using System;
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -44,7 +40,7 @@ namespace Dapplo.Log
         /// <param name="logParameters">parameters for the formatting</param>
         public static void Write(this LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
-            if (logInfo == null)
+            if (logInfo is null)
             {
                 return;
             }
@@ -63,7 +59,7 @@ namespace Dapplo.Log
         /// <param name="logParameters">parameters for the formatting</param>
         public static void WriteLine(this LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
-            if (logInfo == null)
+            if (logInfo is null)
             {
                 return;
             }
@@ -83,7 +79,7 @@ namespace Dapplo.Log
         /// <param name="logParameters">parameters for the formatting</param>
         public static void WriteLine(this LogInfo logInfo, Exception exception, string messageTemplate = null, params object[] logParameters)
         {
-            if (logInfo == null)
+            if (logInfo is null)
             {
                 return;
             }

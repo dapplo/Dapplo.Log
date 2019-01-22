@@ -1,4 +1,7 @@
 ﻿using System;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Environments;
+using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 
 namespace Dapplo.Log.BenchmarkTests
@@ -11,8 +14,9 @@ namespace Dapplo.Log.BenchmarkTests
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            LogSettings.RegisterDefaultLogger<NullLogger>(LogLevels.Info);
-            BenchmarkRunner.Run<LogPerformance>();
+            var job = Job.Default.With(Platform.X64);
+            var config = DefaultConfig.Instance.With(job);
+            BenchmarkRunner.Run<LogPerformance>(config);
             Console.ReadLine();
         }
     }

@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,12 +23,8 @@
 
 #endregion
 
-#region Usings
-
 using System;
 using Xunit;
-
-#endregion
 
 namespace Dapplo.Log.Tests
 {
@@ -48,7 +44,7 @@ namespace Dapplo.Log.Tests
             }
             finally
             {
-                LoggerMapper.DeregisterLoggerFor(logSource, loggerUnderTest);
+                LoggerMapper.DeRegisterLoggerFor(logSource, loggerUnderTest);
             }
         }
 

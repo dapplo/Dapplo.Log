@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -25,12 +25,8 @@
 
 #if NET45
 
-#region Usings
-
 using System;
 using System.Runtime.Remoting.Messaging;
-
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace Nito.AsyncEx.AsyncLocal
@@ -79,7 +75,7 @@ namespace Nito.AsyncEx.AsyncLocal
             get
             {
                 var ret = CallContext.LogicalGetData(_slotName);
-                if (ret == null)
+                if (ret is null)
                 {
                     return _defaultValue;
                 }

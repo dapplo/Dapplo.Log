@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,8 +23,6 @@
 
 #endregion
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +33,6 @@ using System.IO;
 #if NETSTANDARD1_1
 using System.Runtime.InteropServices;
 #endif
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -50,6 +46,22 @@ namespace Dapplo.Log
     /// </summary>
     public sealed class LogSource
     {
+        private static readonly char DirectorySeparatorChar;
+        private static readonly char [] DirectorySeparatorCharArray;
+        private static readonly char [] DotCharArray = {'.'};
+
+        static LogSource()
+        {
+#if NETSTANDARD1_3 || NET45
+            DirectorySeparatorChar = Path.DirectorySeparatorChar;
+#elif NETSTANDARD1_1
+            DirectorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
+#else
+           DirectorySeparatorChar = '\\';
+#endif
+            DirectorySeparatorCharArray = new[] {DirectorySeparatorChar};
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LogSource"/> class. 
         ///     The constructor for specifying the type manually
@@ -57,7 +69,7 @@ namespace Dapplo.Log
         /// <param name="callerType">Type for the LogSource, not null</param>
         public LogSource(Type callerType)
         {
-            if (callerType == null)
+            if (callerType is null)
             {
                 throw new ArgumentNullException(nameof(callerType));
             }
@@ -75,7 +87,7 @@ namespace Dapplo.Log
 
         private static string GetFilenameWithoutExtension(IEnumerable<string> filePath)
         {
-            var filenameParts = GetFilename(filePath).Split('.').ToList();
+            var filenameParts = GetFilename(filePath).Split(DotCharArray).ToList();
             filenameParts.RemoveAt(filenameParts.Count - 1);
             return string.Join(".", filenameParts);
         }
@@ -98,20 +110,14 @@ namespace Dapplo.Log
         /// </summary>
         public LogSource([CallerFilePath] string sourceFilePath = null)
         {
-            if (sourceFilePath == null)
+            if (sourceFilePath is null)
             {
                 throw new ArgumentNullException(nameof(sourceFilePath));
             }
-#if NETSTANDARD1_3 || NET45
-            var directorySeparatorChar = Path.DirectorySeparatorChar;
-#elif NETSTANDARD1_1
-            var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
-#else
-            const char directorySeparatorChar = '\\';
-#endif
-            sourceFilePath = sourceFilePath.Replace('\\', directorySeparatorChar).Replace('/', directorySeparatorChar);
 
-            var pathParts = sourceFilePath.Split(directorySeparatorChar);
+            sourceFilePath = sourceFilePath.Replace('\\', DirectorySeparatorChar).Replace('/', DirectorySeparatorChar);
+
+            var pathParts = sourceFilePath.Split(DirectorySeparatorCharArray);
 
             var typeName = GetFilenameWithoutExtension(pathParts);
 
@@ -123,13 +129,13 @@ namespace Dapplo.Log
 #else
             var type = Type.GetType(fqTypeName, false);
 #endif
-            if (type != null)
+            if (type is null)
             {
-                SetSourceFromType(type);
+                SetSourceFromString(fqTypeName);
             }
             else
             {
-                SetSourceFromString(fqTypeName);
+                SetSourceFromType(type);
             }
         }
 
@@ -152,7 +158,7 @@ namespace Dapplo.Log
         private void SetSourceFromString(string source)
         {
             Source = source;
-            var parts = Source.Split('.');
+            var parts = Source.Split(DotCharArray);
             if (parts.Length > 0)
             {
                 ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));

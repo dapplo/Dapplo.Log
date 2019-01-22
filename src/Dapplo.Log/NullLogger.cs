@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,18 +23,11 @@
 
 #endregion
 
-
-#define DEBUG
-
-#region using
-
-#endregion
-
 namespace Dapplo.Log
 {
     /// <summary>
-    ///     An null logger, doesn't log anything!
-    ///     This can be used to shut-up certain LogSources
+    ///     A null logger, doesn't log anything!
+    ///     This can be used to silence certain LogSources
     /// </summary>
     public class NullLogger : AbstractLogger
     {

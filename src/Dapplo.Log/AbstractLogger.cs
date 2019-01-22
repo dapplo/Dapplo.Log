@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -25,11 +25,7 @@
 
 #define DEBUG
 
-#region Usings
-
 using System;
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -44,7 +40,7 @@ namespace Dapplo.Log
         /// <inheritdoc />
         public virtual void Configure(ILoggerConfiguration loggerConfiguration)
         {
-            if (loggerConfiguration == null)
+            if (loggerConfiguration is null)
             {
                 return;
             }
@@ -57,24 +53,24 @@ namespace Dapplo.Log
         /// <inheritdoc />
         public virtual string Format(LogInfo logInfo, string messageTemplate, params object[] parameters)
         {
-            if (logInfo == null)
+            if (logInfo is null)
             {
                 throw new ArgumentNullException(nameof(logInfo));
             }
-            if (messageTemplate == null)
+            if (messageTemplate is null)
             {
                 throw new ArgumentNullException(nameof(messageTemplate));
             }
 
+            var message = messageTemplate;
             // Test if there are parameters, if not there is no need to format it!
             if (parameters != null && parameters.Length > 0)
             {
-                messageTemplate = string.Format(messageTemplate, parameters);
+                message = string.Format(messageTemplate, parameters);
             }
+
             // Format the LogInfo
-            var source = UseShortSource ? logInfo.Source.ShortSource : logInfo.Source.Source;
-            var logInfoString = $"{logInfo.Timestamp.ToString(DateTimeFormat)} {logInfo.LogLevel} {source}:{logInfo.Method}({logInfo.Line})";
-            return string.Format(LogLineFormat, logInfoString, messageTemplate);
+            return string.Format(LogLineFormat, logInfo.ToString(UseShortSource), message);
         }
 
         /// <inheritdoc />
@@ -122,7 +118,7 @@ namespace Dapplo.Log
             }
             if (exception != null)
             {
-                WriteLine(logInfo, LogSettings.ExceptionToStacktrace(exception));
+                WriteLine(logInfo, LogSettings.ExceptionToStacktrace(exception), null);
             }
         }
     }

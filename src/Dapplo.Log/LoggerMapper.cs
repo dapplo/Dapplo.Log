@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,17 +23,14 @@
 
 #endregion
 
-#region Usings
-
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 #if NETCOREAPP1_6 || NET45
 using System.Collections.Concurrent;
+#else
+using System.Collections.Generic;
 #endif
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -47,9 +44,9 @@ namespace Dapplo.Log
         ///     The lookup table for finding the loggers for a LogSource.Source
         /// </summary>
 #if NETCOREAPP1_6 || NET45
-		private static IDictionary<string, ILogger[]> LoggerMap { get; } = new ConcurrentDictionary<string, ILogger[]>();
+		private static ConcurrentDictionary<string, ILogger[]> LoggerMap { get; } = new ConcurrentDictionary<string, ILogger[]>();
 #else
-        private static IDictionary<string, ILogger[]> LoggerMap { get; } = new Dictionary<string, ILogger[]>();
+        private static Dictionary<string, ILogger[]> LoggerMap { get; } = new Dictionary<string, ILogger[]>();
 #endif
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace Dapplo.Log
         /// <returns>enumerable with loggers</returns>
         public static ILogger[] Loggers(this LogSource logSource)
         {
-            if (logSource == null)
+            if (logSource is null)
             {
                 return EmptyLoggerArray;
             }
@@ -79,14 +76,18 @@ namespace Dapplo.Log
         /// <param name="logger">ILogger to register</param>
         public static void RegisterLoggerFor(string source, ILogger logger)
         {
-            if (source == null)
+            if (source is null)
             {
                 return;
             }
             if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
                 loggersForSource = new[]{ logger };
+#if NETCOREAPP1_6 || NET45
+                LoggerMap.TryAdd(source, loggersForSource);
+#else
                 LoggerMap.Add(source, loggersForSource);
+#endif
             }
 
             // Only add if it's not yet set
@@ -135,7 +136,7 @@ namespace Dapplo.Log
         /// </summary>
         /// <param name="source">string for the source</param>
         /// <param name="logger">ILogger to register</param>
-        public static void DeregisterLoggerFor(string source, ILogger logger)
+        public static void DeRegisterLoggerFor(string source, ILogger logger)
         {
             if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
@@ -147,7 +148,11 @@ namespace Dapplo.Log
 
             if (newLoggersForSource.Length == 0)
             {
+#if NETCOREAPP1_6 || NET45
+                LoggerMap.TryRemove(source, out _);
+#else
                 LoggerMap.Remove(source);
+#endif
             }
         }
 
@@ -156,9 +161,9 @@ namespace Dapplo.Log
         /// </summary>
         /// <param name="logSource">LogSource for the source</param>
         /// <param name="logger">ILogger to register</param>
-        public static void DeregisterLoggerFor(LogSource logSource, ILogger logger)
+        public static void DeRegisterLoggerFor(LogSource logSource, ILogger logger)
         {
-            DeregisterLoggerFor(logSource.Source, logger);
+            DeRegisterLoggerFor(logSource.Source, logger);
         }
 
         /// <summary>
@@ -166,9 +171,9 @@ namespace Dapplo.Log
         /// </summary>
         /// <param name="type">Type for the source</param>
         /// <param name="logger">ILogger to register</param>
-        public static void DeregisterLoggerFor(Type type, ILogger logger)
+        public static void DeRegisterLoggerFor(Type type, ILogger logger)
         {
-            DeregisterLoggerFor(type.FullName, logger);
+            DeRegisterLoggerFor(type.FullName, logger);
         }
 
         /// <summary>
@@ -176,9 +181,9 @@ namespace Dapplo.Log
         /// </summary>
         /// <typeparam name="TType">Type for the source</typeparam>
         /// <param name="logger">ILogger to register</param>
-        public static void DeregisterLoggerFor<TType>(ILogger logger)
+        public static void DeRegisterLoggerFor<TType>(ILogger logger)
         {
-            DeregisterLoggerFor(typeof(TType).FullName, logger);
+            DeRegisterLoggerFor(typeof(TType).FullName, logger);
         }
     }
 }
