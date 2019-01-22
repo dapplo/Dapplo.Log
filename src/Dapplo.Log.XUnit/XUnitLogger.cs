@@ -1,25 +1,27 @@
-﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2015-2016 Dapplo
-// 
-//  For more information see: http://dapplo.net/
-//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
-// 
-//  This file is part of Dapplo.Log
-// 
-//  Dapplo.Log is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-// 
-//  Dapplo.Log is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Lesser General Public License for more details.
-// 
-//  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
-#region Usings
+// Dapplo - building blocks for .NET applications
+// Copyright (C) 2016-2019 Dapplo
+// 
+// For more information see: http://dapplo.net/
+// Dapplo repositories are hosted on GitHub: https://github.com/dapplo
+// 
+// This file is part of Dapplo.Log
+// 
+// Dapplo.Log is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Dapplo.Log is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have a copy of the GNU Lesser General Public License
+// along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+#endregion
 
 using System;
 using Xunit.Abstractions;
@@ -29,8 +31,6 @@ using Nito.AsyncEx.AsyncLocal;
 #else
 using System.Threading;
 #endif
-
-#endregion
 
 namespace Dapplo.Log.XUnit
 {
@@ -97,7 +97,7 @@ namespace Dapplo.Log.XUnit
         public override void WriteLine(LogInfo logInfo, string messageTemplate, params object[] logParameters)
         {
             var testOutputHelper = TestOutputHelperAsyncLocal.Value;
-            if (testOutputHelper == null)
+            if (testOutputHelper is null)
             {
                 throw new ArgumentNullException(nameof(testOutputHelper), "Couldn't find a ITestOutputHelper in the CallContext, maybe you are trying to log outside your testcase?");
             }

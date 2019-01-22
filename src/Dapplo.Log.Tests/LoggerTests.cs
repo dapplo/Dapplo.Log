@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,14 +23,10 @@
 
 #endregion
 
-#region Usings
-
 using System;
 using System.Linq;
 using Dapplo.Log.Loggers;
 using Xunit;
-
-#endregion
 
 namespace Dapplo.Log.Tests
 {
@@ -71,27 +67,27 @@ namespace Dapplo.Log.Tests
         [Fact]
         public void TestLoggerVisibility()
         {
-            var stringwriterLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
+            var stringWriterLogger = LogSettings.RegisterDefaultLogger<StringWriterLogger>();
 
-            Assert.NotNull(stringwriterLogger);
-            Log.Verbose().WriteLine("This is a test, should NOT be visisble");
-            Log.Debug().WriteLine("This is a test, should NOT be visisble");
+            Assert.NotNull(stringWriterLogger);
+            Log.Verbose().WriteLine("This is a test, should NOT be visible");
+            Log.Debug().WriteLine("This is a test, should NOT be visible");
             Log.Info().WriteLine("This is a test");
             Log.Warn().WriteLine("This is a test");
             Log.Error().WriteLine("This is a test");
             Log.Fatal().WriteLine("This is a test");
 
-            Log.Error().WriteLine(new Exception(nameof(stringwriterLogger)), "This is a test exception");
+            Log.Error().WriteLine(new Exception(nameof(stringWriterLogger)), "This is a test exception");
 
-            Assert.DoesNotContain("should NOT be visisble", stringwriterLogger.Output);
+            Assert.DoesNotContain("should NOT be visible", stringWriterLogger.Output);
 
-            var lines = stringwriterLogger.Output.Count(x => x.ToString() == Environment.NewLine);
+            var lines = stringWriterLogger.Output.Count(x => x.ToString() == Environment.NewLine);
             // Info + Warn + Error + Fatal = 4
             Assert.False(lines == 4);
         }
 
         /// <summary>
-        ///     Test RegisterLoggerFor and DeregisterLoggerFor
+        ///     Test RegisterLoggerFor and DeRegisterLoggerFor
         /// </summary>
         [Fact]
         public void TestMapping()
@@ -103,8 +99,8 @@ namespace Dapplo.Log.Tests
 
             LoggerMapper.RegisterLoggerFor("Test", logger);
 
-            const string visibleMessage = "Should be visisble";
-            const string notVisibleMessage = "Should be NOT visisble in logger, but arrive in the defaultLogger";
+            const string visibleMessage = "Should be visible";
+            const string notVisibleMessage = "Should be NOT visible in logger, but arrive in the defaultLogger";
             differentLogSource.Info().WriteLine(visibleMessage);
             Log.Info().WriteLine(notVisibleMessage);
             Assert.Contains(visibleMessage, logger.Output);
@@ -112,7 +108,7 @@ namespace Dapplo.Log.Tests
             Assert.Contains(notVisibleMessage, defaultLogger.Output);
 
             defaultLogger.Clear();
-            LoggerMapper.DeregisterLoggerFor("Test", logger);
+            LoggerMapper.DeRegisterLoggerFor("Test", logger);
             differentLogSource.Info().WriteLine(notVisibleMessage);
             Assert.DoesNotContain(notVisibleMessage, logger.Output);
             Assert.Contains(notVisibleMessage, defaultLogger.Output);

@@ -6,14 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.11.1" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="2.2.13">
+    <PackageReference Include="BenchmarkDotNet" Version="0.11.3" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.3.38">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj" />
     <ProjectReference Include="..\Dapplo.Log\Dapplo.Log.csproj" />
   </ItemGroup>
 

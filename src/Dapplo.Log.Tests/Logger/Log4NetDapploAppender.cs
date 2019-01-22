@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -56,7 +56,7 @@ namespace Dapplo.Log.Tests.Logger
         /// <returns></returns>
         private static bool LevelIn(Level level, params Level[] possibilities)
         {
-            if (level == null || possibilities == null)
+            if (level is null || possibilities == null)
             {
                 return false;
             }

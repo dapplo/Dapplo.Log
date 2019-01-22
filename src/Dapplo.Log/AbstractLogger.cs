@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -25,69 +25,69 @@
 
 #define DEBUG
 
-#region Usings
-
 using System;
-
-#endregion
+using Dapplo.Log.Impl;
 
 namespace Dapplo.Log
 {
+    /// <summary>
+    /// The simplest AbstractLogger
+    /// </summary>
+    public class AbstractLogger : AbstractLogger<ILoggerConfiguration>
+    {
+        /// <summary>
+        /// Make sure a configuration is available
+        /// </summary>
+        public AbstractLogger()
+        {
+            LoggerConfiguration = new SimpleLoggerConfiguration();
+        }
+    }
+
     /// <summary>
     ///     Abstract implementation for ILogger, which safes some time.
     ///     In general you will only need to implement Write (without exception) as:
     ///     1) WriteLine in calls Write after appending a newline.
     ///     2) WriteLine with Exception calls WriteLine with the template/parameters and again with the Exception.ToString()
     /// </summary>
-    public class AbstractLogger : ILogger
+    public class AbstractLogger<TLoggerConfiguration> : ILogger<TLoggerConfiguration> where TLoggerConfiguration : class, ILoggerConfiguration
     {
         /// <inheritdoc />
-        public virtual void Configure(ILoggerConfiguration loggerConfiguration)
+        public TLoggerConfiguration LoggerConfiguration { get; protected set; }
+
+        /// <inheritdoc />
+        public virtual void Configure(TLoggerConfiguration loggerConfiguration)
         {
-            if (loggerConfiguration == null)
-            {
-                return;
-            }
-            LogLevel = loggerConfiguration.LogLevel;
-            UseShortSource = loggerConfiguration.UseShortSource;
-            LogLineFormat = loggerConfiguration.LogLineFormat;
-            DateTimeFormat = loggerConfiguration.DateTimeFormat;
+            LoggerConfiguration = loggerConfiguration ?? throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            LogLevel = LoggerConfiguration.DefaultLogLevel;
         }
 
         /// <inheritdoc />
         public virtual string Format(LogInfo logInfo, string messageTemplate, params object[] parameters)
         {
-            if (logInfo == null)
+            if (logInfo is null)
             {
                 throw new ArgumentNullException(nameof(logInfo));
             }
-            if (messageTemplate == null)
+            if (messageTemplate is null)
             {
                 throw new ArgumentNullException(nameof(messageTemplate));
             }
 
+            var message = messageTemplate;
             // Test if there are parameters, if not there is no need to format it!
             if (parameters != null && parameters.Length > 0)
             {
-                messageTemplate = string.Format(messageTemplate, parameters);
+                message = string.Format(messageTemplate, parameters);
             }
+
             // Format the LogInfo
-            var source = UseShortSource ? logInfo.Source.ShortSource : logInfo.Source.Source;
-            var logInfoString = $"{logInfo.Timestamp.ToString(DateTimeFormat)} {logInfo.LogLevel} {source}:{logInfo.Method}({logInfo.Line})";
-            return string.Format(LogLineFormat, logInfoString, messageTemplate);
+            return string.Format(LoggerConfiguration.LogLineFormat, logInfo.ToString(LoggerConfiguration.UseShortSource), message);
         }
 
         /// <inheritdoc />
         public virtual LogLevels LogLevel { get; set; } = LogLevels.Info;
-
-        /// <inheritdoc />
-        public bool UseShortSource { get; set; } = true;
-
-        /// <inheritdoc />
-        public string DateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
-
-        /// <inheritdoc />
-        public string LogLineFormat { get; set; } = "{0} - {1}";
 
         /// <inheritdoc />
         public virtual bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
@@ -122,7 +122,7 @@ namespace Dapplo.Log
             }
             if (exception != null)
             {
-                WriteLine(logInfo, LogSettings.ExceptionToStacktrace(exception));
+                WriteLine(logInfo, LogSettings.ExceptionToStacktrace(exception), null);
             }
         }
     }

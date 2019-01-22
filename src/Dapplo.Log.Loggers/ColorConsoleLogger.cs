@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -34,8 +34,7 @@ using System.Collections.Generic;
 namespace Dapplo.Log.Loggers
 {
     /// <summary>
-    ///     A console logger with colors, an implementation for logging messages to a console where every log level has a
-    ///     different color.
+    ///     A console logger with colors, an implementation for logging messages to a console where every log level has a different color.
     /// </summary>
     public class ColorConsoleLogger : AbstractLogger
     {

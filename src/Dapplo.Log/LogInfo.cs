@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,11 +23,7 @@
 
 #endregion
 
-#region Usings
-
 using System;
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -36,6 +32,8 @@ namespace Dapplo.Log
     /// </summary>
     public sealed class LogInfo
     {
+        private LogLevels _logLevel;
+
         /// <summary>
         /// Create a LogInfo
         /// </summary>
@@ -49,13 +47,13 @@ namespace Dapplo.Log
             Source = source;
             Method = method;
             Line = line;
-            LogLevel = logLevel;
+            _logLevel = logLevel;
         }
 
         /// <summary>
         ///     The LogLevels enum for the log
         /// </summary>
-        public LogLevels LogLevel { get; }
+        public LogLevels LogLevel => _logLevel;
 
         /// <summary>
         ///     The line of the log
@@ -84,7 +82,20 @@ namespace Dapplo.Log
         /// <returns>string</returns>
         public override string ToString()
         {
-            return $"{Timestamp.ToString(LogSettings.DefaultLoggerConfiguration.DateTimeFormat)} {LogLevel} {Source.Source}:{Method}({Line})";
+            ref var logLevelRef = ref _logLevel;
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {Source.Source}:{Method}({Line.ToString()})";
+        }
+
+        /// <summary>
+        ///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
+        ///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
+        /// </summary>
+        /// <returns>string</returns>
+        public string ToString(bool useShortSource)
+        {
+            var source = useShortSource ? Source.ShortSource : Source.Source;
+            ref var logLevelRef = ref _logLevel;
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {source}:{Method}({Line.ToString()})";
         }
     }
 }

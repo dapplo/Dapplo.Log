@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,12 +23,8 @@
 
 #endregion
 
-#region Usings
-
 using System.Collections.Generic;
 using System.ComponentModel;
-
-#endregion
 
 namespace Dapplo.Log.LogFile
 {
@@ -43,10 +39,10 @@ namespace Dapplo.Log.LogFile
         ///     First makes the call slower, last could introduce problems with UI owned objects.
         /// </summary>
         [DefaultValue(false)]
-        bool Preformat { get; set; }
+        bool PreFormat { get; set; }
 
         /// <summary>
-        ///     Limit the internal stringbuilder size,
+        ///     Limit the internal StringBuilder size,
         /// </summary>
         [DefaultValue(512 * 1024)]
         int MaxBufferSize { get; set; }
@@ -60,7 +56,7 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Name of the application, if null it will be created
         /// </summary>
-        string Processname { get; set; }
+        string ProcessName { get; set; }
 
         /// <summary>
         ///     The extension of log file, default this is ".log"
@@ -71,26 +67,26 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Change the format for the filename, as soon as the filename changes, the previous is archived.
         /// </summary>
-        [DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
+        [DefaultValue("{ProcessName}-{Timestamp:yyyyMMdd}{Extension}")]
         string FilenamePattern { get; set; }
 
         /// <summary>
         ///     Change the format for the filename, the possible arguments are documented in the .
         ///     Environment variablen are also expanded.
         /// </summary>
-        [DefaultValue(@"%LOCALAPPDATA%\{Processname}")]
+        [DefaultValue(@"%LOCALAPPDATA%\{ProcessName}")]
         string DirectoryPath { get; set; }
 
         /// <summary>
         ///     Change the format for the archived filename
         /// </summary>
-        [DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
+        [DefaultValue("{ProcessName}-{Timestamp:yyyyMMdd}{Extension}")]
         string ArchiveFilenamePattern { get; set; }
 
         /// <summary>
         ///     The path of the archived file
         /// </summary>
-        [DefaultValue(@"%LOCALAPPDATA%\{Processname}")]
+        [DefaultValue(@"%LOCALAPPDATA%\{ProcessName}")]
         string ArchiveDirectoryPath { get; set; }
 
         /// <summary>

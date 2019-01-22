@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,11 +23,7 @@
 
 #endregion
 
-#region Usings
-
 using System;
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -37,9 +33,9 @@ namespace Dapplo.Log
     public static class LogSettings
     {
         /// <summary>
-        ///     Default configuration, if any
+        ///     Default DateTimeFormat
         /// </summary>
-        public static ILoggerConfiguration DefaultLoggerConfiguration { get; set; }
+        public static string DefaultDateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
 
         /// <summary>
         ///     The default logger used, if the logger implements IDisposable it will be disposed if another logger is assigned
@@ -70,10 +66,11 @@ namespace Dapplo.Log
         ///     Takes care of registering the default logger with a logger, configuration and arguments
         /// </summary>
         /// <typeparam name="TLogger">Type for the logger</typeparam>
+        /// <typeparam name="TLoggerConfiguration">Type for the TLoggerConfiguration</typeparam>
         /// <param name="loggerConfiguration">ILoggerConfiguration to configure the logger with</param>
         /// <param name="arguments">params</param>
         /// <returns>The newly created logger, this might be needed elsewhere</returns>
-        public static TLogger RegisterDefaultLogger<TLogger>(ILoggerConfiguration loggerConfiguration = null, params object[] arguments) where TLogger : ILogger
+        public static TLogger RegisterDefaultLogger<TLogger, TLoggerConfiguration>(TLoggerConfiguration loggerConfiguration = default, params object[] arguments) where TLogger : class, ILogger<TLoggerConfiguration> where TLoggerConfiguration : class, ILoggerConfiguration
         {
             var newLogger = (TLogger) Activator.CreateInstance(typeof(TLogger), arguments);
             if (loggerConfiguration != null)
@@ -88,13 +85,11 @@ namespace Dapplo.Log
         ///     Takes care of registering the default logger with a logger, LogLevel and arguments
         /// </summary>
         /// <typeparam name="TLogger">Type for the logger</typeparam>
-        /// <param name="logLevel">LogLevels level</param>
         /// <param name="arguments">params</param>
         /// <returns>The newly created logger, this might be needed elsewhere</returns>
-        public static TLogger RegisterDefaultLogger<TLogger>(LogLevels logLevel, params object[] arguments) where TLogger : ILogger
+        public static TLogger RegisterDefaultLogger<TLogger>(params object[] arguments) where TLogger : class, ILogger
         {
             var newLogger = (TLogger) Activator.CreateInstance(typeof(TLogger), arguments);
-            newLogger.LogLevel = logLevel;
             ReplaceDefaultLogger(newLogger);
             return newLogger;
         }
@@ -103,7 +98,7 @@ namespace Dapplo.Log
         ///     Helper method to replace the default logger
         /// </summary>
         /// <param name="newLogger">ILogger</param>
-        private static void ReplaceDefaultLogger(ILogger newLogger)
+        private static void ReplaceDefaultLogger<TLogger>(TLogger newLogger) where TLogger : class, ILogger 
         {
             var previousDefaultLogger = DefaultLogger;
 

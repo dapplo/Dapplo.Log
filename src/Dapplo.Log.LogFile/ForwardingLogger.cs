@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,13 +23,9 @@
 
 #endregion
 
-#region Usings
-
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-
-#endregion
 
 namespace Dapplo.Log.LogFile
 {
@@ -41,8 +37,7 @@ namespace Dapplo.Log.LogFile
     /// </summary>
     public class ForwardingLogger : AbstractLogger, IDisposable
     {
-        private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems =
-            new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
+        private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
 
         /// <summary>
         ///     Enqueue the current information so it can be written to the file, formatting is done later.. (improves performance
@@ -98,7 +93,7 @@ namespace Dapplo.Log.LogFile
                 catch (Exception ex)
                 {
                     Trace.WriteLine($"Couldn't format passed log information, maybe this was owned by the UI? {ex.Message}");
-                    Trace.WriteLine($"LogInfo and messagetemplate for the problematic log information: {logItem.Item1} {logItem.Item2}");
+                    Trace.WriteLine($"LogInfo and messageTemplate for the problematic log information: {logItem.Item1} {logItem.Item2}");
                 }
             }
 

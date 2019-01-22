@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2018 Dapplo
+// Copyright (C) 2016-2019 Dapplo
 // 
 // For more information see: http://dapplo.net/
 // Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,18 +23,17 @@
 
 #endregion
 
-#region Usings
-
 using System.Threading.Tasks;
 using Dapplo.Log.LogFile;
 using Dapplo.Log.XUnit;
 using Xunit;
 using Xunit.Abstractions;
 
-#endregion
-
 namespace Dapplo.Log.Tests
 {
+    /// <summary>
+    /// Tests for the FileLogger
+    /// </summary>
     public class FileLoggerTests
     {
         public FileLoggerTests(ITestOutputHelper testOutputHelper)
@@ -47,22 +46,22 @@ namespace Dapplo.Log.Tests
         [Fact]
         public async Task TestFileLogger()
         {
-            var xunitLogger = new XUnitLogger(_testOutputHelper)
+            var xUnitLogger = new XUnitLogger(_testOutputHelper)
             {
                 LogLevel = LogLevels.Verbose
             };
-            LoggerMapper.RegisterLoggerFor<FileLogger>(xunitLogger);
+            LoggerMapper.RegisterLoggerFor<FileLogger>(xUnitLogger);
 
             // Define a pattern with seconds in it...
-            const string filenamePattern = "{Processname}-{Timestamp:yyyyMMddHHmmss}{Extension}";
+            const string filenamePattern = "{ProcessName}-{Timestamp:yyyyMMddHHmmss}{Extension}";
 
             using (var forwardingLogger = new ForwardingLogger {LogLevel = LogLevels.Verbose})
             {
                 LoggerTestSupport.TestAllLogMethods(forwardingLogger);
                 using (var fileLogger = new FileLogger())
                 {
-                    fileLogger.FilenamePattern = filenamePattern;
-                    fileLogger.ArchiveFilenamePattern = filenamePattern;
+                    fileLogger.LoggerConfiguration.FilenamePattern = filenamePattern;
+                    fileLogger.LoggerConfiguration.ArchiveFilenamePattern = filenamePattern;
                     forwardingLogger.ReplacedWith(fileLogger);
                     // Force archiving, as the filename changes
                     await Task.Delay(2000);

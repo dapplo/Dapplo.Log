@@ -1,7 +1,7 @@
-﻿#region Dapplo 2016-2018 - GNU Lesser General Public License
+﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 //  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -23,11 +23,7 @@
 
 #endregion
 
-#region Usings
-
 using System;
-
-#endregion
 
 namespace Dapplo.Log
 {
@@ -37,13 +33,12 @@ namespace Dapplo.Log
     ///     Assign it to the HttpExtensionsGlobals.Logger and Dapplo.HttpExtensions will start logger with your class.
     ///     A TraceLogger implementation is supplied, so you can see some output while your project is in development.
     /// </summary>
-    public interface ILogger : ILoggerConfiguration
+    public interface ILogger
     {
         /// <summary>
-        ///     Configure the logger with the values from the ILoggerConfiguration
+        /// The LogLevel, initially it takes the ILoggerConfiguration.DefaultLogLevel
         /// </summary>
-        /// <param name="loggerConfiguration">ILoggerConfiguration</param>
-        void Configure(ILoggerConfiguration loggerConfiguration);
+        LogLevels LogLevel { get; set; }
 
         /// <summary>
         ///     This can be overriden to format the line message differently
@@ -96,5 +91,23 @@ namespace Dapplo.Log
         /// <param name="messageTemplate">Message (template) with formatting</param>
         /// <param name="logParameters">Parameters for the template</param>
         void WriteLine(LogInfo logInfo, Exception exception, string messageTemplate = null, params object[] logParameters);
+    }
+
+    /// <summary>
+    /// Generic extension for the configuration
+    /// </summary>
+    /// <typeparam name="TLoggerConfiguration"></typeparam>
+    public interface ILogger<TLoggerConfiguration> : ILogger where TLoggerConfiguration : class, ILoggerConfiguration
+    {
+        /// <summary>
+        /// Defines the LoggerConfiguration
+        /// </summary>
+        TLoggerConfiguration LoggerConfiguration { get; }
+
+        /// <summary>
+        ///     Configure the logger with the values from the ILoggerConfiguration
+        /// </summary>
+        /// <param name="loggerConfiguration">ILoggerConfiguration</param>
+        void Configure(TLoggerConfiguration loggerConfiguration);
     }
 }

@@ -100,7 +100,7 @@ namespace Dapplo.Log
         private static bool IsLogLevelEnabled(LogSource logSource, LogLevels logLevel)
         {
             // "Fail-fast"
-            if (logSource == null || logLevel == LogLevels.None)
+            if (logSource is null || logLevel == LogLevels.None)
             {
                 return false;
             }
@@ -130,7 +130,7 @@ namespace Dapplo.Log
         /// <returns>LogInfo</returns>
         private static LogInfo CreateLogInfo(LogSource logSource, LogLevels logLevel, int lineNumber, string methodName)
         {
-            if (logSource == null || !IsLogLevelEnabled(logSource, logLevel))
+            if (logSource is null || !IsLogLevelEnabled(logSource, logLevel))
             {
                 return null;
             }
