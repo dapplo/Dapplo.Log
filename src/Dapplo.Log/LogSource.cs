@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-#if NETSTANDARD1_3 || NET45
+#if NETSTANDARD2_0 || NETSTANDARD1_3 || NET45
 using System.IO;
 #endif
 #if NETSTANDARD1_1
@@ -100,7 +100,7 @@ namespace Dapplo.Log
                 throw new ArgumentNullException(nameof(sourceFilePath));
             }
 
-#if NETSTANDARD1_3 || NET45
+#if NETSTANDARD2_0 || NETSTANDARD1_3 || NET45
             var directorySeparatorChar = Path.DirectorySeparatorChar;
 #elif NETSTANDARD1_1
             var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
@@ -115,7 +115,7 @@ namespace Dapplo.Log
             var nameSpace = GetFilename(GetDirectory(pathParts));
 
             var fqTypeName = $"{nameSpace}.{typeName}";
-#if NET45
+#if NETSTANDARD2_0 || NET45
             var type = Type.GetType(fqTypeName, false, true);
 #else
             var type = Type.GetType(fqTypeName, false);

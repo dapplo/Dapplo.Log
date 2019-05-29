@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Collections;
 
-#if NETCOREAPP1_6 || NET45
+#if NETSTANDARD2_0 || NETCOREAPP1_6 || NET45
 using System.Collections.Concurrent;
 #else
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ namespace Dapplo.Log
         /// <summary>
         ///     The lookup table for finding the loggers for a LogSource.Source
         /// </summary>
-#if NETCOREAPP1_6 || NET45
+#if NETSTANDARD2_0 || NETCOREAPP1_6 || NET45
 		private static ConcurrentDictionary<string, ILogger[]> LoggerMap { get; } = new ConcurrentDictionary<string, ILogger[]>();
 #else
         private static Dictionary<string, ILogger[]> LoggerMap { get; } = new Dictionary<string, ILogger[]>();
@@ -84,7 +84,7 @@ namespace Dapplo.Log
             if (!LoggerMap.TryGetValue(source, out var loggersForSource))
             {
                 loggersForSource = new[]{ logger };
-#if NETCOREAPP1_6 || NET45
+#if NETSTANDARD2_0 || NETCOREAPP1_6 || NET45
                 LoggerMap.TryAdd(source, loggersForSource);
 #else
                 LoggerMap.Add(source, loggersForSource);
@@ -149,7 +149,7 @@ namespace Dapplo.Log
 
             if (newLoggersForSource.Length == 0)
             {
-#if NETCOREAPP1_6 || NET45
+#if NETSTANDARD2_0 || NETCOREAPP1_6 || NET45
                 LoggerMap.TryRemove(source, out _);
 #else
                 LoggerMap.Remove(source);

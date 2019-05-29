@@ -103,7 +103,6 @@ namespace Dapplo.Log
         /// <inheritdoc />
         public string LogLineFormat { get; set; } = "{0} - {1}";
 
-
         /// <inheritdoc />
         public virtual bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
         {

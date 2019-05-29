@@ -85,18 +85,18 @@ namespace Dapplo.Log
         }
 
         /// <summary>
-        /// 
+        /// ToString 
         /// </summary>
-        /// <param name="loggerConfiguration"></param>
+        /// <param name="loggerConfiguration">ILoggerConfiguration</param>
         /// <returns></returns>
         public string ToString(ILoggerConfiguration loggerConfiguration)
         {
             var stringBuilder = new StringBuilder(Timestamp.ToString(loggerConfiguration?.DateTimeFormat ?? "yyyy-MM-dd HH:mm:ss.fff"));
             stringBuilder
                 .Append(' ')
-                .Append(((int)LogLevel).ToString())
+                .Append(LogLevel)
                 .Append(' ')
-                .Append(Source.Source)
+                .Append(loggerConfiguration.UseShortSource ? Source.ShortSource : Source.Source)
                 .Append(':')
                 .Append(Method)
                 .Append('(')
