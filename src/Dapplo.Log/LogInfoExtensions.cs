@@ -45,8 +45,10 @@ namespace Dapplo.Log
                 return;
             }
 
-            foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
+            ILogger[] array = LogSettings.LoggerLookup(logInfo.Source);
+            for (int i = 0; i < array.Length; i++)
             {
+                ILogger logger = array[i];
                 logger.Write(logInfo, messageTemplate, logParameters);
             }
         }
@@ -64,8 +66,10 @@ namespace Dapplo.Log
                 return;
             }
 
-            foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
+            ILogger[] array = LogSettings.LoggerLookup(logInfo.Source);
+            for (int i = 0; i < array.Length; i++)
             {
+                ILogger logger = array[i];
                 logger.WriteLine(logInfo, messageTemplate, logParameters);
             }
         }
@@ -84,8 +88,10 @@ namespace Dapplo.Log
                 return;
             }
 
-            foreach (var logger in LogSettings.LoggerLookup(logInfo.Source))
+            ILogger[] array = LogSettings.LoggerLookup(logInfo.Source);
+            for (int i = 0; i < array.Length; i++)
             {
+                ILogger logger = array[i];
                 logger.WriteLine(logInfo, exception, messageTemplate, logParameters);
             }
         }

@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using System.Collections;
 
 #if NETCOREAPP1_6 || NET45
 using System.Collections.Concurrent;

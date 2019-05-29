@@ -26,23 +26,9 @@
 #define DEBUG
 
 using System;
-using Dapplo.Log.Impl;
 
 namespace Dapplo.Log
 {
-    /// <summary>
-    /// The simplest AbstractLogger
-    /// </summary>
-    public class AbstractLogger : AbstractLogger<ILoggerConfiguration>
-    {
-        /// <summary>
-        /// Make sure a configuration is available
-        /// </summary>
-        public AbstractLogger()
-        {
-            LoggerConfiguration = new SimpleLoggerConfiguration();
-        }
-    }
 
     /// <summary>
     ///     Abstract implementation for ILogger, which safes some time.
@@ -50,17 +36,36 @@ namespace Dapplo.Log
     ///     1) WriteLine in calls Write after appending a newline.
     ///     2) WriteLine with Exception calls WriteLine with the template/parameters and again with the Exception.ToString()
     /// </summary>
-    public class AbstractLogger<TLoggerConfiguration> : ILogger<TLoggerConfiguration> where TLoggerConfiguration : class, ILoggerConfiguration
+    public class AbstractLogger : ILogger, ILoggerConfiguration
     {
-        /// <inheritdoc />
-        public TLoggerConfiguration LoggerConfiguration { get; protected set; }
-
-        /// <inheritdoc />
-        public virtual void Configure(TLoggerConfiguration loggerConfiguration)
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public AbstractLogger()
         {
-            LoggerConfiguration = loggerConfiguration ?? throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            LogLevel = LoggerConfiguration.DefaultLogLevel;
+        }
+
+        /// <summary>
+        /// Constructor with LogLevels
+        /// </summary>
+        /// <param name="logLevels">LogLevels</param>
+        public AbstractLogger(LogLevels logLevels)
+        {
+            LogLevel = logLevels;
+        }
+
+        /// <inheritdoc />
+        public virtual void Configure(ILoggerConfiguration loggerConfiguration)
+        {
+            if (loggerConfiguration == null)
+            {
+                return;
+            }
+            LogLevel = loggerConfiguration.LogLevel;
+            UseShortSource = loggerConfiguration.UseShortSource;
+            LogLineFormat = loggerConfiguration.LogLineFormat;
+            DateTimeFormat = loggerConfiguration.DateTimeFormat;
         }
 
         /// <inheritdoc />
@@ -75,19 +80,29 @@ namespace Dapplo.Log
                 throw new ArgumentNullException(nameof(messageTemplate));
             }
 
-            var message = messageTemplate;
             // Test if there are parameters, if not there is no need to format it!
             if (parameters != null && parameters.Length > 0)
             {
-                message = string.Format(messageTemplate, parameters);
+                messageTemplate = string.Format(messageTemplate, parameters);
             }
 
             // Format the LogInfo
-            return string.Format(LoggerConfiguration.LogLineFormat, logInfo.ToString(LoggerConfiguration.UseShortSource), message);
+            var logInfoString = logInfo.ToString(this);
+            return string.Format(LogLineFormat, logInfoString, messageTemplate);
         }
 
         /// <inheritdoc />
         public virtual LogLevels LogLevel { get; set; } = LogLevels.Info;
+
+        /// <inheritdoc />
+        public bool UseShortSource { get; set; } = true;
+
+        /// <inheritdoc />
+        public string DateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
+
+        /// <inheritdoc />
+        public string LogLineFormat { get; set; } = "{0} - {1}";
+
 
         /// <inheritdoc />
         public virtual bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)

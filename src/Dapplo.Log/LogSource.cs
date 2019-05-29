@@ -46,22 +46,7 @@ namespace Dapplo.Log
     /// </summary>
     public sealed class LogSource
     {
-        private static readonly char DirectorySeparatorChar;
-        private static readonly char [] DirectorySeparatorCharArray;
-        private static readonly char [] DotCharArray = {'.'};
-
-        static LogSource()
-        {
-#if NETSTANDARD1_3 || NET45
-            DirectorySeparatorChar = Path.DirectorySeparatorChar;
-#elif NETSTANDARD1_1
-            DirectorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
-#else
-           DirectorySeparatorChar = '\\';
-#endif
-            DirectorySeparatorCharArray = new[] {DirectorySeparatorChar};
-        }
-
+        private static readonly char[] Dot = new[] { '.' };
         /// <summary>
         /// Initializes a new instance of the <see cref="LogSource"/> class. 
         ///     The constructor for specifying the type manually
@@ -87,7 +72,7 @@ namespace Dapplo.Log
 
         private static string GetFilenameWithoutExtension(IEnumerable<string> filePath)
         {
-            var filenameParts = GetFilename(filePath).Split(DotCharArray).ToList();
+            var filenameParts = GetFilename(filePath).Split(Dot).ToList();
             filenameParts.RemoveAt(filenameParts.Count - 1);
             return string.Join(".", filenameParts);
         }
@@ -115,9 +100,15 @@ namespace Dapplo.Log
                 throw new ArgumentNullException(nameof(sourceFilePath));
             }
 
-            sourceFilePath = sourceFilePath.Replace('\\', DirectorySeparatorChar).Replace('/', DirectorySeparatorChar);
+#if NETSTANDARD1_3 || NET45
+            var directorySeparatorChar = Path.DirectorySeparatorChar;
+#elif NETSTANDARD1_1
+            var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
+#else
+            const char directorySeparatorChar = '\\';
+#endif
 
-            var pathParts = sourceFilePath.Split(DirectorySeparatorCharArray);
+            var pathParts = sourceFilePath.Split(directorySeparatorChar);
 
             var typeName = GetFilenameWithoutExtension(pathParts);
 
@@ -129,13 +120,13 @@ namespace Dapplo.Log
 #else
             var type = Type.GetType(fqTypeName, false);
 #endif
-            if (type is null)
+            if (type != null)
             {
-                SetSourceFromString(fqTypeName);
+                SetSourceFromType(type);
             }
             else
             {
-                SetSourceFromType(type);
+                SetSourceFromString(fqTypeName);
             }
         }
 
@@ -158,8 +149,7 @@ namespace Dapplo.Log
         private void SetSourceFromString(string source)
         {
             Source = source;
-            var parts = Source.Split(DotCharArray);
-            if (parts.Length > 0)
+            var parts = Source.Split(Dot);            if (parts.Length > 0)
             {
                 ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));
             }

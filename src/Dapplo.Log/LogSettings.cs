@@ -33,9 +33,9 @@ namespace Dapplo.Log
     public static class LogSettings
     {
         /// <summary>
-        ///     Default DateTimeFormat
+        ///     Default ILoggerConfiguration
         /// </summary>
-        public static string DefaultDateTimeFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
+        public static ILoggerConfiguration DefaultLoggerConfiguration { get; set; }
 
         /// <summary>
         ///     The default logger used, if the logger implements IDisposable it will be disposed if another logger is assigned
@@ -82,14 +82,29 @@ namespace Dapplo.Log
         }
 
         /// <summary>
-        ///     Takes care of registering the default logger with a logger, LogLevel and arguments
+        ///     Takes care of registering the default logger with a logger and arguments
         /// </summary>
         /// <typeparam name="TLogger">Type for the logger</typeparam>
         /// <param name="arguments">params</param>
         /// <returns>The newly created logger, this might be needed elsewhere</returns>
         public static TLogger RegisterDefaultLogger<TLogger>(params object[] arguments) where TLogger : class, ILogger
         {
+            var newLogger = (TLogger)Activator.CreateInstance(typeof(TLogger), arguments);
+            ReplaceDefaultLogger(newLogger);
+            return newLogger;
+        }
+
+        /// <summary>
+        ///     Takes care of registering the default logger with a logger, LogLevel and arguments
+        /// </summary>
+        /// <typeparam name="TLogger">Type for the logger</typeparam>
+        /// <param name="logLevel"></param>
+        /// <param name="arguments">params</param>
+        /// <returns>The newly created logger, this might be needed elsewhere</returns>
+        public static TLogger RegisterDefaultLogger<TLogger>(LogLevels logLevel, params object[] arguments) where TLogger : class, ILogger
+        {
             var newLogger = (TLogger) Activator.CreateInstance(typeof(TLogger), arguments);
+            newLogger.LogLevel = logLevel;
             ReplaceDefaultLogger(newLogger);
             return newLogger;
         }

@@ -24,6 +24,7 @@
 #endregion
 
 using System;
+using System.Text;
 
 namespace Dapplo.Log
 {
@@ -32,8 +33,6 @@ namespace Dapplo.Log
     /// </summary>
     public sealed class LogInfo
     {
-        private readonly LogLevels _logLevel;
-
         /// <summary>
         /// Create a LogInfo
         /// </summary>
@@ -47,13 +46,13 @@ namespace Dapplo.Log
             Source = source;
             Method = method;
             Line = line;
-            _logLevel = logLevel;
+            LogLevel = logLevel;
         }
 
         /// <summary>
         ///     The LogLevels enum for the log
         /// </summary>
-        public LogLevels LogLevel => _logLevel;
+        public LogLevels LogLevel { get; }
 
         /// <summary>
         ///     The line of the log
@@ -82,18 +81,28 @@ namespace Dapplo.Log
         /// <returns>string</returns>
         public override string ToString()
         {
-            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {_logLevel} {Source.Source}:{Method}({Line.ToString()})";
+            return ToString(LogSettings.DefaultLoggerConfiguration);
         }
 
         /// <summary>
-        ///     Create a string representation of the LogInfo, this by default has a timestamp, level, source, method and line.
-        ///     If the format needs to be changed, LogSettings.LogInfoFormatter can be assigned with your custom formatter Func
+        /// 
         /// </summary>
-        /// <returns>string</returns>
-        public string ToString(bool useShortSource)
+        /// <param name="loggerConfiguration"></param>
+        /// <returns></returns>
+        public string ToString(ILoggerConfiguration loggerConfiguration)
         {
-            var source = useShortSource ? Source.ShortSource : Source.Source;
-            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {_logLevel} {source}:{Method}({Line.ToString()})";
+            var stringBuilder = new StringBuilder(Timestamp.ToString(loggerConfiguration?.DateTimeFormat ?? "yyyy-MM-dd HH:mm:ss.fff"));
+            stringBuilder
+                .Append(' ')
+                .Append(((int)LogLevel).ToString())
+                .Append(' ')
+                .Append(Source.Source)
+                .Append(':')
+                .Append(Method)
+                .Append('(')
+                .Append(Line.ToString())
+                .Append(')');
+            return stringBuilder.ToString();
         }
     }
 }

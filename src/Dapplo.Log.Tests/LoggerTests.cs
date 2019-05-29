@@ -43,6 +43,16 @@ namespace Dapplo.Log.Tests
             Assert.Equal(GetType().FullName, Log.Source);
         }
 
+        [Fact]
+        public void TestRegisterDefaultLogger()
+        {
+            var defaultLogger = LogSettings.DefaultLogger;
+            // Initialize a debug logger for Dapplo packages
+            LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
+            Assert.True(LogSettings.DefaultLogger is DebugLogger);
+            LogSettings.DefaultLogger = defaultLogger;
+        }
+
         /// <summary>
         ///     Test ConsoleLogger
         /// </summary>
