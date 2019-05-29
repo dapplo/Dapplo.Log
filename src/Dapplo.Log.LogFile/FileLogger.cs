@@ -83,7 +83,7 @@ namespace Dapplo.Log.LogFile
             }
             using (var process = Process.GetCurrentProcess())
             {
-                fileLoggerConfiguration.ProcessName = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
+                fileLoggerConfiguration.ProcessName = Path.GetFileNameWithoutExtension(process.MainModule?.FileName ?? "unknown");
             }
         }
 

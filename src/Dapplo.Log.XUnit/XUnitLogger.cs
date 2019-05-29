@@ -27,7 +27,6 @@ using System;
 using Xunit.Abstractions;
 #if NET45
 using Nito.AsyncEx.AsyncLocal;
-
 #else
 using System.Threading;
 #endif

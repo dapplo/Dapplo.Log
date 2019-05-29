@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Tests for the dapplo log projects</Description>
@@ -9,8 +9,8 @@
     <AssemblyName>Dapplo.Log.Tests</AssemblyName>
     <PackageId>Dapplo.Log.Tests</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-	<IsPackable>false</IsPackable>
-	<Version>1.0.0</Version>
+    <IsPackable>false</IsPackable>
+    <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
@@ -28,7 +28,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog" Version="4.6.4" />
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
 

@@ -32,7 +32,7 @@ namespace Dapplo.Log
     /// </summary>
     public sealed class LogInfo
     {
-        private LogLevels _logLevel;
+        private readonly LogLevels _logLevel;
 
         /// <summary>
         /// Create a LogInfo
@@ -82,8 +82,7 @@ namespace Dapplo.Log
         /// <returns>string</returns>
         public override string ToString()
         {
-            ref var logLevelRef = ref _logLevel;
-            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {Source.Source}:{Method}({Line.ToString()})";
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {_logLevel} {Source.Source}:{Method}({Line.ToString()})";
         }
 
         /// <summary>
@@ -94,8 +93,7 @@ namespace Dapplo.Log
         public string ToString(bool useShortSource)
         {
             var source = useShortSource ? Source.ShortSource : Source.Source;
-            ref var logLevelRef = ref _logLevel;
-            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {logLevelRef.RefLogLevelToString()} {source}:{Method}({Line.ToString()})";
+            return $"{Timestamp.ToString(LogSettings.DefaultDateTimeFormat)} {_logLevel} {source}:{Method}({Line.ToString()})";
         }
     }
 }
