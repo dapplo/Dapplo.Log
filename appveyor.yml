@@ -14,8 +14,11 @@ environment:
     secure: Fu7vXeOuWmvDK7WGNsEbTIV2vhDV4P6PiK5k1+UZOmwldhCfvUvkA4HOkml+ZE/n
   CoverallsRepoToken:
     secure: dVnmCYP9Jc9I11IFY/4JaIaNLQqKEVCV92P0cJsxRlw6CZfhPTL/JcJhtIAkHhVu
+install:
+- ps: Invoke-WebRequest https://download.microsoft.com/download/9/0/1/901B684B-659E-4CBD-BEC8-B3F06967C2E7/NDP471-DevPack-ENU.exe -OutFile NDP471-DevPack-ENU.exe
+- ps: Start-Process -FilePath "NDP471-DevPack-ENU.exe" -ArgumentList "/q","/norestart" -Wait
 build_script:
-- ps: .\build.ps1 --settings_skipverification=true
+- ps: .\build.ps1 --settings_skipverification=true --settings_skippackageversioncheck=true
 cache:
   - tools -> tools/packages.config
 artifacts:
