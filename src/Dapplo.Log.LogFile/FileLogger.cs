@@ -70,10 +70,10 @@ namespace Dapplo.Log.LogFile
             // Start the processing in the background
             _backgroundTask = Task.Run(async () => await BackgroundAsync(_backgroundCancellationTokenSource.Token).ConfigureAwait(false));
 
-            SetProcessName(this);
+            SetProcessname(this);
         }
 
-        private static void SetProcessName(IFileLoggerConfiguration fileLoggerConfiguration)
+        private static void SetProcessname(IFileLoggerConfiguration fileLoggerConfiguration)
         {
             if (fileLoggerConfiguration == null)
             {
@@ -81,7 +81,7 @@ namespace Dapplo.Log.LogFile
             }
             using (var process = Process.GetCurrentProcess())
             {
-                fileLoggerConfiguration.ProcessName = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
+                fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
             }
         }
 
@@ -101,10 +101,10 @@ namespace Dapplo.Log.LogFile
             }
 
             // Copy all values from the IFileLoggerConfiguration
-            if (string.IsNullOrEmpty(fileLoggerConfiguration.ProcessName))
+            if (string.IsNullOrEmpty(fileLoggerConfiguration.Processname))
             {
 #if !_PCL_
-                SetProcessName(fileLoggerConfiguration);
+                SetProcessname(fileLoggerConfiguration);
 #else
 				throw new ArgumentNullException(nameof(fileLoggerConfiguration.Processname));
 #endif
@@ -121,7 +121,7 @@ namespace Dapplo.Log.LogFile
             FilenamePattern = fileLoggerConfiguration.FilenamePattern;
             MaxBufferSize = fileLoggerConfiguration.MaxBufferSize;
             PreFormat = fileLoggerConfiguration.PreFormat;
-            ProcessName = fileLoggerConfiguration.ProcessName;
+            Processname = fileLoggerConfiguration.Processname;
             WriteInterval = fileLoggerConfiguration.WriteInterval;
         }
 
@@ -145,7 +145,7 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Name of the application, if null it will be created
         /// </summary>
-        public string ProcessName { get; set; }
+        public string Processname { get; set; }
 
         /// <summary>
         ///     The extension of log file, default this is ".log"
@@ -288,7 +288,7 @@ namespace Dapplo.Log.LogFile
             }
             var variables = new Dictionary<string, object>
             {
-                {"ProcessName", ProcessName},
+                {"Processname", Processname},
                 {"Timestamp", DateTimeOffset.Now},
                 {"Extension", Extension}
             };

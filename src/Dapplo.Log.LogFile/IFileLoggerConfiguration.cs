@@ -56,7 +56,7 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Name of the application, if null it will be created
         /// </summary>
-        string ProcessName { get; set; }
+        string Processname { get; set; }
 
         /// <summary>
         ///     The extension of log file, default this is ".log"
@@ -67,26 +67,26 @@ namespace Dapplo.Log.LogFile
         /// <summary>
         ///     Change the format for the filename, as soon as the filename changes, the previous is archived.
         /// </summary>
-        [DefaultValue("{ProcessName}-{Timestamp:yyyyMMdd}{Extension}")]
+        [DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
         string FilenamePattern { get; set; }
 
         /// <summary>
         ///     Change the format for the filename, the possible arguments are documented in the .
         ///     Environment variablen are also expanded.
         /// </summary>
-        [DefaultValue(@"%LOCALAPPDATA%\{ProcessName}")]
+        [DefaultValue(@"%LOCALAPPDATA%\{Processname}")]
         string DirectoryPath { get; set; }
 
         /// <summary>
         ///     Change the format for the archived filename
         /// </summary>
-        [DefaultValue("{ProcessName}-{Timestamp:yyyyMMdd}{Extension}")]
+        [DefaultValue("{Processname}-{Timestamp:yyyyMMdd}{Extension}")]
         string ArchiveFilenamePattern { get; set; }
 
         /// <summary>
         ///     The path of the archived file
         /// </summary>
-        [DefaultValue(@"%LOCALAPPDATA%\{ProcessName}")]
+        [DefaultValue(@"%LOCALAPPDATA%\{Processname}")]
         string ArchiveDirectoryPath { get; set; }
 
         /// <summary>

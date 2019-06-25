@@ -66,11 +66,10 @@ namespace Dapplo.Log
         ///     Takes care of registering the default logger with a logger, configuration and arguments
         /// </summary>
         /// <typeparam name="TLogger">Type for the logger</typeparam>
-        /// <typeparam name="TLoggerConfiguration">Type for the TLoggerConfiguration</typeparam>
         /// <param name="loggerConfiguration">ILoggerConfiguration to configure the logger with</param>
         /// <param name="arguments">params</param>
         /// <returns>The newly created logger, this might be needed elsewhere</returns>
-        public static TLogger RegisterDefaultLogger<TLogger, TLoggerConfiguration>(TLoggerConfiguration loggerConfiguration = default, params object[] arguments) where TLogger : class, ILogger<TLoggerConfiguration> where TLoggerConfiguration : class, ILoggerConfiguration
+        public static TLogger RegisterDefaultLogger<TLogger>(ILoggerConfiguration loggerConfiguration = default, params object[] arguments) where TLogger : class, ILogger
         {
             var newLogger = (TLogger) Activator.CreateInstance(typeof(TLogger), arguments);
             if (loggerConfiguration != null)

@@ -36,6 +36,12 @@ namespace Dapplo.Log
     public interface ILogger
     {
         /// <summary>
+        /// Configure the logger with the specified ILoggerConfiguration
+        /// </summary>
+        /// <param name="loggerConfiguration">ILoggerConfiguration</param>
+        void Configure(ILoggerConfiguration loggerConfiguration);
+
+        /// <summary>
         /// The LogLevel, initially it takes the ILoggerConfiguration.DefaultLogLevel
         /// </summary>
         LogLevels LogLevel { get; set; }
@@ -91,23 +97,5 @@ namespace Dapplo.Log
         /// <param name="messageTemplate">Message (template) with formatting</param>
         /// <param name="logParameters">Parameters for the template</param>
         void WriteLine(LogInfo logInfo, Exception exception, string messageTemplate = null, params object[] logParameters);
-    }
-
-    /// <summary>
-    /// Generic extension for the configuration
-    /// </summary>
-    /// <typeparam name="TLoggerConfiguration"></typeparam>
-    public interface ILogger<TLoggerConfiguration> : ILogger where TLoggerConfiguration : class, ILoggerConfiguration
-    {
-        /// <summary>
-        /// Defines the LoggerConfiguration
-        /// </summary>
-        TLoggerConfiguration LoggerConfiguration { get; }
-
-        /// <summary>
-        ///     Configure the logger with the values from the ILoggerConfiguration
-        /// </summary>
-        /// <param name="loggerConfiguration">ILoggerConfiguration</param>
-        void Configure(TLoggerConfiguration loggerConfiguration);
     }
 }
