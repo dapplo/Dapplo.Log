@@ -55,6 +55,8 @@ namespace Dapplo.Log.LogFile
             Log.LogTo(new NullLogger());
         }
 
+        private static readonly byte[] Bom = Encoding.UTF8.GetPreamble();
+        private readonly UTF8Encoding _bomFreeUtf8Encoding = new UTF8Encoding(false);
         private readonly ConcurrentQueue<Tuple<LogInfo, string, object[]>> _logItems = new ConcurrentQueue<Tuple<LogInfo, string, object[]>>();
         private readonly CancellationTokenSource _backgroundCancellationTokenSource = new CancellationTokenSource();
         private string _previousFilePath;
@@ -133,7 +135,7 @@ namespace Dapplo.Log.LogFile
         public bool PreFormat { get; set; }
 
         /// <summary>
-        ///     Limit the internal stringbuilder size,
+        ///     Limit the internal StringBuilder size,
         /// </summary>
         public int MaxBufferSize { get; set; } = 512 * 1024;
 
@@ -339,7 +341,7 @@ namespace Dapplo.Log.LogFile
                 _previousVariables = variables;
             }
 
-            using (var streamWriter = new StreamWriter(new MemoryStream(), Encoding.UTF8))
+            using (var streamWriter = new StreamWriter(new MemoryStream(), _bomFreeUtf8Encoding))
             {
                 streamWriter.AutoFlush = true;
                 // Loop as long as there are items available
@@ -358,7 +360,7 @@ namespace Dapplo.Log.LogFile
                     catch (Exception ex)
                     {
                         Log.Error().WriteLine(ex, "Couldn't format passed log information, maybe this was owned by the UI?", null);
-                        Log.Warn().WriteLine("LogInfo and messagetemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
+                        Log.Warn().WriteLine("LogInfo and messageTemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
                     }
                 }
                 // Check if we wrote anything, if so store it to the file
@@ -374,6 +376,11 @@ namespace Dapplo.Log.LogFile
                         streamWriter.BaseStream.Seek(0, SeekOrigin.Begin);
                         using (var fileStream = new FileStream(filepath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
                         {
+                            // Write UTF-8 BOM when it's a new file, this is detected by the length == 0
+                            if (fileStream.Length == 0)
+                            {
+                                await fileStream.WriteAsync(Bom, 0, Bom.Length, cancellationToken);
+                            }
                             await streamWriter.BaseStream.CopyToAsync(fileStream).ConfigureAwait(false);
                         }
                     }
