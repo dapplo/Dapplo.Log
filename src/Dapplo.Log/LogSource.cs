@@ -1,4 +1,4 @@
-﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
+#region Dapplo 2016-2019 - GNU Lesser General Public License
 
 // Dapplo - building blocks for .NET applications
 // Copyright (C) 2016-2019 Dapplo
@@ -27,12 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-#if NETSTANDARD2_0 || NETSTANDARD1_3 || NET45
-using System.IO;
-#endif
-#if NETSTANDARD1_1
-using System.Runtime.InteropServices;
-#endif
 
 namespace Dapplo.Log
 {
@@ -143,7 +137,8 @@ namespace Dapplo.Log
         private void SetSourceFromString(string source)
         {
             Source = source;
-            var parts = Source.Split(Dot);            if (parts.Length > 0)
+            var parts = Source.Split(Dot);
+            if (parts.Length > 0)
             {
                 ShortSource = string.Join(".", parts.Take(parts.Length - 1).Select(s => s.Substring(0, 1).ToLowerInvariant()).Concat(new[] {parts.Last()}));
             }
