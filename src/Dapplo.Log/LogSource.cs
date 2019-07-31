@@ -100,14 +100,8 @@ namespace Dapplo.Log
                 throw new ArgumentNullException(nameof(sourceFilePath));
             }
 
-#if NETSTANDARD2_0 || NETSTANDARD1_3 || NET45
-            var directorySeparatorChar = Path.DirectorySeparatorChar;
-#elif NETSTANDARD1_1
-            var directorySeparatorChar = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? '\\' : '/';
-#else
-            const char directorySeparatorChar = '\\';
-#endif
-
+            var directorySeparatorChar = sourceFilePath.IndexOf('/') >= 0 ? '/' : '\\';
+            
             var pathParts = sourceFilePath.Split(directorySeparatorChar);
 
             var typeName = GetFilenameWithoutExtension(pathParts);

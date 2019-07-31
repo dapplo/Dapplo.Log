@@ -44,6 +44,34 @@ namespace Dapplo.Log.Tests
         }
 
         [Fact]
+        public void TestConstructorWithLinuxPath()
+        {
+            var log = new LogSource("/Some/Path/To/Namespace/Type.Name.dll");
+            Assert.Equal("Namespace.Type.Name", log.Source);
+        }
+        
+        [Fact]
+        public void TestConstructorWithWindowsPath()
+        {
+            var log = new LogSource(@"c:\Some\Path\To\Namespace\Type.Name.dll");
+            Assert.Equal("Namespace.Type.Name", log.Source);
+        }
+        
+        [Fact]
+        public void TestConstructorWithShortLinuxPath()
+        {
+            var log = new LogSource("/Namespace/Type.Name.dll");
+            Assert.Equal("Namespace.Type.Name", log.Source);
+        }
+        
+        [Fact]
+        public void TestConstructorWithShortWindowsPath()
+        {
+            var log = new LogSource(@"c:\Namespace\Type.Name.dll");
+            Assert.Equal("Namespace.Type.Name", log.Source);
+        }
+
+        [Fact]
         public void TestRegisterDefaultLogger()
         {
             var defaultLogger = LogSettings.DefaultLogger;
