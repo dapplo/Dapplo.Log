@@ -39,7 +39,8 @@ stages:
         codeCoverageEnabled: True
         runInParallel: False
         testSelector: 'testAssemblies'
-        testAssemblyVer2: **\*Tests.dll
+        testAssemblyVer2: |
+          **\*Tests.dll
 
     - task: DotNetCoreCLI@2
       displayName: Build
