@@ -25,11 +25,21 @@ stages:
         version: 3.0.100
 
     - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: build
+        projects: '$(solution)'
+        arguments: '--configuration Debug /p:Platform="$(buildPlatform)"'
+
+    - task: VSTest@2
       displayName: Test
       inputs:
-        command: test
-        projects: '$(solution)'
-        arguments: '--configuration Debug /p:Platform="$(buildPlatform)" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+        platform: $(buildPlatform)
+        configuration: Debug
+        codeCoverageEnabled: True
+        runInParallel: False
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: **\*Tests.dll
 
     - task: DotNetCoreCLI@2
       displayName: Build
