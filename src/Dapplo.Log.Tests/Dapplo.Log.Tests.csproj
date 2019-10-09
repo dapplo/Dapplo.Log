@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj" />
     <ProjectReference Include="..\Dapplo.Log.LogFile\Dapplo.Log.LogFile.csproj" />
     <ProjectReference Include="..\Dapplo.Log\Dapplo.Log.csproj" />
