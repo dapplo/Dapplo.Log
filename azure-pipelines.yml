@@ -42,6 +42,12 @@ stages:
         testAssemblyVer2: |
           **\*Tests.dll
 
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: 'src/**/coverage.cobertura.xml'
+        failIfCoverageEmpty: true
+
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
@@ -58,12 +64,6 @@ stages:
           **\coverage.*
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
-
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: 'src/**/coverage.cobertura.xml'
-        failIfCoverageEmpty: true
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifacts'
