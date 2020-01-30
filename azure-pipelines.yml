@@ -37,7 +37,7 @@ stages:
       condition: ne(variables['Build.Reason'], 'PullRequest')
       inputs:
         command: test
-        projects: '$(solution)'
+        projects: '**/src/**/*.Tests.csproj'
         arguments: '--configuration Debug /p:Platform="$(buildPlatform)" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
 
