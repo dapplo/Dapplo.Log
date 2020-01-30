@@ -1,27 +1,5 @@
-﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
-
-//  Dapplo - building blocks for .NET applications
-//  Copyright (C) 2016-2019 Dapplo
-// 
-//  For more information see: http://dapplo.net/
-//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
-// 
-//  This file is part of Dapplo.Log
-// 
-//  Dapplo.Log is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU Lesser General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-// 
-//  Dapplo.Log is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Lesser General Public License for more details.
-// 
-//  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
-
-#endregion
+﻿// Copyright (c) Dapplo and contributors. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -81,10 +59,8 @@ namespace Dapplo.Log.LogFile
             {
                 return;
             }
-            using (var process = Process.GetCurrentProcess())
-            {
-                fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
-            }
+            using var process = Process.GetCurrentProcess();
+            fileLoggerConfiguration.Processname = Path.GetFileNameWithoutExtension(process.MainModule.FileName);
         }
 
         /// <summary>
@@ -341,53 +317,51 @@ namespace Dapplo.Log.LogFile
                 _previousVariables = variables;
             }
 
-            using (var streamWriter = new StreamWriter(new MemoryStream(), _bomFreeUtf8Encoding))
+            using var streamWriter = new StreamWriter(new MemoryStream(), _bomFreeUtf8Encoding)
             {
-                streamWriter.AutoFlush = true;
-                // Loop as long as there are items available
-                while (_logItems.TryDequeue(out var logItem))
+                AutoFlush = true
+            };
+            // Loop as long as there are items available
+            while (_logItems.TryDequeue(out var logItem))
+            {
+                try
                 {
-                    try
+                    var line = PreFormat ? logItem.Item2 : Format(logItem.Item1, logItem.Item2, logItem.Item3);
+                    await streamWriter.WriteAsync(line).ConfigureAwait(false);
+                    // Check if we exceeded our buffer
+                    if (streamWriter.BaseStream.Length > MaxBufferSize)
                     {
-                        var line = PreFormat ? logItem.Item2 : Format(logItem.Item1, logItem.Item2, logItem.Item3);
-                        await streamWriter.WriteAsync(line).ConfigureAwait(false);
-                        // Check if we exceeded our buffer
-                        if (streamWriter.BaseStream.Length > MaxBufferSize)
-                        {
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error().WriteLine(ex, "Couldn't format passed log information, maybe this was owned by the UI?", null);
-                        Log.Warn().WriteLine("LogInfo and messageTemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
+                        break;
                     }
                 }
-                // Check if we wrote anything, if so store it to the file
-                if (streamWriter.BaseStream.Length > 0)
+                catch (Exception ex)
                 {
-                    try
+                    Log.Error().WriteLine(ex, "Couldn't format passed log information, maybe this was owned by the UI?", null);
+                    Log.Warn().WriteLine("LogInfo and messageTemplate for the problematic log information: {0} {1}", logItem.Item1, logItem.Item2);
+                }
+            }
+            // Check if we wrote anything, if so store it to the file
+            if (streamWriter.BaseStream.Length > 0)
+            {
+                try
+                {
+                    if (!Directory.Exists(directory))
                     {
-                        if (!Directory.Exists(directory))
-                        {
-                            Log.Info().WriteLine("Created directory {0}", directory);
-                            Directory.CreateDirectory(directory);
-                        }
-                        streamWriter.BaseStream.Seek(0, SeekOrigin.Begin);
-                        using (var fileStream = new FileStream(filepath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
-                        {
-                            // Write UTF-8 BOM when it's a new file, this is detected by the length == 0
-                            if (fileStream.Length == 0)
-                            {
-                                await fileStream.WriteAsync(Bom, 0, Bom.Length, cancellationToken);
-                            }
-                            await streamWriter.BaseStream.CopyToAsync(fileStream).ConfigureAwait(false);
-                        }
+                        Log.Info().WriteLine("Created directory {0}", directory);
+                        Directory.CreateDirectory(directory);
                     }
-                    catch (Exception ex)
+                    streamWriter.BaseStream.Seek(0, SeekOrigin.Begin);
+                    using var fileStream = new FileStream(filepath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                    // Write UTF-8 BOM when it's a new file, this is detected by the length == 0
+                    if (fileStream.Length == 0)
                     {
-                        Log.Error().WriteLine(ex, "Error writing to logfile {0}", filepath);
+                        await fileStream.WriteAsync(Bom, 0, Bom.Length, cancellationToken);
                     }
+                    await streamWriter.BaseStream.CopyToAsync(fileStream).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error().WriteLine(ex, "Error writing to logfile {0}", filepath);
                 }
             }
         }
@@ -423,10 +397,8 @@ namespace Dapplo.Log.LogFile
                 using (var targetFileStream = new FileStream(archiveFilepath + ".tmp", FileMode.CreateNew, FileAccess.Write, FileShare.Read))
                 using (var sourceFileStream = new FileStream(oldFile, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var compressionStream = new GZipStream(targetFileStream, CompressionMode.Compress))
-                    {
-                        await sourceFileStream.CopyToAsync(compressionStream).ConfigureAwait(false);
-                    }
+                    using var compressionStream = new GZipStream(targetFileStream, CompressionMode.Compress);
+                    await sourceFileStream.CopyToAsync(compressionStream).ConfigureAwait(false);
                 }
                 // As the previous code didn't throw, we can now safely delete the old file
                 File.Delete(oldFile);

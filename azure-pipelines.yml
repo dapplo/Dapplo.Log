@@ -3,12 +3,20 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
+trigger:
+  batch: true
+  branches:
+    include:
+    - '*'
+    exclude:
+    - gh-pages
+
 stages:
 - stage: Build
   jobs:
   - job: Build
     pool:
-      vmImage: 'Windows-2019'
+      vmImage: 'Windows-latest'
 
     variables:
       solution: '**/src/*.sln'
@@ -19,34 +27,19 @@ stages:
     - task: NuGetToolInstaller@1
 
     - task: UseDotNet@2
-      displayName: 'Use .NET Core sdk 3.0'
+      displayName: 'Use .NET Core sdk 3.1'
       inputs:
         packageType: sdk
-        version: 3.0.100
+        version: 3.1.101
 
     - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        command: build
-        projects: '$(solution)'
-        arguments: '--configuration Debug /p:Platform="$(buildPlatform)"'
-
-    - task: VSTest@2
       displayName: Test
+      condition: ne(variables['Build.Reason'], 'PullRequest')
       inputs:
-        platform: $(buildPlatform)
-        configuration: Debug
-        codeCoverageEnabled: True
-        runInParallel: False
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\*Tests.dll
+        command: test
+        projects: '$(solution)'
+        arguments: '--configuration Debug /p:Platform="$(buildPlatform)" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: 'src/**/*.coverage.cobertura.xml'
-        failIfCoverageEmpty: False
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -65,17 +58,36 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
 
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifacts'
+    - task: PublishCodeCoverageResults@1
+      condition: ne(variables['Build.Reason'], 'PullRequest')
       inputs:
-        artifactName: 'drop'
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        codeCoverageTool: Cobertura
+        summaryFileLocation: 'src/**/coverage.*.xml'
+        failIfCoverageEmpty: true
+
+    - powershell: |
+        choco install docfx -y
+        docfx doc/docfx.json
+        if ($lastexitcode -ne 0){
+          throw ("Error generating docfx document")
+        }
+      displayName: "docfx build"
+
+    - task: CopyFiles@2
+      displayName: 'Copy generated documentation to: $(Build.ArtifactStagingDirectory)/site'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)/doc/_site'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/site'
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop
 
 - stage: Deploy
   jobs:
   - deployment: DeployNuGet
+    condition: ne(variables['Build.Reason'], 'PullRequest')
     pool:
-      vmImage: 'Windows-2019'
+      vmImage: 'Windows-latest'
 
     environment: 'NuGet'
     strategy:
@@ -83,20 +95,19 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'drop'
+          - download: current
+            artifact: drop
 
           - task: NuGetToolInstaller@0
-            displayName: 'Use NuGet 5.2.0'
+            displayName: 'Use NuGet 5.4.0'
             inputs:
-              versionSpec: 5.2.0
+              versionSpec: 5.4.0
               checkLatest: true
 
           - task: NuGetCommand@2
             displayName: 'NuGet push'
             inputs:
               command: push
-              packagesToPush: '$(Pipeline.Workspace)/drop/a/*.nupkg;!$(Pipeline.Workspace)/drop/a/*.symbols.nupkg'
+              packagesToPush: '$(Pipeline.Workspace)/drop/*.nupkg;!$(Pipeline.Workspace)/drop/*.symbols.nupkg'
               nuGetFeedType: external
               publishFeedCredentials: 'Dapplo NuGet push'

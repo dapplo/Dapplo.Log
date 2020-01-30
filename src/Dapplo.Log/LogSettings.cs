@@ -1,27 +1,5 @@
-﻿#region Dapplo 2016-2019 - GNU Lesser General Public License
-
-// Dapplo - building blocks for .NET applications
-// Copyright (C) 2016-2019 Dapplo
-// 
-// For more information see: http://dapplo.net/
-// Dapplo repositories are hosted on GitHub: https://github.com/dapplo
-// 
-// This file is part of Dapplo.Log
-// 
-// Dapplo.Log is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// Dapplo.Log is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have a copy of the GNU Lesser General Public License
-// along with Dapplo.Log. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
-
-#endregion
+﻿// Copyright (c) Dapplo and contributors. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
 
@@ -48,7 +26,12 @@ namespace Dapplo.Log
         /// <summary>
         ///     The constructed default logger array
         /// </summary>
-        internal static ILogger[] DefaultLoggerArray { get; private set; } = {};
+        internal static ILogger[] DefaultLoggerArray { get; private set; } =
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+            Array.Empty<ILogger>();
+#else
+            {};
+#endif
 
         /// <summary>
         ///     This function is responsible for finding the right loggers for a LogSource.
@@ -112,7 +95,7 @@ namespace Dapplo.Log
         ///     Helper method to replace the default logger
         /// </summary>
         /// <param name="newLogger">ILogger</param>
-        private static void ReplaceDefaultLogger<TLogger>(TLogger newLogger) where TLogger : class, ILogger 
+        private static void ReplaceDefaultLogger<TLogger>(TLogger newLogger) where TLogger : class, ILogger
         {
             var previousDefaultLogger = DefaultLogger;
 

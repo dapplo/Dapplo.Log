@@ -5,12 +5,12 @@
         {
 		  "src": "../src",
           "files": [
-            "Dapplo.Log*/project.json"
+            "Dapplo.Log*/*.csproj"
           ],
           "exclude": [
 			"**/bin/**",
 			"**/obj/**",
-			"**Tests/project.json",
+			"**Tests/*.csproj"
           ]
         }
       ],
@@ -39,14 +39,14 @@
       {
         "files": [
           "images/**"
-        ],
+        ]
       }
     ],
     "overwrite": [
       {
         "files": [
           "apidoc/**.md"
-        ],
+        ]
       }
     ],
     "dest": "_site",
@@ -54,7 +54,7 @@
 		"_appTitle": "Dapplo.Log",
 		"_appLogoPath": "images/d.svg",
 		"_appFaviconPath": "images/favicon.ico",
-		"_appFooter": "Copyright © 2017 Dapplo"
+		"_appFooter": "Copyright © Dapplo"
 	},
     "globalMetadataFiles": [],
 	"template": [

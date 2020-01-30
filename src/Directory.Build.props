@@ -1,13 +1,13 @@
 ﻿<Project>
   <PropertyGroup>
-    <Copyright>Copyright © Dapplo 2016-2019</Copyright>
+    <Copyright>Copyright © Dapplo 2016-2020</Copyright>
     <Authors>Dapplo</Authors>
     <PackageIconUrl>http://www.dapplo.net/favicon.ico</PackageIconUrl>
-	<RepositoryUrl>https://github.com/dapplo/Dapplo.Log</RepositoryUrl>
+	  <RepositoryUrl>https://github.com/dapplo/Dapplo.Log</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>http://www.dapplo.net/blocks/Dapplo.Log</PackageProjectUrl>
-    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-	<LangVersion>latest</LangVersion>
+    <PackageProjectUrl>http://www.dapplo.net/Dapplo.Log</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <LangVersion>latest</LangVersion>
     <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
@@ -16,9 +16,9 @@
 
   <PropertyGroup Condition="!$(MSBuildProjectName.Contains('Tests')) And !$(MSBuildProjectName.Contains('Example'))">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-	<IsPackable>true</IsPackable>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Dapplo.Log.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
@@ -38,16 +38,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-	<Optimize>true</Optimize>
-	<DebugType>embedded</DebugType>
+    <Optimize>true</Optimize>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
   
   <ItemGroup Condition="!$(MSBuildProjectName.Contains('Test')) And !$(MSBuildProjectName.Contains('Example'))">
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.0.26">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.0.50">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
