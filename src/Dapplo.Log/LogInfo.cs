@@ -74,7 +74,7 @@ namespace Dapplo.Log
                 .Append(' ')
                 .Append(LogLevel)
                 .Append(' ')
-                .Append(loggerConfiguration.UseShortSource ? Source.ShortSource : Source.Source)
+                .Append(loggerConfiguration?.UseShortSource == true ? Source.ShortSource : Source.Source)
                 .Append(':')
                 .Append(Method)
                 .Append('(')

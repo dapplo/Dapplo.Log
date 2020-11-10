@@ -14,8 +14,9 @@ namespace Dapplo.Log.BenchmarkTests
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            var job = Job.Default.With(Platform.X64);
-            var config = DefaultConfig.Instance.With(job);
+            var jobCore50 = Job.Default.WithRuntime(CoreRuntime.Core50).WithPlatform(Platform.X64);
+            var jobNet472 = Job.Default.WithRuntime(ClrRuntime.Net472).WithPlatform(Platform.X64);
+            var config = DefaultConfig.Instance.AddJob(jobCore50).AddJob(jobNet472);
             BenchmarkRunner.Run<LogPerformance>(config);
             Console.ReadLine();
         }

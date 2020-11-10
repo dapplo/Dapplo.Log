@@ -10,8 +10,6 @@ namespace Dapplo.Log
     /// </summary>
     public static class LogSourceExtensions
     {
-        #region Level checks
-
         /// <summary>
         ///     Test if LogLevels.Debug is enabled
         /// </summary>
@@ -94,8 +92,6 @@ namespace Dapplo.Log
 
             return false;
         }
-
-        #endregion
 
         /// <summary>
         ///     This helper method will create LogInfo, if there is anything to log to

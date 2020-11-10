@@ -69,7 +69,7 @@ namespace Dapplo.Log
             return string.Format(LogLineFormat, logInfoString, messageTemplate);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ILoggerConfiguration"/>
         public virtual LogLevels LogLevel { get; set; } = LogLevels.Info;
 
         /// <inheritdoc />

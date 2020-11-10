@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Dapplo and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Diagnostics.CodeAnalysis;
 using log4net.Appender;
 using log4net.Core;
 using System.Linq;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dapplo.Log.Tests.Logger
 {
     /// <summary>
     /// An implementation of a Log4NET appender which logs using Dapplo.Log
     /// </summary>
-    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument", Justification = "Framework code")]
     public class Log4NetDapploAppender : AppenderSkeleton
     {
         private readonly Level _minimalLog4NetLevel = Level.Info;

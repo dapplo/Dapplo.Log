@@ -11,14 +11,14 @@ namespace Dapplo.Log
     /// <summary>
     ///     This defines the "source" (origin) for log statements, it should have a Type or a identifier (string) so it's clear
     ///     where the log
-    ///     entries come from. In general this should be instanciated with the default constructor without arguments, which
+    ///     entries come from. In general this should be instantiated with the default constructor without arguments, which
     ///     takes care of initiating it.
     ///     For normal .NET 4.5 this uses the Stack to find the type which called the constructor.
     ///     For other platforms this uses the CallerFilePath, which supplies the source-file.
     /// </summary>
     public sealed class LogSource
     {
-        private static readonly char[] Dot = new[] { '.' };
+        private static readonly char[] Dot = { '.' };
         /// <summary>
         /// Initializes a new instance of the <see cref="LogSource"/> class.
         ///     The constructor for specifying the type manually

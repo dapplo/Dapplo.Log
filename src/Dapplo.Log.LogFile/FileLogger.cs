@@ -203,8 +203,6 @@ namespace Dapplo.Log.LogFile
             }
         }
 
-        #region FormatWith
-
         /// <summary>
         ///     A simple FormatWith
         /// </summary>
@@ -231,10 +229,6 @@ namespace Dapplo.Log.LogFile
 
             return string.Format(stringToFormat, arguments.ToArray());
         }
-
-        #endregion
-
-        #region Background processing
 
         /// <summary>
         ///     This is the implementation of the background task
@@ -414,10 +408,6 @@ namespace Dapplo.Log.LogFile
             }
         }
 
-        #endregion
-
-        #region IDisposable Support
-
         private bool _disposedValue; // To detect redundant calls
 
         private void Dispose(bool disposing)
@@ -478,7 +468,5 @@ namespace Dapplo.Log.LogFile
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
         }
-
-        #endregion
     }
 }

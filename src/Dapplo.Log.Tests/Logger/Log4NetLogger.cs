@@ -101,21 +101,16 @@ namespace Dapplo.Log.Tests.Logger
         public override bool IsLogLevelEnabled(LogLevels logLevel, LogSource logSource = null)
         {
             var log = GetLogger(logSource);
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevels.Verbose:
-                case LogLevels.Debug:
-                    return log.IsDebugEnabled;
-                case LogLevels.Error:
-                    return log.IsErrorEnabled;
-                case LogLevels.Fatal:
-                    return log.IsFatalEnabled;
-                case LogLevels.Info:
-                    return log.IsInfoEnabled;
-                case LogLevels.Warn:
-                    return log.IsWarnEnabled;
-            }
-            return false;
+                LogLevels.Verbose => log.IsDebugEnabled,
+                LogLevels.Debug => log.IsDebugEnabled,
+                LogLevels.Error => log.IsErrorEnabled,
+                LogLevels.Fatal => log.IsFatalEnabled,
+                LogLevels.Info => log.IsInfoEnabled,
+                LogLevels.Warn => log.IsWarnEnabled,
+                _ => false
+            };
         }
     }
 }

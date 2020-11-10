@@ -2,14 +2,8 @@
 
   <PropertyGroup>
     <Description>A small logger facade, usable in projects where a log framework should not be forced.</Description>
-    <AssemblyTitle>Dapplo.Log</AssemblyTitle>
     <TargetFrameworks>netstandard1.1;netstandard1.3;net45;netstandard2.0</TargetFrameworks>
-    <AssemblyName>Dapplo.Log</AssemblyName>
-    <PackageId>Dapplo.Log</PackageId>
     <PackageTags>log;dapplo</PackageTags>
-	<Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
