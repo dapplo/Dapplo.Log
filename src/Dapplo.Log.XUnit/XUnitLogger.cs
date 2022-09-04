@@ -3,7 +3,7 @@
 
 using System;
 using Xunit.Abstractions;
-#if NET45
+#if NET471
 using Nito.AsyncEx.AsyncLocal;
 #else
 using System.Threading;

@@ -81,7 +81,7 @@ namespace Dapplo.Log
             var nameSpace = GetFilename(GetDirectory(pathParts));
 
             var fqTypeName = $"{nameSpace}.{typeName}";
-#if NETSTANDARD2_0 || NET45
+#if NETSTANDARD2_0 || NET471
             var type = Type.GetType(fqTypeName, false, true);
 #else
             var type = Type.GetType(fqTypeName, false);
