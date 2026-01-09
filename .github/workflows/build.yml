@@ -97,7 +97,7 @@ jobs:
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
       with:
-        nuget-version: '7.1.0'
+        nuget-version: '7.0.1'
     
     - name: Push to NuGet
       shell: pwsh
