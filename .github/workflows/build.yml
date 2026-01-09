@@ -88,11 +88,11 @@ jobs:
     if: github.event_name != 'pull_request'
     
     steps:
-    - name: Download artifacts
+    - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: drop
-        path: ${{ github.workspace }}/drop
+        name: build-artifacts
+        path: artifacts
     
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
