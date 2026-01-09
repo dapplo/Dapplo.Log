@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Dapplo and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 using Dapplo.Log.LogFile;
 using Dapplo.Log.Tests.Logger;
 using Dapplo.Log.XUnit;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Dapplo.Log.Tests
 {
@@ -55,7 +55,7 @@ namespace Dapplo.Log.Tests
             };
             forwardingLogger.ReplacedWith(fileLogger);
             // Force archiving, as the filename changes
-            await Task.Delay(2000);
+            await Task.Delay(2000, TestContext.Current.CancellationToken);
             LoggerTestSupport.TestAllLogMethods(fileLogger);
         }
     }

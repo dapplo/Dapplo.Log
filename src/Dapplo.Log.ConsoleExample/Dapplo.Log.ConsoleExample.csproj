@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <Description>A demo for the console logger</Description>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <OutputType>Exe</OutputType>
     <PackageTags>log;dapplo</PackageTags>
-    <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +18,7 @@
     <ProjectReference Include="..\Dapplo.Log.Loggers\Dapplo.Log.Loggers.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net481' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

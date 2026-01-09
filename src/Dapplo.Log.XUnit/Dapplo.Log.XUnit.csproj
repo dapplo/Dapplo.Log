@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>A Dapplo.Log XUnit logger</Description>
     <AssemblyTitle>Dapplo.XUnit</AssemblyTitle>
-    <TargetFrameworks>net471;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net481;netstandard2.0</TargetFrameworks>
     <AssemblyName>Dapplo.Log.XUnit</AssemblyName>
     <PackageId>Dapplo.Log.XUnit</PackageId>
     <PackageTags>xunit;log;dapplo</PackageTags>
@@ -14,15 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit" Version="2.4.2" />
+	  <PackageReference Include="xunit.v3.extensibility.core" Version="3.2.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net481' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
   </ItemGroup>
 </Project>

@@ -2,12 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using Xunit.Abstractions;
-#if NET471
-using Nito.AsyncEx.AsyncLocal;
-#else
 using System.Threading;
-#endif
+using Xunit;
 
 namespace Dapplo.Log.XUnit
 {

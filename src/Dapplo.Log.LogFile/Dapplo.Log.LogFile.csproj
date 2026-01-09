@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A file logger for Dapplo.Log</Description>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;net471</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net481</TargetFrameworks>
     <PackageTags>file;logger;dapplo</PackageTags>
   </PropertyGroup>
 
@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net481' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
