@@ -52,7 +52,7 @@ jobs:
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.COVERALLS_SECRET }}
-        fail_ci_if_error: false
+        fail-on-error: false
         file: src/Dapplo.Log.Tests/coverage.info
     
     - name: Install DocFX
@@ -65,7 +65,7 @@ jobs:
       shell: pwsh
       run: |
         New-Item -ItemType Directory -Force -Path artifacts
-        Get-ChildItem -Path src -Include "*.nupkg" -Recurse -File | Where-Object { $_.FullName -match "\\bin\\${{ env.BUILD_CONFIGURATION }}\\" } | Copy-Item -Destination artifacts
+        Get-ChildItem -Path src -Include "*nupkg" -Recurse -File | Where-Object { $_.FullName -match "\\bin\\${{ env.BUILD_CONFIGURATION }}\\" } | Copy-Item -Destination artifacts
     
     - name: Copy coverage files to artifacts
       shell: pwsh
