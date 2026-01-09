@@ -74,6 +74,12 @@ jobs:
         Get-ChildItem -Path src -Include "coverage.*" -Recurse -File | Copy-Item -Destination artifacts
       continue-on-error: true
     
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: artifacts/**/*
+
     - name: Upload documentation site
       uses: actions/upload-artifact@v4
       with:
