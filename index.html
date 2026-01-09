@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Dapplo.Log | Dapplo.Log </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Dapplo.Log | Dapplo.Log ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/d.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                <ul class="nav level1 navbar-nav">
+                  <li class="">
+                    <a href="articles/intro.html" title="Articles" class="">Articles</a>
+                  </li>
+                  <li class="">
+                    <a href="api/" title="Api Documentation" class="">Api Documentation</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="dapplolog">Dapplo.Log</h1>
+
+<p>This contains a simple logging facade in dapplo.log, as well as some simple loggers, a file logger and also some (currently example) adapters for other log frameworks.
+The facade allows a framework/library to have log statements without forcing the project that uses this to use the same huge logger.
+Without a logger and if used correctly the performance penalty is extremely small, as soon as you have issues you can set a logger and get some information.</p>
+<p>The project is build modular, currently the facade which is the least you will need, is about 17KB.
+Adding a file logger adds another 21KB, which totals to &lt;40KB. Just as a comparison, log4net is about 300KB. (although unfair, it can do a lot more)</p>
+<ul>
+<li>Current build status: <a href="https://ci.appveyor.com/project/dapplo/dapplo-log"><img src="https://ci.appveyor.com/api/projects/status/5s97m6ha9niupt1y?svg=true" alt="Build status"></a></li>
+<li>Coverage Status: <a href="https://coveralls.io/github/dapplo/Dapplo.Log?branch=master"><img src="https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master" alt="Coverage Status"></a></li>
+<li>NuGet package Dapplo.Log: <a href="https://badge.fury.io/nu/dapplo.log"><img src="https://badge.fury.io/nu/dapplo.log.svg" alt="NuGet package"></a></li>
+<li>NuGet package Dapplo.Log.Loggers: <a href="https://badge.fury.io/nu/dapplo.log.loggers"><img src="https://badge.fury.io/nu/dapplo.log.loggers.svg" alt="NuGet package"></a></li>
+<li>NuGet package Dapplo.Log.LogFile: <a href="https://badge.fury.io/nu/dapplo.log.logfile"><img src="https://badge.fury.io/nu/dapplo.log.logfile.svg" alt="NuGet package"></a></li>
+<li>NuGet package Dapplo.Log.XUnit: <a href="https://badge.fury.io/nu/dapplo.log.xunit"><img src="https://badge.fury.io/nu/dapplo.log.xunit.svg" alt="NuGet package"></a></li>
+</ul>
+<p>This package supports most platforms / profiles, if something is missing let me know.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/dapplo/Dapplo.Log/blob/master/doc/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © Dapplo
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

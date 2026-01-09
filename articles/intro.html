@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Dapplo.Log | Dapplo.Log </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Dapplo.Log | Dapplo.Log ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/d.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                <ul class="nav level1 navbar-nav">
+                  <li class="active">
+                    <a href="../articles/intro.html" title="Articles" class="active">Articles</a>
+                  </li>
+                  <li class="">
+                    <a href="../api/" title="Api Documentation" class="">Api Documentation</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="active">
+                      <a href="intro.html" title="Introduction" class="active">Introduction</a>
+                    </li>
+                    <li class="">
+                      <a href="xunit.html" title="Logging in XUnit tests" class="">Logging in XUnit tests</a>
+                    </li>
+                    <li class="">
+                      <a href="file.html" title="Logging to files" class="">Logging to files</a>
+                    </li>
+                    <li class="">
+                      <a href="adapters.html" title="Other log frameworks" class="">Other log frameworks</a>
+                    </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="dapplolog">Dapplo.Log</h1>
+
+<p>Ever written a framework? Well... I did, and one of the biggest problems I had was deciding on a logger framework.
+Most of the time, I didn&#39;t decide on a logger as this would force the user to use or at least include the one I used.
+This project will help you out, and make it possible for your user to decide where the entries go.</p>
+<p>To you this, you add the nuget package:</p>
+<pre><code>Install-Package Dapplo.Log
+</code></pre><p>Add the using statement to your class:</p>
+<pre><code>using Dapplo.Log;
+</code></pre><p>Include a static one-liner in your class:</p>
+<pre><code>private static readonly LogSource Log = new LogSource();
+</code></pre><p>And wherever you want to write a log statement, you call:</p>
+<pre><code>Log.Info().WriteLine(message, params);
+Log.Error().WriteLine(exception, message, params);
+</code></pre><p>Where the Log is the static @Dapplo.Log.LogSource variable in your class, the method after this defines the log level via @Dapplo.Log.LogLevels and the WriteLine only specifies the information to log.</p>
+<p>There is a reason why this is defined like this:</p>
+<ul>
+<li>The @Dapplo.Log.LogSource captures the calling class once, so you know where the log came from.</li>
+<li>The log level method is an extension method which defines the @Dapplo.Log.LogLevels, captures the calling method name and line in your code. </li>
+<li>The Write / WriteLine extension takes care of the arguments.</li>
+<li>If no logger is available, or the level is higher, nothing happens. If there is a logger with the right level, all information is passed to the logger.</li>
+</ul>
+<p>To see the output from the code in your project, you will need to instanciate a logger before using it.</p>
+<p>There are a couple of loggers available, in @Dapplo.Log.Loggers, here some examples:</p>
+<ul>
+<li>@Dapplo.Log.Loggers.TraceLogger, which uses the System.Diagnostics.Trace to write the formatted information to.</li>
+<li>@Dapplo.Log.Loggers.ConsoleLogger, which uses the Console to write the formatted information to.</li>
+</ul>
+<p>If you need a specific log level, use either this before creating your TraceLogger:</p>
+<pre><code>LogSettings.DefaultLevel = LogLevels.Warn;
+</code></pre><p>Or you can set the level on the Logger itself.</p>
+<p>You enable the logging like this:</p>
+<pre><code>LogSettings.RegisterDefaultLogger&lt;TraceLogger&gt;(LogLevels.Warn)
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/dapplo/Dapplo.Log/blob/master/doc/articles/intro.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © Dapplo
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
