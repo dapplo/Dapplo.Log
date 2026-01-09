@@ -1,0 +1,105 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    env:
+      solution: '**/src/*.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+    
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+      with:
+        nuget-version: '6.3.0'
+    
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.solution }}
+    
+    - name: Test
+      if: github.event_name != 'pull_request'
+      run: dotnet test **/src/**/*.Tests.csproj --configuration Debug /p:Platform="${{ env.buildPlatform }}" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+    
+    - name: Build
+      run: dotnet build ${{ env.solution }} --configuration ${{ env.buildConfiguration }} /p:Platform="${{ env.buildPlatform }}" --no-restore
+    
+    - name: Upload coverage to Codecov
+      if: github.event_name != 'pull_request'
+      uses: codecov/codecov-action@v4
+      with:
+        files: src/**/coverage.cobertura.xml
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: false
+    
+    - name: Install docfx
+      run: choco install docfx -y
+    
+    - name: Build documentation
+      run: |
+        docfx doc/docfx.json
+        if ($LASTEXITCODE -ne 0) {
+          throw "Error generating docfx document"
+        }
+      shell: pwsh
+    
+    - name: Collect NuGet packages
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path ${{ github.workspace }}/artifacts
+        Get-ChildItem -Path . -Filter *.nupkg -Recurse | Where-Object { $_.FullName -match "\\bin\\${{ env.buildConfiguration }}\\" } | Copy-Item -Destination ${{ github.workspace }}/artifacts
+    
+    - name: Collect coverage files
+      if: github.event_name != 'pull_request'
+      shell: pwsh
+      run: |
+        Get-ChildItem -Path src -Filter coverage.* -Recurse | Copy-Item -Destination ${{ github.workspace }}/artifacts
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: drop
+        path: |
+          ${{ github.workspace }}/artifacts
+          doc/_site
+    
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    if: github.event_name != 'pull_request'
+    
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: drop
+        path: ${{ github.workspace }}/drop
+    
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+      with:
+        nuget-version: '6.3.0'
+    
+    - name: Push to NuGet
+      run: |
+        nuget push "${{ github.workspace }}/drop/artifacts/*.nupkg" -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
+      continue-on-error: true
