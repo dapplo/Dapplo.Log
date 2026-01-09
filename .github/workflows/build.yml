@@ -37,8 +37,7 @@ jobs:
       run: dotnet restore ${{ env.SOLUTION }}
     
     - name: Test
-      if: github.event_name != 'pull_request'
-      run: dotnet test **/src/**/*.Tests.csproj --configuration Debug /p:Platform="${{ env.buildPlatform }}" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+      run: dotnet test ${{ env.SOLUTION }} --configuration Debug /p:Platform="${{ env.BUILD_PLATFORM }}" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
     
     - name: Build
       run: dotnet build ${{ env.solution }} --configuration ${{ env.buildConfiguration }} /p:Platform="${{ env.buildPlatform }}" --no-restore
