@@ -7,6 +7,9 @@
     <AssemblyName>Dapplo.Log.XUnit</AssemblyName>
     <PackageId>Dapplo.Log.XUnit</PackageId>
     <PackageTags>xunit;log;dapplo</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   
   <ItemGroup>
