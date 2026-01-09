@@ -9,7 +9,7 @@ Adding a file logger adds another 21KB, which totals to <40KB. Just as a compari
 
 - Documentation can be found [here](http://www.dapplo.net/documentation/Dapplo.Log)
 - Current build status: [![Build Status](https://github.com/dapplo/Dapplo.Log/actions/workflows/build.yml/badge.svg)](https://github.com/dapplo/Dapplo.Log/actions/workflows/build.yml)
-- Coverage Status: [![codecov](https://codecov.io/gh/dapplo/Dapplo.Log/branch/master/graph/badge.svg)](https://codecov.io/gh/dapplo/Dapplo.Log)
+- Coverage Status: [![Coverage Status](https://coveralls.io/repos/github/dapplo/Dapplo.Log/badge.svg?branch=master)](https://coveralls.io/github/dapplo/Dapplo.Log?branch=master)
 - NuGet package Dapplo.Log: [![NuGet package](https://badge.fury.io/nu/dapplo.log.svg)](https://badge.fury.io/nu/dapplo.log)
 - NuGet package Dapplo.Log.Loggers: [![NuGet package](https://badge.fury.io/nu/dapplo.log.loggers.svg)](https://badge.fury.io/nu/dapplo.log.loggers)
 - NuGet package Dapplo.Log.LogFile: [![NuGet package](https://badge.fury.io/nu/dapplo.log.logfile.svg)](https://badge.fury.io/nu/dapplo.log.logfile)
