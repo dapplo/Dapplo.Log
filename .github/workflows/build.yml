@@ -3,19 +3,24 @@ name: Build and Deploy
 on:
   push:
     branches-ignore:
-      - gh-pages
+      - 'gh-pages'
   pull_request:
-    branches:
-      - '*'
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
     runs-on: windows-latest
     
+    permissions:
+      contents: write  # Required for pushing to gh-pages
+      actions: read
+      checks: write
+
     env:
       SOLUTION: 'src/Dapplo.Log.sln'
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Release'
+      BUILD_PLATFORM: 'Any CPU'
+      BUILD_CONFIGURATION: 'Release'
     
     steps:
     - name: Checkout code
@@ -23,24 +28,24 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Setup .NET Core SDK
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+      with:
+        nuget-version: '7.0.1'
+    
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.101'
-    
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2
-      with:
-        nuget-version: '7.0.1'
     
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION }}
     
     - name: Test
-      run: dotnet test ${{ env.SOLUTION }} --configuration ${{ env.buildConfiguration }} /p:Platform="${{ env.buildPlatform}}" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+      run: dotnet test ${{ env.SOLUTION }} --configuration ${{ env.BUILD_CONFIGURATION }} /p:Platform="${{ env.BUILD_PLATFORM}}" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
     
     - name: Build
-      run: dotnet build ${{ env.solution }} --configuration ${{ env.buildConfiguration }} /p:Platform="${{ env.buildPlatform }}" --no-restore
+      run: dotnet build ${{ env.solution }} --configuration ${{ env.BUILD_CONFIGURATION }} /p:Platform="${{ env.BUILD_PLATFORM }}" --no-restore
     
     - name: Upload coverage to Codecov
       if: github.event_name != 'pull_request'
@@ -51,41 +56,54 @@ jobs:
         slug: dapplo/Dapplo.Log
         fail_ci_if_error: false
     
-    - name: Install docfx
+    - name: Install DocFX
       run: choco install docfx -y
     
-    - name: Build documentation
-      run: |
-        docfx doc/docfx.json
-        if ($LASTEXITCODE -ne 0) {
-          throw "Error generating docfx document"
-        }
-      shell: pwsh
+    - name: Build Documentation
+      run: docfx doc/docfx.json
     
-    - name: Collect NuGet packages
+    - name: Copy NuGet packages to artifacts
       shell: pwsh
       run: |
-        New-Item -ItemType Directory -Force -Path ${{ github.workspace }}/artifacts
-        Get-ChildItem -Path . -Filter *.nupkg -Recurse | Where-Object { $_.FullName -match "\\bin\\${{ env.buildConfiguration }}\\" } | Copy-Item -Destination ${{ github.workspace }}/artifacts
+        New-Item -ItemType Directory -Force -Path artifacts
+        Get-ChildItem -Path src -Include "*.nupkg" -Recurse -File | Where-Object { $_.FullName -match "\\bin\\${{ env.BUILD_CONFIGURATION }}\\" } | Copy-Item -Destination artifacts
     
-    - name: Collect coverage files
-      if: github.event_name != 'pull_request'
+    - name: Copy coverage files to artifacts
       shell: pwsh
       run: |
-        Get-ChildItem -Path src -Filter coverage.* -Recurse | Copy-Item -Destination ${{ github.workspace }}/artifacts
+        Get-ChildItem -Path src -Include "coverage.*" -Recurse -File | Copy-Item -Destination artifacts
+      continue-on-error: true
     
-    - name: Upload build artifacts
+    - name: Upload documentation site
       uses: actions/upload-artifact@v4
       with:
-        name: drop
-        path: |
-          ${{ github.workspace }}/artifacts
-          doc/_site
-    
+        name: documentation-site
+        path: doc/_site/**/*
+
+    - name: Publish documentation to gh-pages
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+      shell: cmd
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local core.autocrlf false
+        git config --local core.safecrlf false
+        git checkout -B docfx
+        del .gitignore
+        git add doc/_site
+        git commit -m "Generated documentation for ${{ github.run_number }}"
+        git subtree split --prefix doc/_site -b gh-pages
+        git push -f origin gh-pages:gh-pages
+
   deploy:
     runs-on: windows-latest
     needs: build
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: read
+    
+    environment: 
+      name: NuGet
     
     steps:
     - name: Download build artifacts
@@ -93,7 +111,7 @@ jobs:
       with:
         name: build-artifacts
         path: artifacts
-    
+
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2
       with:

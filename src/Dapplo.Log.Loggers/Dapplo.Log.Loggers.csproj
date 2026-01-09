@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A collections of loggers for Dapplo.Log</Description>
-    <TargetFrameworks>net481;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net481;netstandard2.0;net8.0;net10.0</TargetFrameworks>
   	<PackageTags>loggers;dapplo</PackageTags>
   </PropertyGroup>
 
@@ -10,20 +10,7 @@
     <ProjectReference Include="..\Dapplo.Log\Dapplo.Log.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
-    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <DefineConstants>$(DefineConstants);PCL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net481' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

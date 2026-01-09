@@ -2,20 +2,12 @@
 
   <PropertyGroup>
     <Description>A file logger for Dapplo.Log</Description>
-    <TargetFrameworks>netstandard2.0;net481</TargetFrameworks>
+    <TargetFrameworks>net481;netstandard2.0;net8.0;net10.0</TargetFrameworks>
     <PackageTags>file;logger;dapplo</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dapplo.Log\Dapplo.Log.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
-    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-    <PackageReference Include="System.IO" Version="4.3.0" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net481' ">
